@@ -14,4 +14,36 @@ public class LoaiTrangThai {
     private int maLoaiTrangThai;
     private String tenLoaiTrangThai;
     private String moTa;
+
+    public int getLoaiTrangThaiID() {
+        return loaiTrangThaiID;
+    }
+
+    public void setLoaiTrangThaiID(int loaiTrangThaiID) {
+        this.loaiTrangThaiID = loaiTrangThaiID;
+    }
+
+    public int getMaLoaiTrangThai() {
+        return maLoaiTrangThai;
+    }
+
+    public void setMaLoaiTrangThai(int maLoaiTrangThai) {
+        this.maLoaiTrangThai = maLoaiTrangThai;
+    }
+
+    public String getTenLoaiTrangThai() {
+        return tenLoaiTrangThai;
+    }
+
+    public void setTenLoaiTrangThai(String tenLoaiTrangThai) {
+        this.tenLoaiTrangThai = tenLoaiTrangThai;
+    }
+
+    public String getMoTa() {
+        return moTa;
+    }
+
+    public void setMoTa(String moTa) {
+        this.moTa = moTa;
+    }
 }

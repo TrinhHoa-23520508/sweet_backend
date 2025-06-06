@@ -19,4 +19,52 @@ public class PhieuRutTien {
     private int soTienRut;
     private LocalDateTime ngayRut;
     private float laiSuatKhongKyHan;
+
+    public int getPhieuRutTienID() {
+        return phieuRutTienID;
+    }
+
+    public void setPhieuRutTienID(int phieuRutTienID) {
+        this.phieuRutTienID = phieuRutTienID;
+    }
+
+    public PhieuGuiTien getPhieuGuiTien() {
+        return phieuGuiTien;
+    }
+
+    public void setPhieuGuiTien(PhieuGuiTien phieuGuiTien) {
+        this.phieuGuiTien = phieuGuiTien;
+    }
+
+    public GiaoDich getGiaoDich() {
+        return giaoDich;
+    }
+
+    public void setGiaoDich(GiaoDich giaoDich) {
+        this.giaoDich = giaoDich;
+    }
+
+    public int getSoTienRut() {
+        return soTienRut;
+    }
+
+    public void setSoTienRut(int soTienRut) {
+        this.soTienRut = soTienRut;
+    }
+
+    public LocalDateTime getNgayRut() {
+        return ngayRut;
+    }
+
+    public void setNgayRut(LocalDateTime ngayRut) {
+        this.ngayRut = ngayRut;
+    }
+
+    public float getLaiSuatKhongKyHan() {
+        return laiSuatKhongKyHan;
+    }
+
+    public void setLaiSuatKhongKyHan(float laiSuatKhongKyHan) {
+        this.laiSuatKhongKyHan = laiSuatKhongKyHan;
+    }
 }

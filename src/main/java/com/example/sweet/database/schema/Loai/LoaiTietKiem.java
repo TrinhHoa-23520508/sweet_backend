@@ -16,4 +16,60 @@ public class LoaiTietKiem {
     private boolean duocPhepRutTruocHan;
     private boolean duocPhepRutMotPhan;
     private boolean coHoatDong;
+
+    public int getLoaiTietKiemID() {
+        return loaiTietKiemID;
+    }
+
+    public void setLoaiTietKiemID(int loaiTietKiemID) {
+        this.loaiTietKiemID = loaiTietKiemID;
+    }
+
+    public String getTenLoaiTietKiem() {
+        return tenLoaiTietKiem;
+    }
+
+    public void setTenLoaiTietKiem(String tenLoaiTietKiem) {
+        this.tenLoaiTietKiem = tenLoaiTietKiem;
+    }
+
+    public int getMaLoaiTietKiem() {
+        return maLoaiTietKiem;
+    }
+
+    public void setMaLoaiTietKiem(int maLoaiTietKiem) {
+        this.maLoaiTietKiem = maLoaiTietKiem;
+    }
+
+    public String getMoTa() {
+        return moTa;
+    }
+
+    public void setMoTa(String moTa) {
+        this.moTa = moTa;
+    }
+
+    public boolean isDuocPhepRutTruocHan() {
+        return duocPhepRutTruocHan;
+    }
+
+    public void setDuocPhepRutTruocHan(boolean duocPhepRutTruocHan) {
+        this.duocPhepRutTruocHan = duocPhepRutTruocHan;
+    }
+
+    public boolean isDuocPhepRutMotPhan() {
+        return duocPhepRutMotPhan;
+    }
+
+    public void setDuocPhepRutMotPhan(boolean duocPhepRutMotPhan) {
+        this.duocPhepRutMotPhan = duocPhepRutMotPhan;
+    }
+
+    public boolean isCoHoatDong() {
+        return coHoatDong;
+    }
+
+    public void setCoHoatDong(boolean coHoatDong) {
+        this.coHoatDong = coHoatDong;
+    }
 }

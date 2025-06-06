@@ -17,4 +17,36 @@ public class PhieuTraLai {
     private PhieuGuiTien phieuGuiTien;
 
     private LocalDateTime ngayTraLai;
+
+    public int getPhieuTraLaiID() {
+        return phieuTraLaiID;
+    }
+
+    public void setPhieuTraLaiID(int phieuTraLaiID) {
+        this.phieuTraLaiID = phieuTraLaiID;
+    }
+
+    public GiaoDich getGiaoDich() {
+        return giaoDich;
+    }
+
+    public void setGiaoDich(GiaoDich giaoDich) {
+        this.giaoDich = giaoDich;
+    }
+
+    public PhieuGuiTien getPhieuGuiTien() {
+        return phieuGuiTien;
+    }
+
+    public void setPhieuGuiTien(PhieuGuiTien phieuGuiTien) {
+        this.phieuGuiTien = phieuGuiTien;
+    }
+
+    public LocalDateTime getNgayTraLai() {
+        return ngayTraLai;
+    }
+
+    public void setNgayTraLai(LocalDateTime ngayTraLai) {
+        this.ngayTraLai = ngayTraLai;
+    }
 }

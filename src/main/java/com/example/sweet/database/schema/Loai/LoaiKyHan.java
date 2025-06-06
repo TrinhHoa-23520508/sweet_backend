@@ -12,4 +12,28 @@ public class LoaiKyHan {
     private int loaiKyHanID;
     private String tenLoaiKyHan;
     private int soThang;
+
+    public int getLoaiKyHanID() {
+        return loaiKyHanID;
+    }
+
+    public void setLoaiKyHanID(int loaiKyHanID) {
+        this.loaiKyHanID = loaiKyHanID;
+    }
+
+    public String getTenLoaiKyHan() {
+        return tenLoaiKyHan;
+    }
+
+    public void setTenLoaiKyHan(String tenLoaiKyHan) {
+        this.tenLoaiKyHan = tenLoaiKyHan;
+    }
+
+    public int getSoThang() {
+        return soThang;
+    }
+
+    public void setSoThang(int soThang) {
+        this.soThang = soThang;
+    }
 }

@@ -12,4 +12,28 @@ public class QuyenHan {
     private int quyenHanID;
     private String tenQuyenHan;
     private String moTa;
+
+    public int getQuyenHanID() {
+        return quyenHanID;
+    }
+
+    public void setQuyenHanID(int quyenHanID) {
+        this.quyenHanID = quyenHanID;
+    }
+
+    public String getTenQuyenHan() {
+        return tenQuyenHan;
+    }
+
+    public void setTenQuyenHan(String tenQuyenHan) {
+        this.tenQuyenHan = tenQuyenHan;
+    }
+
+    public String getMoTa() {
+        return moTa;
+    }
+
+    public void setMoTa(String moTa) {
+        this.moTa = moTa;
+    }
 }

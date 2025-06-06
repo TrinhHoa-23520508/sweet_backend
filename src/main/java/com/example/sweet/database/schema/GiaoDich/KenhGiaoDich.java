@@ -13,4 +13,36 @@ public class KenhGiaoDich {
     private String tenKenhGiaoDich;
     private int maKenhGiaoDich;
     private String moTa;
+
+    public String getMoTa() {
+        return moTa;
+    }
+
+    public void setMoTa(String moTa) {
+        this.moTa = moTa;
+    }
+
+    public int getMaKenhGiaoDich() {
+        return maKenhGiaoDich;
+    }
+
+    public void setMaKenhGiaoDich(int maKenhGiaoDich) {
+        this.maKenhGiaoDich = maKenhGiaoDich;
+    }
+
+    public String getTenKenhGiaoDich() {
+        return tenKenhGiaoDich;
+    }
+
+    public void setTenKenhGiaoDich(String tenKenhGiaoDich) {
+        this.tenKenhGiaoDich = tenKenhGiaoDich;
+    }
+
+    public int getKenhGiaoDichID() {
+        return kenhGiaoDichID;
+    }
+
+    public void setKenhGiaoDichID(int kenhGiaoDichID) {
+        this.kenhGiaoDichID = kenhGiaoDichID;
+    }
 }
