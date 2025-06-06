@@ -18,4 +18,28 @@ public class TanSuatNhanLaiHinhThucDaoHan {
     @MapsId("hinhThucDaoHanID")
     @JoinColumn(name = "hinh_thuc_dao_han_id")
     private HinhThucDaoHan hinhThucDaoHan;
+
+    public TanSuatNhanLai getTanSuatNhanLai() {
+        return tanSuatNhanLai;
+    }
+
+    public void setTanSuatNhanLai(TanSuatNhanLai tanSuatNhanLai) {
+        this.tanSuatNhanLai = tanSuatNhanLai;
+    }
+
+    public TanSuatNhanLaiHinhThucDaoHan getId() {
+        return id;
+    }
+
+    public void setId(TanSuatNhanLaiHinhThucDaoHan id) {
+        this.id = id;
+    }
+
+    public HinhThucDaoHan getHinhThucDaoHan() {
+        return hinhThucDaoHan;
+    }
+
+    public void setHinhThucDaoHan(HinhThucDaoHan hinhThucDaoHan) {
+        this.hinhThucDaoHan = hinhThucDaoHan;
+    }
 }

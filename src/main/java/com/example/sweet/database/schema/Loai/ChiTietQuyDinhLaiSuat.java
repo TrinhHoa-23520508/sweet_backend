@@ -25,4 +25,44 @@ public class ChiTietQuyDinhLaiSuat {
     @ManyToOne
     @JoinColumn(name = "loai_ky_han", nullable = false)
     private LoaiKyHan loaiKyHan;
+
+    public int getChiTietQuyDinhID() {
+        return chiTietQuyDinhID;
+    }
+
+    public void setChiTietQuyDinhID(int chiTietQuyDinhID) {
+        this.chiTietQuyDinhID = chiTietQuyDinhID;
+    }
+
+    public QuyDinhLaiSuat getQuyDinhLaiSuat() {
+        return quyDinhLaiSuat;
+    }
+
+    public void setQuyDinhLaiSuat(QuyDinhLaiSuat quyDinhLaiSuat) {
+        this.quyDinhLaiSuat = quyDinhLaiSuat;
+    }
+
+    public LoaiTietKiem getLoaiTietKiem() {
+        return loaiTietKiem;
+    }
+
+    public void setLoaiTietKiem(LoaiTietKiem loaiTietKiem) {
+        this.loaiTietKiem = loaiTietKiem;
+    }
+
+    public TanSuatNhanLai getTanSuatNhanLai() {
+        return tanSuatNhanLai;
+    }
+
+    public void setTanSuatNhanLai(TanSuatNhanLai tanSuatNhanLai) {
+        this.tanSuatNhanLai = tanSuatNhanLai;
+    }
+
+    public LoaiKyHan getLoaiKyHan() {
+        return loaiKyHan;
+    }
+
+    public void setLoaiKyHan(LoaiKyHan loaiKyHan) {
+        this.loaiKyHan = loaiKyHan;
+    }
 }

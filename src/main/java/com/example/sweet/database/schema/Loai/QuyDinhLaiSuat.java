@@ -20,4 +20,60 @@ public class QuyDinhLaiSuat {
 
     private float laiSuatKhongKyHan;
     private int soTienGuiToiThieu;
+
+    public int getQuyDinhLaiSuatID() {
+        return quyDinhLaiSuatID;
+    }
+
+    public void setQuyDinhLaiSuatID(int quyDinhLaiSuatID) {
+        this.quyDinhLaiSuatID = quyDinhLaiSuatID;
+    }
+
+    public LocalDate getNgayBatDau() {
+        return ngayBatDau;
+    }
+
+    public void setNgayBatDau(LocalDate ngayBatDau) {
+        this.ngayBatDau = ngayBatDau;
+    }
+
+    public LocalDate getNgayKetThuc() {
+        return ngayKetThuc;
+    }
+
+    public void setNgayKetThuc(LocalDate ngayKetThuc) {
+        this.ngayKetThuc = ngayKetThuc;
+    }
+
+    public String getMoTa() {
+        return moTa;
+    }
+
+    public void setMoTa(String moTa) {
+        this.moTa = moTa;
+    }
+
+    public NhanVien getNguoiLapQuyDinh() {
+        return nguoiLapQuyDinh;
+    }
+
+    public void setNguoiLapQuyDinh(NhanVien nguoiLapQuyDinh) {
+        this.nguoiLapQuyDinh = nguoiLapQuyDinh;
+    }
+
+    public float getLaiSuatKhongKyHan() {
+        return laiSuatKhongKyHan;
+    }
+
+    public void setLaiSuatKhongKyHan(float laiSuatKhongKyHan) {
+        this.laiSuatKhongKyHan = laiSuatKhongKyHan;
+    }
+
+    public int getSoTienGuiToiThieu() {
+        return soTienGuiToiThieu;
+    }
+
+    public void setSoTienGuiToiThieu(int soTienGuiToiThieu) {
+        this.soTienGuiToiThieu = soTienGuiToiThieu;
+    }
 }

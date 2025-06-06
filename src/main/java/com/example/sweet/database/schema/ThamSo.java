@@ -14,4 +14,44 @@ public class ThamSo {
     private String moTa;
     private int maThamSo;
     private int giaTri;
+
+    public int getThamSoID() {
+        return thamSoID;
+    }
+
+    public void setThamSoID(int thamSoID) {
+        this.thamSoID = thamSoID;
+    }
+
+    public String getTenThamSo() {
+        return tenThamSo;
+    }
+
+    public void setTenThamSo(String tenThamSo) {
+        this.tenThamSo = tenThamSo;
+    }
+
+    public String getMoTa() {
+        return moTa;
+    }
+
+    public void setMoTa(String moTa) {
+        this.moTa = moTa;
+    }
+
+    public int getMaThamSo() {
+        return maThamSo;
+    }
+
+    public void setMaThamSo(int maThamSo) {
+        this.maThamSo = maThamSo;
+    }
+
+    public int getGiaTri() {
+        return giaTri;
+    }
+
+    public void setGiaTri(int giaTri) {
+        this.giaTri = giaTri;
+    }
 }

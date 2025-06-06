@@ -27,8 +27,104 @@ public class KhachHang {
 
     @ManyToOne
     @JoinColumn(name = "vai_tro")
-    private VaiTro vaiTroID;
+    private VaiTro vaiTro;
     @ManyToOne
     @JoinColumn(name = "trang_thai_tai_khoan")
     private TrangThai trangThaiTaiKhoan;
+
+    public int getKhachHangID() {
+        return khachHangID;
+    }
+
+    public void setKhachHangID(int khachHangID) {
+        this.khachHangID = khachHangID;
+    }
+
+    public String getHoTen() {
+        return hoTen;
+    }
+
+    public void setHoTen(String hoTen) {
+        this.hoTen = hoTen;
+    }
+
+    public LocalDateTime getNgaySinh() {
+        return ngaySinh;
+    }
+
+    public void setNgaySinh(LocalDateTime ngaySinh) {
+        this.ngaySinh = ngaySinh;
+    }
+
+    public String getCccd() {
+        return cccd;
+    }
+
+    public void setCccd(String cccd) {
+        this.cccd = cccd;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public DiaChi getDiaChiThuongTruID() {
+        return diaChiThuongTruID;
+    }
+
+    public void setDiaChiThuongTruID(DiaChi diaChiThuongTruID) {
+        this.diaChiThuongTruID = diaChiThuongTruID;
+    }
+
+    public DiaChi getDiaChiLienLacID() {
+        return diaChiLienLacID;
+    }
+
+    public void setDiaChiLienLacID(DiaChi diaChiLienLacID) {
+        this.diaChiLienLacID = diaChiLienLacID;
+    }
+
+    public LocalDateTime getNgayTuyenDung() {
+        return ngayTuyenDung;
+    }
+
+    public void setNgayTuyenDung(LocalDateTime ngayTuyenDung) {
+        this.ngayTuyenDung = ngayTuyenDung;
+    }
+
+    public String getTenDangNhap() {
+        return tenDangNhap;
+    }
+
+    public void setTenDangNhap(String tenDangNhap) {
+        this.tenDangNhap = tenDangNhap;
+    }
+
+    public String getMatKhau() {
+        return matKhau;
+    }
+
+    public void setMatKhau(String matKhau) {
+        this.matKhau = matKhau;
+    }
+
+    public TrangThai getTrangThaiTaiKhoan() {
+        return trangThaiTaiKhoan;
+    }
+
+    public void setTrangThaiTaiKhoan(TrangThai trangThaiTaiKhoan) {
+        this.trangThaiTaiKhoan = trangThaiTaiKhoan;
+    }
+
+    public VaiTro getVaiTro() {
+        return vaiTro;
+    }
+
+    public void setVaiTro(VaiTro vaiTro) {
+        this.vaiTro = vaiTro;
+    }
 }

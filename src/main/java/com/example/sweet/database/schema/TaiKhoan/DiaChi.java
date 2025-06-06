@@ -15,4 +15,52 @@ public class DiaChi {
     private String phuongXa;
     private String quanHuyen;
     private String tinhTP;
+
+    public Integer getDiaChiID() {
+        return diaChiID;
+    }
+
+    public void setDiaChiID(Integer diaChiID) {
+        this.diaChiID = diaChiID;
+    }
+
+    public Integer getSoNha() {
+        return soNha;
+    }
+
+    public void setSoNha(Integer soNha) {
+        this.soNha = soNha;
+    }
+
+    public String getTenDuong() {
+        return tenDuong;
+    }
+
+    public void setTenDuong(String tenDuong) {
+        this.tenDuong = tenDuong;
+    }
+
+    public String getPhuongXa() {
+        return phuongXa;
+    }
+
+    public void setPhuongXa(String phuongXa) {
+        this.phuongXa = phuongXa;
+    }
+
+    public String getQuanHuyen() {
+        return quanHuyen;
+    }
+
+    public void setQuanHuyen(String quanHuyen) {
+        this.quanHuyen = quanHuyen;
+    }
+
+    public String getTinhTP() {
+        return tinhTP;
+    }
+
+    public void setTinhTP(String tinhTP) {
+        this.tinhTP = tinhTP;
+    }
 }
