@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Entity
 public class TrangThai {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int trangThaiID;
     private int maTrangThai;
     private String tenTrangThai;

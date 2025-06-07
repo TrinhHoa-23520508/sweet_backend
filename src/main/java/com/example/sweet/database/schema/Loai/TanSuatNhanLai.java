@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 @Entity
 public class TanSuatNhanLai {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int tanSoNhanLaiID;
     private String tenTanSoNhanLai;
     private int maTanSoNhanLai;

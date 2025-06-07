@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 @Entity
 public class VaiTro {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer vaiTroID;
     private String tenVaiTro;
     private String moTa;

@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @Entity
 public class PhieuRutTien {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int phieuRutTienID;
     @ManyToOne
     @JoinColumn(name = "phieu_gui_tien", nullable = false)

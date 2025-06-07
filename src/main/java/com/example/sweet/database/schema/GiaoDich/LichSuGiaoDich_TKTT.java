@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Entity
 public class LichSuGiaoDich_TKTT {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int lichSuGiaoDichID;
 
     @ManyToOne

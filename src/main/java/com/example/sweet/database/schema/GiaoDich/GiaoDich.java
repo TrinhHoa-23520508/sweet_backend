@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 public class GiaoDich {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int giaoDichID;
     @ManyToOne
     @JoinColumn(name = "tai_khoan_nguon", nullable = false)

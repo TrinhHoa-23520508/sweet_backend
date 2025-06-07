@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 public class KhachHang {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int khachHangID;
     private String hoTen;
     private LocalDateTime ngaySinh;

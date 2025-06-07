@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class ChiTietQuyDinhLaiSuat {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int chiTietQuyDinhID;
 
     @ManyToOne
