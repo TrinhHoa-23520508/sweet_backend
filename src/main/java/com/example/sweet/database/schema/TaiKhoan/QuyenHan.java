@@ -1,39 +1,44 @@
 package com.example.sweet.database.schema.TaiKhoan;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.Instant;
+import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class QuyenHan {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int quyenHanID;
-    private String tenQuyenHan;
-    private String moTa;
+    private Long id;
 
-    public int getQuyenHanID() {
-        return quyenHanID;
-    }
+    @NotBlank(message = "Tên permission không được để trống")
+    private String name;
 
-    public void setQuyenHanID(int quyenHanID) {
-        this.quyenHanID = quyenHanID;
-    }
+    @NotBlank(message = "Api path không được để trống")
+    private String apiPath;
 
-    public String getTenQuyenHan() {
-        return tenQuyenHan;
-    }
+    @NotBlank(message = "Tên method không được để trống")
+    private String method;
 
-    public void setTenQuyenHan(String tenQuyenHan) {
-        this.tenQuyenHan = tenQuyenHan;
-    }
+    @NotBlank(message = "Tên module không được để trống")
+    private String module;
 
-    public String getMoTa() {
-        return moTa;
-    }
 
-    public void setMoTa(String moTa) {
-        this.moTa = moTa;
-    }
+
+    @ManyToMany(mappedBy = "quyenHans", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<VaiTro> vaiTros;
+
+
 }

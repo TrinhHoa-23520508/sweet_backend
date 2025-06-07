@@ -1,39 +1,41 @@
 package com.example.sweet.database.schema.TaiKhoan;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.Instant;
+import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class VaiTro {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Integer vaiTroID;
-    private String tenVaiTro;
-    private String moTa;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Integer getVaiTroID() {
-        return vaiTroID;
-    }
+    @NotBlank(message = "Tên role không được để trống")
+    private String name;
 
-    public void setVaiTroID(Integer vaiTroID) {
-        this.vaiTroID = vaiTroID;
-    }
+    @Column(columnDefinition = "MEDIUMTEXT")
+    private String description;
 
-    public String getTenVaiTro() {
-        return tenVaiTro;
-    }
+    private Boolean active;
 
-    public void setTenVaiTro(String tenVaiTro) {
-        this.tenVaiTro = tenVaiTro;
-    }
 
-    public String getMoTa() {
-        return moTa;
-    }
 
-    public void setMoTa(String moTa) {
-        this.moTa = moTa;
-    }
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"vaiTros"})
+    @JoinTable(name = "vaitro_quyenhan",
+            joinColumns = @JoinColumn(name = "vaitro_id"),
+            inverseJoinColumns = @JoinColumn(name = "quyenhan_id"))
+    private List<QuyenHan> quyenHans;
 }
