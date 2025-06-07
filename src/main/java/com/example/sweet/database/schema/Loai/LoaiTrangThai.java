@@ -9,7 +9,7 @@ import jakarta.persistence.Id;
 @Entity
 public class LoaiTrangThai {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private int loaiTrangThaiID;
     private int maLoaiTrangThai;
     private String tenLoaiTrangThai;
