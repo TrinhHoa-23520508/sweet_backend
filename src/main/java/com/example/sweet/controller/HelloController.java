@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-    @Autowired private NhanVienRespository nhanVienRespository;
     @Autowired private ThamSoRespository thamSoRespository;
 
     @GetMapping("/")
@@ -21,13 +20,4 @@ public class HelloController {
         return "Hello World";
     }
 
-    @GetMapping("/nhanvien")
-    public @ResponseBody Iterable<NhanVien> getAllNhanVien() {
-        return nhanVienRespository.findAll();
-    }
-
-    @GetMapping("/thamso")
-    public @ResponseBody Iterable<ThamSo> getAllThamSo() {
-        return thamSoRespository.findAll();
-    }
 }
