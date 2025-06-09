@@ -4,6 +4,7 @@ import com.example.sweet.database.respository.TaiKhoan.TaiKhoanThanhToanResposit
 import com.example.sweet.database.schema.TaiKhoan.TaiKhoanThanhToan;
 import com.example.sweet.database.schema.ThamSo;
 import com.example.sweet.util.annotation.ApiMessage;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,8 +12,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/giao-dich/tktt")
+@AllArgsConstructor
 public class TaiKhoanThanhToanController {
-    @Autowired private TaiKhoanThanhToanRespository respository;
+    private TaiKhoanThanhToanRespository respository;
 
     @GetMapping("/")
     @ApiMessage("Mah balls")
