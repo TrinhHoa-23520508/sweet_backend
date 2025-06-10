@@ -8,6 +8,7 @@ import com.example.sweet.database.schema.GiaoDich.KenhGiaoDich;
 import com.example.sweet.database.schema.Loai.LoaiGiaoDich;
 import com.example.sweet.database.schema.Loai.LoaiTaiKhoan;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;

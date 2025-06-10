@@ -2,13 +2,20 @@ package com.example.sweet.database.schema.TaiKhoan;
 
 import com.example.sweet.database.schema.TrangThai;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
 public class TaiKhoanThanhToan {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Getter
     private int soTaiKhoan;
 
     @ManyToOne
@@ -19,38 +26,6 @@ public class TaiKhoanThanhToan {
     @JoinColumn(name = "trang_thai", nullable = false)
     private TrangThai trangThai;
 
+    private int soDu;
     private LocalDateTime ngayTao;
-
-
-    public KhachHang getKhachHang() {
-        return khachHang;
-    }
-
-    public void setKhachHang(KhachHang khachHang) {
-        this.khachHang = khachHang;
-    }
-
-    public TrangThai getTrangThai() {
-        return trangThai;
-    }
-
-    public void setTrangThai(TrangThai trangThai) {
-        this.trangThai = trangThai;
-    }
-
-    public LocalDateTime getNgayTao() {
-        return ngayTao;
-    }
-
-    public void setNgayTao(LocalDateTime ngayTao) {
-        this.ngayTao = ngayTao;
-    }
-
-    public int getSoTaiKhoan() {
-        return soTaiKhoan;
-    }
-
-    public void setSoTaiKhoan(int soTaiKhoan) {
-        this.soTaiKhoan = soTaiKhoan;
-    }
 }

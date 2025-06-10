@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/v1/giao-dich/tktt/lich-su")
 @AllArgsConstructor
@@ -18,6 +20,12 @@ public class LichSuGiaoDich_TKTTController {
     @ApiMessage("Mah balls")
     public @ResponseBody Iterable<LichSuGiaoDich_TKTT> getAllLichSuGiaoDich_TKTT() {
         return respository.findAll();
+    }
+
+    @GetMapping("/{id}")
+    @ApiMessage("Mah balls")
+    public @ResponseBody Optional<LichSuGiaoDich_TKTT> getLichSuGiaoDich_TKTTID(@PathVariable int id) {
+        return respository.findById(id);
     }
 
     @PostMapping("/")

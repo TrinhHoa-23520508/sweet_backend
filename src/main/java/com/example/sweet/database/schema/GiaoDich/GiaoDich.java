@@ -5,14 +5,24 @@ import com.example.sweet.database.schema.Loai.LoaiTaiKhoan;
 import com.example.sweet.database.schema.TaiKhoan.NhanVien;
 import com.example.sweet.database.schema.TaiKhoan.TaiKhoanThanhToan;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class GiaoDich {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Getter
     private int giaoDichID;
+
     @ManyToOne
     @JoinColumn(name = "tai_khoan_nguon", nullable = false)
     private TaiKhoanThanhToan taiKhoanNguon;
@@ -42,92 +52,4 @@ public class GiaoDich {
     private int soTienGiaoDich;
     private String noiDung;
     private LocalDateTime thoiGianGiaoDich;
-
-    public LocalDateTime getThoiGianGiaoDich() {
-        return thoiGianGiaoDich;
-    }
-
-    public void setThoiGianGiaoDich(LocalDateTime thoiGianGiaoDich) {
-        this.thoiGianGiaoDich = thoiGianGiaoDich;
-    }
-
-    public String getNoiDung() {
-        return noiDung;
-    }
-
-    public void setNoiDung(String noiDung) {
-        this.noiDung = noiDung;
-    }
-
-    public int getSoTienGiaoDich() {
-        return soTienGiaoDich;
-    }
-
-    public void setSoTienGiaoDich(int soTienGiaoDich) {
-        this.soTienGiaoDich = soTienGiaoDich;
-    }
-
-    public NhanVien getNhanVienGiaoDich() {
-        return nhanVienGiaoDich;
-    }
-
-    public void setNhanVienGiaoDich(NhanVien nhanVienGiaoDich) {
-        this.nhanVienGiaoDich = nhanVienGiaoDich;
-    }
-
-    public KenhGiaoDich getKenhGiaoDich() {
-        return kenhGiaoDich;
-    }
-
-    public void setKenhGiaoDich(KenhGiaoDich kenhGiaoDich) {
-        this.kenhGiaoDich = kenhGiaoDich;
-    }
-
-    public LoaiGiaoDich getLoaiGiaoDich() {
-        return loaiGiaoDich;
-    }
-
-    public void setLoaiGiaoDich(LoaiGiaoDich loaiGiaoDich) {
-        this.loaiGiaoDich = loaiGiaoDich;
-    }
-
-    public LoaiTaiKhoan getLoaiTaiKhoanDich() {
-        return loaiTaiKhoanDich;
-    }
-
-    public void setLoaiTaiKhoanDich(LoaiTaiKhoan loaiTaiKhoanDich) {
-        this.loaiTaiKhoanDich = loaiTaiKhoanDich;
-    }
-
-    public TaiKhoanThanhToan getTaiKhoanDich() {
-        return taiKhoanDich;
-    }
-
-    public void setTaiKhoanDich(TaiKhoanThanhToan taiKhoanDich) {
-        this.taiKhoanDich = taiKhoanDich;
-    }
-
-    public LoaiTaiKhoan getLoaiTaiKhoanNguon() {
-        return loaiTaiKhoanNguon;
-    }
-
-    public void setLoaiTaiKhoanNguon(LoaiTaiKhoan loaiTaiKhoanNguon) {
-        this.loaiTaiKhoanNguon = loaiTaiKhoanNguon;
-    }
-
-    public TaiKhoanThanhToan getTaiKhoanNguon() {
-        return taiKhoanNguon;
-    }
-
-    public void setTaiKhoanNguon(TaiKhoanThanhToan taiKhoanNguon) {
-        this.taiKhoanNguon = taiKhoanNguon;
-    }
-
-    public int getGiaoDichID() {
-        return giaoDichID;
-    }
-
-    public void setGiaoDichID(int giaoDichID) {
-        this.giaoDichID = giaoDichID;
-    }
 }

@@ -1,13 +1,22 @@
 package com.example.sweet.database.schema.GiaoDich;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class PhieuRutTien {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @Getter
     private int phieuRutTienID;
     @ManyToOne
     @JoinColumn(name = "phieu_gui_tien", nullable = false)
@@ -20,51 +29,4 @@ public class PhieuRutTien {
     private LocalDateTime ngayRut;
     private float laiSuatKhongKyHan;
 
-    public int getPhieuRutTienID() {
-        return phieuRutTienID;
-    }
-
-    public void setPhieuRutTienID(int phieuRutTienID) {
-        this.phieuRutTienID = phieuRutTienID;
-    }
-
-    public PhieuGuiTien getPhieuGuiTien() {
-        return phieuGuiTien;
-    }
-
-    public void setPhieuGuiTien(PhieuGuiTien phieuGuiTien) {
-        this.phieuGuiTien = phieuGuiTien;
-    }
-
-    public GiaoDich getGiaoDich() {
-        return giaoDich;
-    }
-
-    public void setGiaoDich(GiaoDich giaoDich) {
-        this.giaoDich = giaoDich;
-    }
-
-    public int getSoTienRut() {
-        return soTienRut;
-    }
-
-    public void setSoTienRut(int soTienRut) {
-        this.soTienRut = soTienRut;
-    }
-
-    public LocalDateTime getNgayRut() {
-        return ngayRut;
-    }
-
-    public void setNgayRut(LocalDateTime ngayRut) {
-        this.ngayRut = ngayRut;
-    }
-
-    public float getLaiSuatKhongKyHan() {
-        return laiSuatKhongKyHan;
-    }
-
-    public void setLaiSuatKhongKyHan(float laiSuatKhongKyHan) {
-        this.laiSuatKhongKyHan = laiSuatKhongKyHan;
-    }
 }
