@@ -1,12 +1,21 @@
 package com.example.sweet.controller;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.example.sweet.database.respository.TaiKhoan.KhachHangRespository;
+import com.example.sweet.database.schema.TaiKhoan.KhachHang;
+import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1")
+@AllArgsConstructor
 public class KhachHangController {
+
+    private KhachHangRespository respository;
+
+    @GetMapping("/khach-hang")
+    public @ResponseBody Iterable<KhachHang> getAllKhachHang() {
+        return respository.findAll();
+    }
 
     @PostMapping("/khach-hang")
     public String createKhachHang() {

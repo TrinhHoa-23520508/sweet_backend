@@ -20,7 +20,7 @@ import java.util.List;
 public class VaiTro {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @NotBlank(message = "Tên role không được để trống")
     private String name;
@@ -28,9 +28,7 @@ public class VaiTro {
     @Column(columnDefinition = "MEDIUMTEXT")
     private String description;
 
-    private Boolean active;
-
-
+    private boolean active;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = {"vaiTros"})
@@ -38,4 +36,8 @@ public class VaiTro {
             joinColumns = @JoinColumn(name = "vaitro_id"),
             inverseJoinColumns = @JoinColumn(name = "quyenhan_id"))
     private List<QuyenHan> quyenHans;
+
+//    public VaiTro(Long id, String name, String description, boolean active) {
+//
+//    }
 }

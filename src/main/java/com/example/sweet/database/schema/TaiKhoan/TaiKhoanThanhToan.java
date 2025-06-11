@@ -4,6 +4,7 @@ import com.example.sweet.database.schema.TrangThai;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class TaiKhoanThanhToan {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)

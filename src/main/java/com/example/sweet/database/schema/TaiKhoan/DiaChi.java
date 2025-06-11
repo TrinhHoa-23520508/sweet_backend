@@ -17,8 +17,9 @@ import lombok.Setter;
 public class DiaChi {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Integer diaChiID;
-    private Integer soNha;
+    @Getter
+    private int diaChiID;
+    private int soNha;
     private String tenDuong;
     private String phuongXa;
     private String quanHuyen;
