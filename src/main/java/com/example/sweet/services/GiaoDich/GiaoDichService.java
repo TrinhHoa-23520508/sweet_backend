@@ -19,15 +19,13 @@ public class GiaoDichService {
         return giaoDichRepo.findAll();
     }
 
-    public void createGiaoDich(GiaoDich giaoDich) {
+    public GiaoDich createGiaoDich(GiaoDich giaoDich) {
         var taiKhoanNguon = taiKhoanRepo.findById(giaoDich.getTaiKhoanNguon().getSoTaiKhoan()).orElseThrow();
         var taiKhoanDich = taiKhoanRepo.findById(giaoDich.getTaiKhoanDich().getSoTaiKhoan()).orElseThrow();
 
         if (taiKhoanNguon.getSoDu() < giaoDich.getSoTienGiaoDich())
             throw new IllegalStateException("Số dư không đủ");
 
-        taiKhoanNguon.setSoDu(taiKhoanNguon.getSoDu() - giaoDich.getSoTienGiaoDich());
-        taiKhoanDich.setSoDu(taiKhoanDich.getSoDu() + giaoDich.getSoTienGiaoDich());
 
         taiKhoanRepo.save(taiKhoanNguon);
         taiKhoanRepo.save(taiKhoanDich);
@@ -44,6 +42,11 @@ public class GiaoDichService {
                 taiKhoanDich,
                 insertedGiaoDich,
                 taiKhoanDich.getSoDu()));
+
+        taiKhoanNguon.setSoDu(taiKhoanNguon.getSoDu() - giaoDich.getSoTienGiaoDich());
+        taiKhoanDich.setSoDu(taiKhoanDich.getSoDu() + giaoDich.getSoTienGiaoDich());
+
+        return insertedGiaoDich;
     }
 
     // this should either delete or create, no update i think?

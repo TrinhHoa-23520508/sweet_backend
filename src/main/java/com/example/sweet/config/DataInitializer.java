@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -55,15 +56,23 @@ public class DataInitializer implements CommandLineRunner {
                 new LoaiGiaoDich(0, 6, "Trả tiền lãi", "Trả tiền lãi"),
                 new LoaiGiaoDich(0, 7, "Đáo hạn phiếu gửi tiền", "Đáo hạn phiếu gửi tiền")));
 
-        var loaiTrangThai = loaiTrangThaiRespo.save(new LoaiTrangThai(0, 1, "Foo", "foo"));
+        var insertedLTT = loaiTrangThaiRespo.saveAll(List.of(
+            new LoaiTrangThai(0, 1, "Tất toán", "Tất toán"),
+            new LoaiTrangThai(0, 2, "Giao dịch", "Giao dịch"),
+            new LoaiTrangThai(0, 3, "Tài khoản thanh toán", "Tài khoản thanh toán")
+        )).iterator();
+        ArrayList<LoaiTrangThai> loaiTrangThais = new ArrayList<>();
+        while (insertedLTT.hasNext()) {
+            loaiTrangThais.add(insertedLTT.next());
+        }
 
         trangThaiRespo.saveAll(List.of(
-                new TrangThai(0, 1, "Đã tất toán", loaiTrangThai),
-                new TrangThai(0, 2, "Chưa tất toán", loaiTrangThai),
-                new TrangThai(0, 3, "Thành công", loaiTrangThai),
-                new TrangThai(0, 4, "Thất bại", loaiTrangThai),
-                new TrangThai(0, 5, "Còn hoạt động", loaiTrangThai),
-                new TrangThai(0, 6, "Đã hủy", loaiTrangThai)));
+                new TrangThai(0, 1, "Đã tất toán", loaiTrangThais.get(0)),
+                new TrangThai(0, 2, "Chưa tất toán", loaiTrangThais.get(0)),
+                new TrangThai(0, 3, "Thành công", loaiTrangThais.get(0)),
+                new TrangThai(0, 4, "Thất bại", loaiTrangThais.get(1)),
+                new TrangThai(0, 5, "Còn hoạt động", loaiTrangThais.get(1)),
+                new TrangThai(0, 6, "Đã hủy", loaiTrangThais.get(2))));
 
         vaiTroRespo.save(new VaiTro(0L, "Foo", "fOO", true, List.of()));
         diaChiRespo.save(new DiaChi(0, 1, "foo", "foo", "foo", "foo"));

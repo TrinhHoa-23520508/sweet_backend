@@ -6,6 +6,7 @@ import com.example.sweet.database.schema.TaiKhoan.TaiKhoanThanhToan;
 import com.example.sweet.util.annotation.ApiMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -18,21 +19,19 @@ public class LichSuGiaoDich_TKTTController {
 
     @GetMapping("/")
     @ApiMessage("Mah balls")
-    public @ResponseBody Iterable<LichSuGiaoDich_TKTT> getAllLichSuGiaoDich_TKTT() {
-        return respository.findAll();
+    public ResponseEntity<Iterable<LichSuGiaoDich_TKTT>> getAllLichSuGiaoDich_TKTT() {
+        return ResponseEntity.ok(respository.findAll());
     }
 
     @GetMapping("/{id}")
     @ApiMessage("Mah balls")
-    public @ResponseBody Optional<LichSuGiaoDich_TKTT> getLichSuGiaoDich_TKTTID(@PathVariable int id) {
-        return respository.findById(id);
+    public ResponseEntity<Optional<LichSuGiaoDich_TKTT>> getLichSuGiaoDich_TKTTID(@PathVariable int id) {
+        return ResponseEntity.ok(respository.findById(id));
     }
 
     @PostMapping("/")
-    public @ResponseBody LichSuGiaoDich_TKTT insertLichSuGiaoDich_TKTT(
-            @RequestBody LichSuGiaoDich_TKTT lichSuGiaoDich) {
-        respository.save(lichSuGiaoDich);
-        return lichSuGiaoDich;
+    public ResponseEntity<LichSuGiaoDich_TKTT> insertLichSuGiaoDich_TKTT(@RequestBody LichSuGiaoDich_TKTT lichSuGiaoDich) {
+        return ResponseEntity.ok(respository.save(lichSuGiaoDich));
     }
 
     @DeleteMapping("/{id}")
