@@ -1,8 +1,8 @@
 package com.example.sweet.services.GiaoDich;
 
-import com.example.sweet.database.respository.GiaoDich.GiaoDichRespository;
-import com.example.sweet.database.respository.GiaoDich.LichSuGiaoDich_TKTTRespository;
-import com.example.sweet.database.respository.TaiKhoan.TaiKhoanThanhToanRespository;
+import com.example.sweet.database.repository.GiaoDich.GiaoDichRepository;
+import com.example.sweet.database.repository.GiaoDich.LichSuGiaoDich_TKTTRepository;
+import com.example.sweet.database.repository.TaiKhoan.TaiKhoanThanhToanRepository;
 import com.example.sweet.database.schema.GiaoDich.GiaoDich;
 import com.example.sweet.database.schema.GiaoDich.LichSuGiaoDich_TKTT;
 import lombok.AllArgsConstructor;
@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class GiaoDichService {
-    private GiaoDichRespository giaoDichRepo;
-    private LichSuGiaoDich_TKTTRespository lichSuRepo;
-    private TaiKhoanThanhToanRespository taiKhoanRepo;
+    private GiaoDichRepository giaoDichRepo;
+    private LichSuGiaoDich_TKTTRepository lichSuRepo;
+    private TaiKhoanThanhToanRepository taiKhoanRepo;
 
     public Iterable<GiaoDich> findAll() {
         return giaoDichRepo.findAll();
@@ -23,7 +23,8 @@ public class GiaoDichService {
         var taiKhoanNguon = taiKhoanRepo.findById(giaoDich.getTaiKhoanNguon().getSoTaiKhoan()).orElseThrow();
         var taiKhoanDich = taiKhoanRepo.findById(giaoDich.getTaiKhoanDich().getSoTaiKhoan()).orElseThrow();
 
-        if (taiKhoanNguon.getSoDu() < giaoDich.getSoTienGiaoDich()) throw new IllegalStateException("Số dư không đủ");
+        if (taiKhoanNguon.getSoDu() < giaoDich.getSoTienGiaoDich())
+            throw new IllegalStateException("Số dư không đủ");
 
         taiKhoanNguon.setSoDu(taiKhoanNguon.getSoDu() - giaoDich.getSoTienGiaoDich());
         taiKhoanDich.setSoDu(taiKhoanDich.getSoDu() + giaoDich.getSoTienGiaoDich());

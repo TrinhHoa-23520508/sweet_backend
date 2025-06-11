@@ -1,6 +1,6 @@
 package com.example.sweet.controller;
 
-import com.example.sweet.database.respository.TaiKhoan.KhachHangRespository;
+import com.example.sweet.database.repository.TaiKhoan.KhachHangRepository;
 import com.example.sweet.database.schema.TaiKhoan.KhachHang;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class KhachHangController {
 
-    private KhachHangRespository respository;
+    private KhachHangRepository respository;
 
     @GetMapping("/khach-hang")
     public @ResponseBody Iterable<KhachHang> getAllKhachHang() {

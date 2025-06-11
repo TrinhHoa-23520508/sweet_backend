@@ -1,6 +1,6 @@
 package com.example.sweet.controller.Loai;
 
-import com.example.sweet.database.respository.Loai.LoaiTaiKhoanRespository;
+import com.example.sweet.database.repository.Loai.LoaiTaiKhoanRepository;
 import com.example.sweet.database.schema.Loai.LoaiTaiKhoan;
 import com.example.sweet.util.annotation.ApiMessage;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/loai-tai-khoan")
 @AllArgsConstructor
 public class LoaiTaiKhoanController {
-    private LoaiTaiKhoanRespository respository;
+    private LoaiTaiKhoanRepository respository;
 
     @GetMapping("/")
     @ApiMessage("Mah balls")

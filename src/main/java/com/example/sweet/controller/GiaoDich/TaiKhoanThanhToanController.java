@@ -1,7 +1,7 @@
 package com.example.sweet.controller.GiaoDich;
 
-import com.example.sweet.database.respository.TaiKhoan.TaiKhoanThanhToanRespository;
 import com.example.sweet.database.schema.TaiKhoan.TaiKhoanThanhToan;
+import com.example.sweet.database.repository.TaiKhoan.TaiKhoanThanhToanRepository;
 import com.example.sweet.database.schema.ThamSo;
 import com.example.sweet.services.GiaoDich.TaiKhoanThanhToanService;
 import com.example.sweet.util.annotation.ApiMessage;

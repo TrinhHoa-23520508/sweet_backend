@@ -1,6 +1,6 @@
 package com.example.sweet.controller.GiaoDich;
 
-import com.example.sweet.database.respository.GiaoDich.GiaoDichRespository;
+import com.example.sweet.database.repository.GiaoDich.GiaoDichRepository;
 import com.example.sweet.database.schema.GiaoDich.GiaoDich;
 import com.example.sweet.services.GiaoDich.GiaoDichService;
 import com.example.sweet.util.annotation.ApiMessage;

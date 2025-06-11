@@ -1,4 +1,4 @@
-package com.example.sweet.database.respository.GiaoDich;
+package com.example.sweet.database.repository.GiaoDich;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,6 +1,6 @@
 package com.example.sweet.services.GiaoDich;
 
-import com.example.sweet.database.respository.TaiKhoan.TaiKhoanThanhToanRespository;
+import com.example.sweet.database.repository.TaiKhoan.TaiKhoanThanhToanRepository;
 import com.example.sweet.database.schema.TaiKhoan.TaiKhoanThanhToan;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,8 +10,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class TaiKhoanThanhToanService {
-    private TaiKhoanThanhToanRespository taiKhoanRepo;
-
+    private TaiKhoanThanhToanRepository taiKhoanRepo;
 
     public Iterable<TaiKhoanThanhToan> findAll() {
         return taiKhoanRepo.findAll();

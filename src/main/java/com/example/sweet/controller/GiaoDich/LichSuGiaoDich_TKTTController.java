@@ -1,6 +1,6 @@
 package com.example.sweet.controller.GiaoDich;
 
-import com.example.sweet.database.respository.GiaoDich.LichSuGiaoDich_TKTTRespository;
+import com.example.sweet.database.repository.GiaoDich.LichSuGiaoDich_TKTTRepository;
 import com.example.sweet.database.schema.GiaoDich.LichSuGiaoDich_TKTT;
 import com.example.sweet.database.schema.TaiKhoan.TaiKhoanThanhToan;
 import com.example.sweet.util.annotation.ApiMessage;
@@ -14,7 +14,7 @@ import java.util.Optional;
 @RequestMapping("/api/v1/giao-dich/tktt/lich-su")
 @AllArgsConstructor
 public class LichSuGiaoDich_TKTTController {
-    private LichSuGiaoDich_TKTTRespository respository;
+    private LichSuGiaoDich_TKTTRepository respository;
 
     @GetMapping("/")
     @ApiMessage("Mah balls")
@@ -29,7 +29,8 @@ public class LichSuGiaoDich_TKTTController {
     }
 
     @PostMapping("/")
-    public @ResponseBody LichSuGiaoDich_TKTT insertLichSuGiaoDich_TKTT(@RequestBody LichSuGiaoDich_TKTT lichSuGiaoDich) {
+    public @ResponseBody LichSuGiaoDich_TKTT insertLichSuGiaoDich_TKTT(
+            @RequestBody LichSuGiaoDich_TKTT lichSuGiaoDich) {
         respository.save(lichSuGiaoDich);
         return lichSuGiaoDich;
     }
