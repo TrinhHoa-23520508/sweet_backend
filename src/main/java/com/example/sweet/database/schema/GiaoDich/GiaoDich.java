@@ -19,9 +19,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class GiaoDich {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
-    private int giaoDichID;
+    private Long giaoDichID;
 
     @ManyToOne
     @JoinColumn(name = "tai_khoan_nguon", nullable = false)

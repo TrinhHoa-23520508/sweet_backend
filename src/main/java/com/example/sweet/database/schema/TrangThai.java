@@ -14,9 +14,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TrangThai {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
-    private int trangThaiID;
+    private Long trangThaiID;
     private int maTrangThai;
     private String tenTrangThai;
 

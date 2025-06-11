@@ -8,17 +8,17 @@ import jakarta.persistence.Id;
 @Entity
 public class HinhThucDaoHan {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int hinhThucDaoHangID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long hinhThucDaoHangID;
     private String tenHinhThucDaoHang;
     private int maHinhThucDaoHang;
     private String moTa;
 
-    public int getHinhThucDaoHangID() {
+    public Long getHinhThucDaoHangID() {
         return hinhThucDaoHangID;
     }
 
-    public void setHinhThucDaoHangID(int hinhThucDaoHangID) {
+    public void setHinhThucDaoHangID(Long hinhThucDaoHangID) {
         this.hinhThucDaoHangID = hinhThucDaoHangID;
     }
 
