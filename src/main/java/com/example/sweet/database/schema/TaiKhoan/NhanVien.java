@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class NhanVien {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int nhanVienID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long nhanVienID;
     private String hoTen;
     private LocalDate ngaySinh;
     private String cccd;
@@ -42,6 +42,5 @@ public class NhanVien {
     @ManyToOne
     @JoinColumn(name = "trang_thai_tai_khoan", nullable = false)
     private TrangThai trangThaiTaiKhoan;
-
 
 }

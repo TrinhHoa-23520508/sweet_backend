@@ -8,8 +8,8 @@ import jakarta.persistence.Id;
 @Entity
 public class LoaiTietKiem {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int loaiTietKiemID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long loaiTietKiemID;
     private String tenLoaiTietKiem;
     private int maLoaiTietKiem;
     private String moTa;
@@ -17,11 +17,11 @@ public class LoaiTietKiem {
     private boolean duocPhepRutMotPhan;
     private boolean coHoatDong;
 
-    public int getLoaiTietKiemID() {
+    public Long getLoaiTietKiemID() {
         return loaiTietKiemID;
     }
 
-    public void setLoaiTietKiemID(int loaiTietKiemID) {
+    public void setLoaiTietKiemID(Long loaiTietKiemID) {
         this.loaiTietKiemID = loaiTietKiemID;
     }
 

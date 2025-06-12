@@ -22,9 +22,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class PhieuGuiTien {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Getter
-    private int phieuGuiTienID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long phieuGuiTienID;
     @ManyToOne
     @JoinColumn(name = "khach_hang", nullable = false)
     private KhachHang khachHang;
@@ -51,8 +50,8 @@ public class PhieuGuiTien {
     private HinhThucDaoHan hinhThucDaoHan;
 
     private LocalDate ngayGuiTien;
-    private int soTienGuiBanDau;
-    private float laiSuatCamKet;
+    private Long soTienGuiBanDau;
+    private Float laiSuatCamKet;
     private String tenGoiNho;
     @ManyToOne
     @JoinColumn(name = "trang_thai", nullable = false)

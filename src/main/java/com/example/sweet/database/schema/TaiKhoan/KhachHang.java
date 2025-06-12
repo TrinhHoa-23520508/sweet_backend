@@ -2,16 +2,20 @@ package com.example.sweet.database.schema.TaiKhoan;
 
 import com.example.sweet.database.schema.TrangThai;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @Entity
 public class KhachHang {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int khachHangID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long khachHangID;
     private String hoTen;
     private LocalDate ngaySinh;
     private String cccd;
@@ -34,6 +38,5 @@ public class KhachHang {
     @ManyToOne
     @JoinColumn(name = "trang_thai_tai_khoan")
     private TrangThai trangThaiTaiKhoan;
-
 
 }

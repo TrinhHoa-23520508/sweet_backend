@@ -8,16 +8,16 @@ import jakarta.persistence.Id;
 @Entity
 public class LoaiKyHan {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int loaiKyHanID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long loaiKyHanID;
     private String tenLoaiKyHan;
     private int soThang;
 
-    public int getLoaiKyHanID() {
+    public Long getLoaiKyHanID() {
         return loaiKyHanID;
     }
 
-    public void setLoaiKyHanID(int loaiKyHanID) {
+    public void setLoaiKyHanID(Long loaiKyHanID) {
         this.loaiKyHanID = loaiKyHanID;
     }
 

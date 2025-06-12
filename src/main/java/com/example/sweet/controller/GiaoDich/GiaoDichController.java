@@ -29,7 +29,7 @@ public class GiaoDichController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteGiaoDich(@PathVariable int id) {
+    public void deleteGiaoDich(@PathVariable Long id) {
         service.cancelGiaoDich(id);
     }
 }

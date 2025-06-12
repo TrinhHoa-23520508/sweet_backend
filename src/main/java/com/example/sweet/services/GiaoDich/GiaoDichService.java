@@ -47,7 +47,7 @@ public class GiaoDichService {
     }
 
     // this should either delete or create, no update i think?
-    public void cancelGiaoDich(int id) {
+    public void cancelGiaoDich(Long id) {
         var giaoDich = giaoDichRepo.findById(id).orElseThrow();
 
         cancelGiaoDich(giaoDich);
