@@ -5,6 +5,7 @@ import com.example.sweet.database.schema.Loai.LoaiGiaoDich;
 import com.example.sweet.util.annotation.ApiMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,14 +16,13 @@ public class LoaiGiaoDichController {
 
     @GetMapping("/")
     @ApiMessage("Mah balls")
-    public @ResponseBody Iterable<LoaiGiaoDich> getAllLoaiGiaoDich() {
-        return respository.findAll();
+    public ResponseEntity<Iterable<LoaiGiaoDich>> getAllLoaiGiaoDich() {
+        return ResponseEntity.ok(respository.findAll());
     }
 
     @PostMapping("/")
-    public @ResponseBody LoaiGiaoDich insertLoaiGiaoDich(@RequestBody LoaiGiaoDich loaiGiaoDich) {
-        respository.save(loaiGiaoDich);
-        return loaiGiaoDich;
+    public ResponseEntity<LoaiGiaoDich> insertLoaiGiaoDich(@RequestBody LoaiGiaoDich loaiGiaoDich) {
+        return ResponseEntity.ok(respository.save(loaiGiaoDich));
     }
 
     @DeleteMapping("/{id}")

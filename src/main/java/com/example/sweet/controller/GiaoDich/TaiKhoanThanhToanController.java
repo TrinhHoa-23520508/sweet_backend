@@ -7,6 +7,7 @@ import com.example.sweet.services.GiaoDich.TaiKhoanThanhToanService;
 import com.example.sweet.util.annotation.ApiMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,19 +21,19 @@ public class TaiKhoanThanhToanController {
 
     @GetMapping("/")
     @ApiMessage("Mah balls")
-    public @ResponseBody Iterable<TaiKhoanThanhToan> getAllTaiKhoanThanhToan() {
-        return service.findAll();
+    public ResponseEntity<Iterable<TaiKhoanThanhToan>> getAllTaiKhoanThanhToan() {
+        return ResponseEntity.ok(service.findAll());
     }
 
     @PostMapping("/")
-    public @ResponseBody TaiKhoanThanhToan insertTaiKhoanThanhToan(@RequestBody TaiKhoanThanhToan taiKhoan) {
-        return service.save(taiKhoan);
+    public ResponseEntity<TaiKhoanThanhToan> insertTaiKhoanThanhToan(@RequestBody TaiKhoanThanhToan taiKhoan) {
+        return ResponseEntity.ok(service.save(taiKhoan));
     }
 
     @GetMapping("/loai/{id}")
     @ApiMessage("Mah balls")
-    public @ResponseBody Optional<TaiKhoanThanhToan> getTaiKhoanThanhToanByLoai(@PathVariable int id) {
-        return service.findById(id);
+    public ResponseEntity<Optional<TaiKhoanThanhToan>> getTaiKhoanThanhToanByLoai(@PathVariable int id) {
+        return ResponseEntity.ok(service.findById(id));
     }
 
     @DeleteMapping("/{id}")

@@ -6,6 +6,9 @@ import com.example.sweet.services.GiaoDich.GiaoDichService;
 import com.example.sweet.util.annotation.ApiMessage;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,16 +19,15 @@ public class GiaoDichController {
 
     @GetMapping("/")
     @ApiMessage("Mah balls")
-    public @ResponseBody Iterable<GiaoDich> getAllGiaoDich() {
-        return service.findAll();
+    public ResponseEntity<Iterable<GiaoDich>> getAllGiaoDich() {
+        return ResponseEntity.ok(service.findAll());
     }
 
     @PostMapping("/")
-    public @ResponseBody GiaoDich insertGiaoDich(@RequestBody GiaoDich giaoDich) {
+    public ResponseEntity<GiaoDich> insertGiaoDich(@RequestBody GiaoDich giaoDich) {
         if (giaoDich.getGiaoDichID() != 0)
             throw new IllegalStateException("Không thể update được giao dịch");
-        service.createGiaoDich(giaoDich);
-        return giaoDich;
+        return ResponseEntity.ok(service.createGiaoDich(giaoDich));
     }
 
     @DeleteMapping("/{id}")
