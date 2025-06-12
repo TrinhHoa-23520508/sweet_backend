@@ -76,6 +76,7 @@ public class DataInitializer implements CommandLineRunner {
                                 new TrangThai(0L, 6, "Đã hủy", loaiTrangThais.get(2))));
 
                 vaiTroRespo.save(new VaiTro(0L, "Foo", "fOO", true, List.of()));
+                diaChiRespo.save(new DiaChi(0, 1, "foo", "foo", "foo", "foo"));
 
                 /*
                  * Hào: Data mẫu để tui test đừng xóa làm ơn
