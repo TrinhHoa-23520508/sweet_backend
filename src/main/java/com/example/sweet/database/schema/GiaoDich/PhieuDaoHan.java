@@ -16,9 +16,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class PhieuDaoHan {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
-    private int phieuDaoHanID;
+    private Long phieuDaoHanID;
     @ManyToOne
     @JoinColumn(name = "phieu_gui_tien_ky_truoc", nullable = false)
     private PhieuGuiTien phieuGuiTienKyTruoc;
