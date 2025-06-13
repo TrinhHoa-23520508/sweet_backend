@@ -46,7 +46,7 @@ public class GiaoDich {
     private KenhGiaoDich kenhGiaoDich;
 
     @ManyToOne
-    @JoinColumn(name = "nhan_vien_giao_dich", nullable = false)
+    @JoinColumn(name = "nhan_vien_giao_dich", nullable = true)
     private NhanVien nhanVienGiaoDich;
 
     private int soTienGiaoDich;

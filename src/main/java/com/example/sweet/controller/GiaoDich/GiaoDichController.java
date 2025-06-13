@@ -17,21 +17,16 @@ import org.springframework.web.bind.annotation.*;
 public class GiaoDichController {
     private GiaoDichService service;
 
-    @GetMapping("/")
+    @GetMapping("")
     @ApiMessage("Mah balls")
     public ResponseEntity<Iterable<GiaoDich>> getAllGiaoDich() {
         return ResponseEntity.ok(service.findAll());
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<GiaoDich> insertGiaoDich(@RequestBody GiaoDich giaoDich) {
-        if (giaoDich.getGiaoDichID() == null)
+        if (giaoDich.getGiaoDichID() != null)
             throw new IllegalStateException("Không thể update được giao dịch");
         return ResponseEntity.ok(service.createGiaoDich(giaoDich));
     }
-
-//    @DeleteMapping("/{id}")
-//    public void deleteGiaoDich(@PathVariable Long id) {
-//        service.cancelGiaoDich(id);
-//    }
 }

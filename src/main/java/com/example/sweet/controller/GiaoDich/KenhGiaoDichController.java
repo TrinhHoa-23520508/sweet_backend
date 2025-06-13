@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.*;
 public class KenhGiaoDichController {
     private KenhGiaoDichRepository respository;
 
-    @GetMapping("/")
+    @GetMapping("")
     @ApiMessage("Mah balls")
     public ResponseEntity<Iterable<KenhGiaoDich>> getAllKenhGiaoDich() {
         return ResponseEntity.ok(respository.findAll());
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<KenhGiaoDich> insertKenhGiaoDich(@RequestBody KenhGiaoDich kenhGiaoDich) {
         return ResponseEntity.ok(respository.save(kenhGiaoDich));
     }
