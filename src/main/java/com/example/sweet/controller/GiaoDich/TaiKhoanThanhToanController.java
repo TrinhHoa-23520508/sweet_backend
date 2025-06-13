@@ -19,13 +19,13 @@ import java.util.Optional;
 public class TaiKhoanThanhToanController {
     private TaiKhoanThanhToanService service;
 
-    @GetMapping("/")
+    @GetMapping("")
     @ApiMessage("Mah balls")
     public ResponseEntity<Iterable<TaiKhoanThanhToan>> getAllTaiKhoanThanhToan() {
         return ResponseEntity.ok(service.findAll());
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<TaiKhoanThanhToan> insertTaiKhoanThanhToan(@RequestBody TaiKhoanThanhToan taiKhoan) {
         return ResponseEntity.ok(service.save(taiKhoan));
     }

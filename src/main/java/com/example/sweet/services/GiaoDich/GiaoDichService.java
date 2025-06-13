@@ -20,12 +20,12 @@ public class GiaoDichService {
     }
 
     public GiaoDich createGiaoDich(GiaoDich giaoDich) {
+
         var taiKhoanNguon = taiKhoanRepo.findById(giaoDich.getTaiKhoanNguon().getSoTaiKhoan()).orElseThrow();
         var taiKhoanDich = taiKhoanRepo.findById(giaoDich.getTaiKhoanDich().getSoTaiKhoan()).orElseThrow();
 
         if (taiKhoanNguon.getSoDu() < giaoDich.getSoTienGiaoDich())
             throw new IllegalStateException("Số dư không đủ");
-
 
         taiKhoanRepo.save(taiKhoanNguon);
         taiKhoanRepo.save(taiKhoanDich);
@@ -45,6 +45,9 @@ public class GiaoDichService {
 
         taiKhoanNguon.setSoDu(taiKhoanNguon.getSoDu() - giaoDich.getSoTienGiaoDich());
         taiKhoanDich.setSoDu(taiKhoanDich.getSoDu() + giaoDich.getSoTienGiaoDich());
+
+        taiKhoanRepo.save(taiKhoanNguon);
+        taiKhoanRepo.save(taiKhoanDich);
 
         return insertedGiaoDich;
     }
@@ -68,6 +71,9 @@ public class GiaoDichService {
         lichSuRepo.deleteByTaiKhoanAndGiaoDich(taiKhoanNguon, giaoDich);
         lichSuRepo.deleteByTaiKhoanAndGiaoDich(taiKhoanDich, giaoDich);
         giaoDichRepo.delete(giaoDich);
+
+        taiKhoanRepo.save(taiKhoanNguon);
+        taiKhoanRepo.save(taiKhoanDich);
 
     }
 }

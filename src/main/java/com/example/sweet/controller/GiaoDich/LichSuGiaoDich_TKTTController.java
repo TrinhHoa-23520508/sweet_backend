@@ -17,10 +17,15 @@ import java.util.Optional;
 public class LichSuGiaoDich_TKTTController {
     private LichSuGiaoDich_TKTTRepository respository;
 
-    @GetMapping("/")
+    @GetMapping("")
     @ApiMessage("Mah balls")
     public ResponseEntity<Iterable<LichSuGiaoDich_TKTT>> getAllLichSuGiaoDich_TKTT() {
         return ResponseEntity.ok(respository.findAll());
+    }
+
+    @PostMapping("")
+    public ResponseEntity<LichSuGiaoDich_TKTT> insertLichSuGiaoDich_TKTT(@RequestBody LichSuGiaoDich_TKTT lichSuGiaoDich) {
+        return ResponseEntity.ok(respository.save(lichSuGiaoDich));
     }
 
     @GetMapping("/{id}")
@@ -29,10 +34,6 @@ public class LichSuGiaoDich_TKTTController {
         return ResponseEntity.ok(respository.findById(id));
     }
 
-    @PostMapping("/")
-    public ResponseEntity<LichSuGiaoDich_TKTT> insertLichSuGiaoDich_TKTT(@RequestBody LichSuGiaoDich_TKTT lichSuGiaoDich) {
-        return ResponseEntity.ok(respository.save(lichSuGiaoDich));
-    }
 
     @DeleteMapping("/{id}")
     public void deleteLichSuGiaoDich_TKTT(@PathVariable int id) {

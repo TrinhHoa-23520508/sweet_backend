@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,17 +24,17 @@ public class GiaoDich {
     private Long giaoDichID;
 
     @ManyToOne
-    @JoinColumn(name = "tai_khoan_nguon", nullable = false)
+    @JoinColumn(name = "tai_khoan_nguon", nullable = true)
     private TaiKhoanThanhToan taiKhoanNguon;
     @ManyToOne
-    @JoinColumn(name = "loai_tai_khoan_nguon", nullable = false)
+    @JoinColumn(name = "loai_tai_khoan_nguon", nullable = true)
     private LoaiTaiKhoan loaiTaiKhoanNguon;
 
     @ManyToOne
-    @JoinColumn(name = "tai_khoan_dich", nullable = false)
+    @JoinColumn(name = "tai_khoan_dich", nullable = true)
     private TaiKhoanThanhToan taiKhoanDich;
     @ManyToOne
-    @JoinColumn(name = "loai_tai_khoan_dich", nullable = false)
+    @JoinColumn(name = "loai_tai_khoan_dich", nullable = true)
     private LoaiTaiKhoan loaiTaiKhoanDich;
 
     @ManyToOne
@@ -45,10 +46,10 @@ public class GiaoDich {
     private KenhGiaoDich kenhGiaoDich;
 
     @ManyToOne
-    @JoinColumn(name = "nhan_vien_giao_dich", nullable = false)
+    @JoinColumn(name = "nhan_vien_giao_dich", nullable = true)
     private NhanVien nhanVienGiaoDich;
 
     private int soTienGiaoDich;
     private String noiDung;
-    private LocalDateTime thoiGianGiaoDich;
+    private Instant thoiGianGiaoDich;
 }
