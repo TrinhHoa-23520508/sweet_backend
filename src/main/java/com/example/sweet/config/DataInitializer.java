@@ -1,16 +1,22 @@
 package com.example.sweet.config;
 
 import com.example.sweet.database.schema.GiaoDich.KenhGiaoDich;
+import com.example.sweet.database.schema.Loai.HinhThucDaoHan;
 import com.example.sweet.database.schema.Loai.LoaiGiaoDich;
 import com.example.sweet.database.schema.Loai.LoaiTaiKhoan;
+import com.example.sweet.database.schema.Loai.LoaiTietKiem;
 import com.example.sweet.database.schema.Loai.LoaiTrangThai;
+import com.example.sweet.database.schema.Loai.TanSuatNhanLai;
 import com.example.sweet.database.schema.TaiKhoan.DiaChi;
 import com.example.sweet.database.schema.TaiKhoan.VaiTro;
 import com.example.sweet.database.repository.TrangThaiRepository;
 import com.example.sweet.database.repository.GiaoDich.KenhGiaoDichRepository;
+import com.example.sweet.database.repository.Loai.HinhThucDaoHanRepository;
 import com.example.sweet.database.repository.Loai.LoaiGiaoDichRepository;
 import com.example.sweet.database.repository.Loai.LoaiTaiKhoanRepository;
+import com.example.sweet.database.repository.Loai.LoaiTietKiemRepository;
 import com.example.sweet.database.repository.Loai.LoaiTrangThaiRepository;
+import com.example.sweet.database.repository.Loai.TanSuatNhanLaiRepository;
 import com.example.sweet.database.repository.TaiKhoan.DiaChiRepository;
 import com.example.sweet.database.repository.TaiKhoan.VaiTroRepository;
 import com.example.sweet.database.schema.TrangThai;
@@ -32,6 +38,9 @@ public class DataInitializer implements CommandLineRunner {
         private LoaiTrangThaiRepository loaiTrangThaiRespo;
         private DiaChiRepository diaChiRespo;
         private VaiTroRepository vaiTroRespo;
+        private final HinhThucDaoHanRepository hinhThucDaoHanRepo;
+        private final LoaiTietKiemRepository loaiTietKiemRepo;
+        private final TanSuatNhanLaiRepository tanSuatNhanLaiRepo;
 
         @Override
         public void run(String... args) throws Exception {
@@ -77,6 +86,33 @@ public class DataInitializer implements CommandLineRunner {
 
                 vaiTroRespo.save(new VaiTro(null, "Foo", "fOO", true, List.of()));
                 diaChiRespo.save(new DiaChi(null, 1, "foo", "foo", "foo", "foo"));
+
+                Long temp = null;
+                hinhThucDaoHanRepo.saveAll(List.of(
+                                new HinhThucDaoHan(temp, "Tất toán phiếu gửi tiền", 01,
+                                                "Nhận toàn bộ tiền gốc và lãi khi đáo hạn"),
+                                new HinhThucDaoHan(null, "Tái tục gốc", 02,
+                                                "Nhận lãi và tự động gửi lại tiền gốc"),
+                                new HinhThucDaoHan(null, "Tự động tái tục gốc và lãi", 03,
+                                                "Tự động gửi lại cả gốc và lãi khi đáo hạn")));
+
+                loaiTietKiemRepo.saveAll(List.of(
+                                new LoaiTietKiem(null, "Tiết kiệm có kỳ hạn", 01,
+                                                "Phải gửi đủ thời gian mới được hưởng lãi suất tối đa",
+                                                false, false, true),
+                                new LoaiTietKiem(null, "Tiết kiệm linh hoạt", 02,
+                                                "Cho phép rút một phần tiền trước hạn",
+                                                true, true, true)));
+
+                tanSuatNhanLaiRepo.saveAll(List.of(
+                                new TanSuatNhanLai(null, "Hàng tháng", 01,
+                                                "Nhận lãi định kỳ hàng tháng", true),
+                                new TanSuatNhanLai(null, "Hàng quý", 02,
+                                                "Nhận lãi định kỳ mỗi quý", true),
+                                new TanSuatNhanLai(null, "Cuối kỳ hạn", 03,
+                                                "Nhận lãi một lần khi đáo hạn", true),
+                                new TanSuatNhanLai(null, "Đầu kỳ hạn", 04,
+                                                "Nhận lãi một lần khi đáo hạn", true)));
 
                 /*
                  * Hào: Data mẫu để tui test đừng xóa làm ơn

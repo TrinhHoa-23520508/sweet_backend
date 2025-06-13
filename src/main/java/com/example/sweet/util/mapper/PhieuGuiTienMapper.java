@@ -77,6 +77,14 @@ public class PhieuGuiTienMapper {
         dto.setTenGoiNho(phieuGuiTien.getTenGoiNho());
         dto.setTrangThaiId(phieuGuiTien.getTrangThai() != null ? phieuGuiTien.getTrangThai().getTrangThaiID() : null);
 
+        // Add new fields
+        dto.setSoDuHienTai(phieuGuiTien.getSoDuHienTai());
+        dto.setTongTienLaiDuKien(phieuGuiTien.getTongTienLaiDuKien());
+        dto.setTienLaiNhanDinhKy(phieuGuiTien.getTienLaiNhanDinhKy());
+        dto.setTienLaiDaNhanNhungChuaDuyetToan(phieuGuiTien.getTienLaiDaNhanNhungChuaDuyetToan());
+        dto.setTongLaiQuyetToan(phieuGuiTien.getTongLaiQuyetToan());
+        dto.setNgayDaoHan(phieuGuiTien.getNgayDaoHan());
+
         return dto;
     }
 
@@ -146,6 +154,14 @@ public class PhieuGuiTienMapper {
         entity.setSoTienGuiBanDau(dto.getSoTienGuiBanDau());
         entity.setLaiSuatCamKet(dto.getLaiSuatCamKet());
         entity.setTenGoiNho(dto.getTenGoiNho());
+
+        // Add new fields
+        entity.setSoDuHienTai(dto.getSoDuHienTai());
+        entity.setTongTienLaiDuKien(dto.getTongTienLaiDuKien());
+        entity.setTienLaiNhanDinhKy(dto.getTienLaiNhanDinhKy());
+        entity.setTienLaiDaNhanNhungChuaDuyetToan(dto.getTienLaiDaNhanNhungChuaDuyetToan());
+        entity.setTongLaiQuyetToan(dto.getTongLaiQuyetToan());
+        entity.setNgayDaoHan(dto.getNgayDaoHan());
 
         return entity;
     }

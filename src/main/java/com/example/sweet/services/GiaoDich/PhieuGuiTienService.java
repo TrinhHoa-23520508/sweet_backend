@@ -163,29 +163,42 @@ public class PhieuGuiTienService {
     }
 
     @Transactional
-    public void deletePhieuGuiTien(Integer id) {
+    public void deletePhieuGuiTien(Long id) {
         phieuGuiTienRepository.deleteById(id);
     }
 
     @Transactional
-    public PhieuGuiTienDTO updatePhieuGuiTien(Integer id, PhieuGuiTienDTO phieuGuiTienDTO) {
-        PhieuGuiTien existingPhieuGuiTien = phieuGuiTienRepository.findById(id).get();
+    public PhieuGuiTienDTO updatePhieuGuiTien(Long id, PhieuGuiTienDTO phieuGuiTienDTO) {
+        PhieuGuiTien existingPhieuGuiTien = phieuGuiTienRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy phiếu gửi tiền"));
 
+        // Update các trường reference
         if (phieuGuiTienDTO.getKhachHangId() != null) {
-            existingPhieuGuiTien.setKhachHang(khachHangRepository.findById(phieuGuiTienDTO.getKhachHangId()).get());
+            existingPhieuGuiTien.setKhachHang(khachHangRepository.findById(phieuGuiTienDTO.getKhachHangId())
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy khách hàng")));
         }
-        if (phieuGuiTienDTO.getGiaoDichId() != null) {
-            existingPhieuGuiTien.setGiaoDichVien(nhanVienRepository.findById(phieuGuiTienDTO.getGiaoDichId()).get());
+        if (phieuGuiTienDTO.getGiaoDichVienId() != null) {
+            existingPhieuGuiTien.setGiaoDichVien(nhanVienRepository.findById(phieuGuiTienDTO.getGiaoDichVienId())
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy giao dịch viên")));
         }
         if (phieuGuiTienDTO.getLoaiTietKiemId() != null) {
-            existingPhieuGuiTien
-                    .setLoaiTietKiem(loaiTietKiemRepository.findById(phieuGuiTienDTO.getLoaiTietKiemId()).get());
+            existingPhieuGuiTien.setLoaiTietKiem(loaiTietKiemRepository.findById(phieuGuiTienDTO.getLoaiTietKiemId())
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy loại tiết kiệm")));
         }
 
+        // Update các trường cơ bản
         existingPhieuGuiTien.setNgayGuiTien(phieuGuiTienDTO.getNgayGuiTien());
         existingPhieuGuiTien.setSoTienGuiBanDau(phieuGuiTienDTO.getSoTienGuiBanDau());
         existingPhieuGuiTien.setLaiSuatCamKet(phieuGuiTienDTO.getLaiSuatCamKet());
         existingPhieuGuiTien.setTenGoiNho(phieuGuiTienDTO.getTenGoiNho());
+
+        // Update các trường mới
+        existingPhieuGuiTien.setSoDuHienTai(phieuGuiTienDTO.getSoDuHienTai());
+        existingPhieuGuiTien.setTongTienLaiDuKien(phieuGuiTienDTO.getTongTienLaiDuKien());
+        existingPhieuGuiTien.setTienLaiNhanDinhKy(phieuGuiTienDTO.getTienLaiNhanDinhKy());
+        existingPhieuGuiTien.setTienLaiDaNhanNhungChuaDuyetToan(phieuGuiTienDTO.getTienLaiDaNhanNhungChuaDuyetToan());
+        existingPhieuGuiTien.setTongLaiQuyetToan(phieuGuiTienDTO.getTongLaiQuyetToan());
+        existingPhieuGuiTien.setNgayDaoHan(phieuGuiTienDTO.getNgayDaoHan());
 
         return phieuGuiTienMapper.toDTO(phieuGuiTienRepository.save(existingPhieuGuiTien));
     }

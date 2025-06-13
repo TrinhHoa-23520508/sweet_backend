@@ -26,4 +26,10 @@ public class PhieuGuiTienDTO {
     private Float laiSuatCamKet;
     private String tenGoiNho;
     private Long trangThaiId;
+    private Long soDuHienTai;
+    private Long tongTienLaiDuKien;
+    private Long tienLaiNhanDinhKy;
+    private Boolean tienLaiDaNhanNhungChuaDuyetToan;
+    private Long tongLaiQuyetToan;
+    private LocalDate ngayDaoHan;
 }

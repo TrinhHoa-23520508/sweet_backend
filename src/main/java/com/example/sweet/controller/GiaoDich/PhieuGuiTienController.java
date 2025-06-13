@@ -51,7 +51,7 @@ public class PhieuGuiTienController {
 
     @DeleteMapping("/phieu-gui-tien/{id}")
     @ApiMessage("Xóa phiếu gửi tiền")
-    public ResponseEntity<Void> deletePhieuGuiTien(@PathVariable Integer id) {
+    public ResponseEntity<Void> deletePhieuGuiTien(@PathVariable Long id) {
         phieuGuiTienService.deletePhieuGuiTien(id);
         return ResponseEntity.ok().build();
     }
