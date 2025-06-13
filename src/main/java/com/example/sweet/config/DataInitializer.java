@@ -38,45 +38,45 @@ public class DataInitializer implements CommandLineRunner {
                 if (ltkRespo.count() > 0)
                         return;
                 ltkRespo.saveAll(List.of(
-                                new LoaiTaiKhoan(0, 1, "Tài khoản thanh toán", "Tài khoản thanh toán"),
-                                new LoaiTaiKhoan(0, 2, "Phiếu gửi tiền", "Phiếu gửi tiền"),
-                                new LoaiTaiKhoan(0, 3, "Tiền mặt tại quầy", "Tiền mặt tại quầy"),
-                                new LoaiTaiKhoan(0, 4, "Ngân hàng", "Ngân hàng")));
+                                new LoaiTaiKhoan(null, 1, "Tài khoản thanh toán", "Tài khoản thanh toán"),
+                                new LoaiTaiKhoan(null, 2, "Phiếu gửi tiền", "Phiếu gửi tiền"),
+                                new LoaiTaiKhoan(null, 3, "Tiền mặt tại quầy", "Tiền mặt tại quầy"),
+                                new LoaiTaiKhoan(null, 4, "Ngân hàng", "Ngân hàng")));
 
                 kgdRespo.saveAll(List.of(
-                                new KenhGiaoDich(0, 1, "Giao dịch tại quầy", "Giao dịch tại quầy"),
-                                new KenhGiaoDich(0, 2, "Giao dịch trực tuyến", "Giao dịch trực tuyến")));
+                                new KenhGiaoDich(null, 1, "Giao dịch tại quầy", "Giao dịch tại quầy"),
+                                new KenhGiaoDich(null, 2, "Giao dịch trực tuyến", "Giao dịch trực tuyến")));
 
                 lgdRespo.saveAll(List.of(
-                                new LoaiGiaoDich(0, 1, "Gửi tiền vào tài khoản thanh toán",
+                                new LoaiGiaoDich(null, 1, "Gửi tiền vào tài khoản thanh toán",
                                                 "Gửi tiền vào tài khoản thanh toán"),
-                                new LoaiGiaoDich(0, 2, "Rút tiền từ tài khoản thanh toán",
+                                new LoaiGiaoDich(null, 2, "Rút tiền từ tài khoản thanh toán",
                                                 "Rút tiền từ tài khoản thanh toán"),
-                                new LoaiGiaoDich(0, 3, "Gửi tiền vào phiếu gửi tiền", "Gửi tiền vào phiếu gửi tiền"),
-                                new LoaiGiaoDich(0, 4, "Rút tiền từ phiếu gửi tiền", "Rút tiền từ phiếu gửi tiền"),
-                                new LoaiGiaoDich(0, 5, "Tất toán phiếu gửi tiền", "Tất toán phiếu gửi tiền"),
-                                new LoaiGiaoDich(0, 6, "Trả tiền lãi", "Trả tiền lãi"),
-                                new LoaiGiaoDich(0, 7, "Đáo hạn phiếu gửi tiền", "Đáo hạn phiếu gửi tiền")));
+                                new LoaiGiaoDich(null, 3, "Gửi tiền vào phiếu gửi tiền", "Gửi tiền vào phiếu gửi tiền"),
+                                new LoaiGiaoDich(null, 4, "Rút tiền từ phiếu gửi tiền", "Rút tiền từ phiếu gửi tiền"),
+                                new LoaiGiaoDich(null, 5, "Tất toán phiếu gửi tiền", "Tất toán phiếu gửi tiền"),
+                                new LoaiGiaoDich(null, 6, "Trả tiền lãi", "Trả tiền lãi"),
+                                new LoaiGiaoDich(null, 7, "Đáo hạn phiếu gửi tiền", "Đáo hạn phiếu gửi tiền")));
 
                 var insertedLTT = loaiTrangThaiRespo.saveAll(List.of(
-                                new LoaiTrangThai(0, 1, "Tất toán", "Tất toán"),
-                                new LoaiTrangThai(0, 2, "Giao dịch", "Giao dịch"),
-                                new LoaiTrangThai(0, 3, "Tài khoản thanh toán", "Tài khoản thanh toán"))).iterator();
+                                new LoaiTrangThai(null, 1, "Tất toán", "Tất toán"),
+                                new LoaiTrangThai(null, 2, "Giao dịch", "Giao dịch"),
+                                new LoaiTrangThai(null, 3, "Tài khoản thanh toán", "Tài khoản thanh toán"))).iterator();
                 ArrayList<LoaiTrangThai> loaiTrangThais = new ArrayList<>();
                 while (insertedLTT.hasNext()) {
                         loaiTrangThais.add(insertedLTT.next());
                 }
 
                 trangThaiRespo.saveAll(List.of(
-                                new TrangThai(0L, 1, "Đã tất toán", loaiTrangThais.get(0)),
-                                new TrangThai(0L, 2, "Chưa tất toán", loaiTrangThais.get(0)),
-                                new TrangThai(0L, 3, "Thành công", loaiTrangThais.get(0)),
-                                new TrangThai(0L, 4, "Thất bại", loaiTrangThais.get(1)),
-                                new TrangThai(0L, 5, "Còn hoạt động", loaiTrangThais.get(1)),
-                                new TrangThai(0L, 6, "Đã hủy", loaiTrangThais.get(2))));
+                                new TrangThai(null, 1, "Đã tất toán", loaiTrangThais.get(0)),
+                                new TrangThai(null, 2, "Chưa tất toán", loaiTrangThais.get(0)),
+                                new TrangThai(null, 3, "Thành công", loaiTrangThais.get(0)),
+                                new TrangThai(null, 4, "Thất bại", loaiTrangThais.get(1)),
+                                new TrangThai(null, 5, "Còn hoạt động", loaiTrangThais.get(1)),
+                                new TrangThai(null, 6, "Đã hủy", loaiTrangThais.get(2))));
 
-                vaiTroRespo.save(new VaiTro(0L, "Foo", "fOO", true, List.of()));
-                diaChiRespo.save(new DiaChi(0, 1, "foo", "foo", "foo", "foo"));
+                vaiTroRespo.save(new VaiTro(null, "Foo", "fOO", true, List.of()));
+                diaChiRespo.save(new DiaChi(null, 1, "foo", "foo", "foo", "foo"));
 
                 /*
                  * Hào: Data mẫu để tui test đừng xóa làm ơn

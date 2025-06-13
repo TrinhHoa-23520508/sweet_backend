@@ -19,7 +19,7 @@ public class LoaiTrangThai {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Getter
-    private int loaiTrangThaiID;
+    private Long loaiTrangThaiID;
     private int maLoaiTrangThai;
     private String tenLoaiTrangThai;
     private String moTa;
