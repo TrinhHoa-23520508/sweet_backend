@@ -18,7 +18,7 @@ public class DiaChi {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Getter
-    private int diaChiID;
+    private Long diaChiID;
     private int soNha;
     private String tenDuong;
     private String phuongXa;

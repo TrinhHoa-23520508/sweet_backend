@@ -18,7 +18,7 @@ public class KenhGiaoDich {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Getter
-    private int kenhGiaoDichID;
+    private Long kenhGiaoDichID;
     private int maKenhGiaoDich;
     private String tenKenhGiaoDich;
     private String moTa;
