@@ -56,4 +56,11 @@ public class PhieuGuiTien {
     @ManyToOne
     @JoinColumn(name = "trang_thai", nullable = false)
     private TrangThai trangThai;
+
+    private Long soDuHienTai;
+    private Long tongTienLaiDuKien;
+    private Long tienLaiNhanDinhKy;
+    private Boolean tienLaiDaNhanNhungChuaDuyetToan;
+    private Long tongLaiQuyetToan;
+    private LocalDate ngayDaoHan;
 }
