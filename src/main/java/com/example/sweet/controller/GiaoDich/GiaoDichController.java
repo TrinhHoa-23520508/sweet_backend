@@ -25,13 +25,13 @@ public class GiaoDichController {
 
     @PostMapping("/")
     public ResponseEntity<GiaoDich> insertGiaoDich(@RequestBody GiaoDich giaoDich) {
-        if (giaoDich.getGiaoDichID() != 0)
+        if (giaoDich.getGiaoDichID() == null)
             throw new IllegalStateException("Không thể update được giao dịch");
         return ResponseEntity.ok(service.createGiaoDich(giaoDich));
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteGiaoDich(@PathVariable Long id) {
-        service.cancelGiaoDich(id);
-    }
+//    @DeleteMapping("/{id}")
+//    public void deleteGiaoDich(@PathVariable Long id) {
+//        service.cancelGiaoDich(id);
+//    }
 }

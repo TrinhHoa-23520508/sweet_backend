@@ -19,7 +19,7 @@ public class LichSuGiaoDich_TKTT {
     private int lichSuGiaoDichID;
 
     @ManyToOne
-    @JoinColumn(name = "tai_khoan", nullable = false)
+    @JoinColumn(name = "tai_khoan", nullable = true)
     private TaiKhoanThanhToan taiKhoan;
 
     @ManyToOne
