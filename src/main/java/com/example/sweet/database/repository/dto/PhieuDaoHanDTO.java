@@ -2,13 +2,21 @@ package com.example.sweet.database.repository.dto;
 
 import java.time.LocalDate;
 
+import com.example.sweet.database.schema.GiaoDich.PhieuDaoHan;
 import com.example.sweet.database.schema.Loai.HinhThucDaoHan;
 import com.example.sweet.database.schema.Loai.LoaiKyHan;
 import com.example.sweet.database.schema.Loai.LoaiTietKiem;
 import com.example.sweet.database.schema.Loai.TanSuatNhanLai;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
 public class PhieuDaoHanDTO {
-	String maPhieuDaoHan; // khoa chinh, auto generated
+	Long maPhieuDaoHan; // khoa chinh
 
 	// input
 	String maPhieuGuiTien; // khoa ngoai, tham chieu toi phieu gui tien
@@ -60,4 +68,7 @@ public class PhieuDaoHanDTO {
 	Long tienLaiNhanDuocTruocQuyetToanSauDaoHan;
 	Long tongTienLaiSauQuyetToan;
 
+	public PhieuDaoHanDTO(PhieuDaoHan entity) {
+		this.maPhieuDaoHan = entity.getPhieuDaoHanID();
+	}
 }
