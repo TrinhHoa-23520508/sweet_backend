@@ -21,8 +21,8 @@ public class GiaoDichService {
 
     public GiaoDich createGiaoDich(GiaoDich giaoDich) {
 
-        var taiKhoanNguon = taiKhoanRepo.findById(giaoDich.getTaiKhoanNguon().getSoTaiKhoan()).orElseThrow();
-        var taiKhoanDich = taiKhoanRepo.findById(giaoDich.getTaiKhoanDich().getSoTaiKhoan()).orElseThrow();
+        var taiKhoanNguon = taiKhoanRepo.findById(Math.toIntExact(giaoDich.getTaiKhoanNguon())).orElseThrow();
+        var taiKhoanDich = taiKhoanRepo.findById(Math.toIntExact(giaoDich.getTaiKhoanDich())).orElseThrow();
 
         if (taiKhoanNguon.getSoDu() < giaoDich.getSoTienGiaoDich())
             throw new IllegalStateException("Số dư không đủ");
@@ -61,8 +61,8 @@ public class GiaoDichService {
 
     // Please fill out all field before using this
     public void cancelGiaoDich(GiaoDich giaoDich) {
-        var taiKhoanNguon = giaoDich.getTaiKhoanNguon();
-        var taiKhoanDich = giaoDich.getTaiKhoanNguon();
+        var taiKhoanNguon = taiKhoanRepo.findById(Math.toIntExact(giaoDich.getTaiKhoanNguon())).orElseThrow();
+        var taiKhoanDich = taiKhoanRepo.findById(Math.toIntExact(giaoDich.getTaiKhoanDich())).orElseThrow();
 
         taiKhoanNguon.setSoDu(taiKhoanNguon.getSoDu() + giaoDich.getSoTienGiaoDich());
         // Negate that bitch
