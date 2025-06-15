@@ -1,7 +1,6 @@
 package com.example.sweet.database.repository.dto;
 
 import java.time.Instant;
-import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

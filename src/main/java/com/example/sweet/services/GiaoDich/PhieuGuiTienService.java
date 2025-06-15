@@ -95,6 +95,9 @@ public class PhieuGuiTienService {
             // B3-B8: Validate dữ liệu đầu vào
             validatePhieuGuiTien(phieuGuiTienDTO);
 
+            // Set trạng thái mặc định là "chưa tất toán" (ID = 9)
+            phieuGuiTienDTO.setTrangThaiId(9L);
+
             // Set ngày gửi tiền to now
             phieuGuiTienDTO.setNgayGuiTien(Instant.now());
 

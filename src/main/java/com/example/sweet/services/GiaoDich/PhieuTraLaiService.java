@@ -16,9 +16,11 @@ import com.example.sweet.database.repository.Loai.LoaiTaiKhoanRepository;
 import com.example.sweet.database.repository.TaiKhoan.KhachHangRepository;
 import com.example.sweet.database.repository.TaiKhoan.TaiKhoanThanhToanRepository;
 import com.example.sweet.database.repository.GiaoDich.KenhGiaoDichRepository;
+import com.example.sweet.database.repository.GiaoDich.LichSuGiaoDich_PhieuGuiTienRepository;
 import com.example.sweet.database.repository.GiaoDich.PhieuGuiTienRepository;
 import com.example.sweet.database.repository.dto.PhieuTraLaiDTO;
 import com.example.sweet.database.schema.GiaoDich.GiaoDich;
+import com.example.sweet.database.schema.GiaoDich.LichSuGiaoDich_PhieuGuiTien;
 import com.example.sweet.database.schema.GiaoDich.PhieuGuiTien;
 import com.example.sweet.database.schema.GiaoDich.PhieuTraLai;
 import com.example.sweet.database.schema.TaiKhoan.KhachHang;
@@ -41,6 +43,7 @@ public class PhieuTraLaiService {
     private final KenhGiaoDichRepository kenhGiaoDichRepository;
     private final KhachHangRepository khachHangRepository;
     private final TaiKhoanThanhToanRepository taiKhoanThanhToanRepository;
+    private final LichSuGiaoDich_PhieuGuiTienRepository lichSuPGTRepo;
 
     public List<PhieuTraLaiDTO> getAllPhieuTraLai() {
         Iterable<PhieuTraLai> phieuTraLais = phieuTraLaiRepository.findAll();
@@ -55,6 +58,9 @@ public class PhieuTraLaiService {
     @Transactional
     public PhieuTraLaiDTO createPhieuTraLai(PhieuTraLaiDTO dto) {
         try {
+            // Tự động set ngày trả lãi là thời điểm hiện tại
+            dto.setNgayTraLai(Instant.now());
+
             // B3: Đọc thông tin từ DB
             PhieuGuiTien phieuGuiTien = phieuGuiTienRepository.findById(dto.getPhieuGuiTienID())
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy phiếu gửi tiền"));
@@ -91,6 +97,7 @@ public class PhieuTraLaiService {
             GiaoDich giaoDich = new GiaoDich();
             giaoDich.setSoTienGiaoDich(tienLaiNhanDuoc);
             giaoDich.setThoiGianGiaoDich(dto.getNgayTraLai());
+            giaoDich.setNoiDung("trả lãi phiếu gửi tiền ID: " + phieuGuiTien.getPhieuGuiTienID());
 
             // Save PhieuGuiTien first to ensure it has ID
             phieuGuiTien = phieuGuiTienRepository.save(phieuGuiTien);
@@ -118,8 +125,8 @@ public class PhieuTraLaiService {
                                                                                                         // toán
 
             // Set loại và kênh giao dịch
-            giaoDich.setLoaiGiaoDich(loaiGiaoDichRepository.findById(4L).get()); // 4L - Trả lãi
-            giaoDich.setKenhGiaoDich(kenhGiaoDichRepository.findById(1L).get()); // 1L - Tại quầy
+            giaoDich.setLoaiGiaoDich(loaiGiaoDichRepository.findById(6L).get()); // 4L - Trả lãi
+            giaoDich.setKenhGiaoDich(kenhGiaoDichRepository.findById(2L).get()); // 1L - Tại quầy
 
             // Lưu giao dịch
             GiaoDich savedGiaoDich = giaoDichService.createGiaoDich(giaoDich);
@@ -131,6 +138,18 @@ public class PhieuTraLaiService {
 
             PhieuTraLai savedPhieuTraLai = phieuTraLaiRepository.save(phieuTraLai);
             phieuGuiTienRepository.save(phieuGuiTien);
+            // Sau khi có savedGiaoDich, lưu lịch sử giao dịch
+            LichSuGiaoDich_PhieuGuiTien lichSuPGT = new LichSuGiaoDich_PhieuGuiTien();
+            lichSuPGT.setPhieuGuiTien(phieuGuiTien);
+            lichSuPGT.setGiaoDich(savedGiaoDich);
+            lichSuPGT.setSoTienGocGiaoDich(0.0);
+            lichSuPGT.setSoDuHienTai_SauGD(phieuGuiTien.getSoDuHienTai());
+            lichSuPGT.setTienLai_TrongGD(phieuGuiTien.getTienLaiNhanDinhKy());
+            lichSuPGT.setLaiQuyetToan_TrongGD(0.0);
+            lichSuPGT.setTienLaiDaNhanNhungChuaQuyetToan_SauGD(phieuGuiTien.getTienLaiDaNhanNhungChuaQuyetToan());
+            lichSuPGT.setTongLaiQuyetToan_SauGD(phieuGuiTien.getTongLaiQuyetToan());
+
+            lichSuPGTRepo.save(lichSuPGT);
 
             return phieuTraLaiMapper.toDTO(savedPhieuTraLai);
 

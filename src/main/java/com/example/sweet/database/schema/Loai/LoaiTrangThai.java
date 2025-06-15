@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @Entity
 @Getter
 @Setter
@@ -17,10 +16,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class LoaiTrangThai {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     private Long loaiTrangThaiID;
-    private int maLoaiTrangThai;
+    private String maLoaiTrangThai;
     private String tenLoaiTrangThai;
     private String moTa;
 }
