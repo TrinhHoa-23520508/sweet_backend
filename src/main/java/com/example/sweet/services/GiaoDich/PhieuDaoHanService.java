@@ -15,6 +15,7 @@ import com.example.sweet.database.repository.TaiKhoan.NhanVienRepository;
 import com.example.sweet.database.repository.dto.PhieuDaoHanDTO;
 import com.example.sweet.database.repository.dto.PhieuDaoHanDTO_inp;
 import com.example.sweet.database.schema.GiaoDich.PhieuDaoHan;
+import com.example.sweet.database.schema.GiaoDich.PhieuGuiTien;
 import com.example.sweet.util.mapper.PhieuDaoHanMapper;
 import com.example.sweet.util.mapper.PhieuGuiTienMapper;
 
@@ -74,7 +75,24 @@ public class PhieuDaoHanService {
             phieuDaoHanRepository.save(phieuDaoHan);
         }
 
+        PhieuGuiTien phieuGuiTienKyTruoc = phieuDaoHan.getPhieuGuiTienKyTruoc();
+
         PhieuDaoHanDTO phieuDaoHanDTO = new PhieuDaoHanDTO(phieuDaoHan);
+
+        phieuDaoHanDTO.setMaPhieuDaoHan(phieuDaoHan.getPhieuDaoHanID());
+        phieuDaoHanDTO.setMaKhachHang(phieuDaoHanDTO_inp.getMaKH());
+        phieuDaoHanDTO.setCccdKhachHang(this.khachHangRepository
+                .findById(phieuDaoHanDTO_inp.getMaKH())
+                .get()
+                .getCccd());
+        phieuDaoHanDTO.setHoTenKhachHang(this.khachHangRepository
+                .findById(phieuDaoHanDTO_inp.getMaKH())
+                .get()
+                .getHoTen());
+        phieuDaoHanDTO.setMaPhieuGuiTien(phieuDaoHanDTO_inp.getMaPhieuGuiTien());
+
+        phieuDaoHanDTO.tinhToan(phieuGuiTienKyTruoc);
         return;
     }
+
 }
