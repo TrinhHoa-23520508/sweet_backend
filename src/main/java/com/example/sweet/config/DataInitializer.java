@@ -1,22 +1,14 @@
 package com.example.sweet.config;
 
+import com.example.sweet.database.repository.Loai.*;
+import com.example.sweet.database.repository.TaiKhoan.NhanVienRepository;
 import com.example.sweet.database.schema.GiaoDich.KenhGiaoDich;
-import com.example.sweet.database.schema.Loai.HinhThucDaoHan;
-import com.example.sweet.database.schema.Loai.LoaiGiaoDich;
-import com.example.sweet.database.schema.Loai.LoaiTaiKhoan;
-import com.example.sweet.database.schema.Loai.LoaiTietKiem;
-import com.example.sweet.database.schema.Loai.LoaiTrangThai;
-import com.example.sweet.database.schema.Loai.TanSuatNhanLai;
+import com.example.sweet.database.schema.Loai.*;
 import com.example.sweet.database.schema.TaiKhoan.DiaChi;
+import com.example.sweet.database.schema.TaiKhoan.NhanVien;
 import com.example.sweet.database.schema.TaiKhoan.VaiTro;
 import com.example.sweet.database.repository.TrangThaiRepository;
 import com.example.sweet.database.repository.GiaoDich.KenhGiaoDichRepository;
-import com.example.sweet.database.repository.Loai.HinhThucDaoHanRepository;
-import com.example.sweet.database.repository.Loai.LoaiGiaoDichRepository;
-import com.example.sweet.database.repository.Loai.LoaiTaiKhoanRepository;
-import com.example.sweet.database.repository.Loai.LoaiTietKiemRepository;
-import com.example.sweet.database.repository.Loai.LoaiTrangThaiRepository;
-import com.example.sweet.database.repository.Loai.TanSuatNhanLaiRepository;
 import com.example.sweet.database.repository.TaiKhoan.DiaChiRepository;
 import com.example.sweet.database.repository.TaiKhoan.VaiTroRepository;
 import com.example.sweet.database.schema.TrangThai;
@@ -24,39 +16,48 @@ import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Component
 @AllArgsConstructor
 public class DataInitializer implements CommandLineRunner {
 
-        private LoaiTaiKhoanRepository ltkRespo;
-        private KenhGiaoDichRepository kgdRespo;
-        private LoaiGiaoDichRepository lgdRespo;
-        private TrangThaiRepository trangThaiRespo;
-        private LoaiTrangThaiRepository loaiTrangThaiRespo;
-        private DiaChiRepository diaChiRespo;
-        private VaiTroRepository vaiTroRespo;
+        private final LoaiTaiKhoanRepository loaiTaiKhoanRepository;
+        private final KenhGiaoDichRepository kenhGiaoDichRepository;
+        private final LoaiGiaoDichRepository loaiGiaoDichRepository;
+        private final TrangThaiRepository trangThaiRepo;
+        private final LoaiTrangThaiRepository loaiTrangThaiRepo;
+        private final DiaChiRepository diaChiRepo;
+        private final VaiTroRepository vaiTroRepo;
         private final HinhThucDaoHanRepository hinhThucDaoHanRepo;
         private final LoaiTietKiemRepository loaiTietKiemRepo;
         private final TanSuatNhanLaiRepository tanSuatNhanLaiRepo;
 
+        private final LoaiKyHanRepository loaiKyHanRepository;
+        private final LoaiTietKiemRepository loaiTietKiemRepository;
+        private final QuyDinhLaiSuatRepository quyDinhLaiSuatRepository;
+        private final NhanVienRepository nhanVienRepository;
+        private final ChiTietQuyDinhLaiSuatRepository chiTietQuyDinhLaiSuatRepository;
+
         @Override
         public void run(String... args) throws Exception {
-                if (ltkRespo.count() > 0)
+                if (loaiTaiKhoanRepository.count() > 0)
                         return;
-                ltkRespo.saveAll(List.of(
+                loaiTaiKhoanRepository.saveAll(List.of(
                                 new LoaiTaiKhoan(null, 1, "Tài khoản thanh toán", "Tài khoản thanh toán"),
                                 new LoaiTaiKhoan(null, 2, "Phiếu gửi tiền", "Phiếu gửi tiền"),
                                 new LoaiTaiKhoan(null, 3, "Tiền mặt tại quầy", "Tiền mặt tại quầy"),
                                 new LoaiTaiKhoan(null, 4, "Ngân hàng", "Ngân hàng")));
 
-                kgdRespo.saveAll(List.of(
+                kenhGiaoDichRepository.saveAll(List.of(
                                 new KenhGiaoDich(null, 1, "Giao dịch tại quầy", "Giao dịch tại quầy"),
                                 new KenhGiaoDich(null, 2, "Giao dịch trực tuyến", "Giao dịch trực tuyến")));
 
-                lgdRespo.saveAll(List.of(
+                loaiGiaoDichRepository.saveAll(List.of(
                                 new LoaiGiaoDich(null, 1, "Gửi tiền vào tài khoản thanh toán",
                                                 "Gửi tiền vào tài khoản thanh toán"),
                                 new LoaiGiaoDich(null, 2, "Rút tiền từ tài khoản thanh toán",
@@ -67,25 +68,51 @@ public class DataInitializer implements CommandLineRunner {
                                 new LoaiGiaoDich(null, 6, "Trả tiền lãi", "Trả tiền lãi"),
                                 new LoaiGiaoDich(null, 7, "Đáo hạn phiếu gửi tiền", "Đáo hạn phiếu gửi tiền")));
 
-                var insertedLTT = loaiTrangThaiRespo.saveAll(List.of(
-                                new LoaiTrangThai(null, 1, "Tất toán", "Tất toán"),
-                                new LoaiTrangThai(null, 2, "Giao dịch", "Giao dịch"),
-                                new LoaiTrangThai(null, 3, "Tài khoản thanh toán", "Tài khoản thanh toán"))).iterator();
+                var insertedLTT = loaiTrangThaiRepo.saveAll(List.of(
+                                new LoaiTrangThai(null, "customer", "Khách hàng", "Khách hàng"),
+                                new LoaiTrangThai(null, "employee", "Nhân viên", "Nhân viên"),
+                                new LoaiTrangThai(null, "payment_account", "Tài khoản thanh toán",
+                                                "Tài khoản thanh toán"),
+                                new LoaiTrangThai(null, "transaction", "Giao dịch", "Giao dịch"),
+                                new LoaiTrangThai(null, "deposit_receipt", "Phiếu gửi tiền", "Phiếu gửi tiền"),
+                                new LoaiTrangThai(null, "login_account", "Tài khoản đăng nhập", "Tài khoản đăng nhập")))
+                                .iterator();
                 ArrayList<LoaiTrangThai> loaiTrangThais = new ArrayList<>();
                 while (insertedLTT.hasNext()) {
                         loaiTrangThais.add(insertedLTT.next());
                 }
 
-                trangThaiRespo.saveAll(List.of(
-                                new TrangThai(null, 1, "Đã tất toán", loaiTrangThais.get(0)),
-                                new TrangThai(null, 2, "Chưa tất toán", loaiTrangThais.get(0)),
-                                new TrangThai(null, 3, "Thành công", loaiTrangThais.get(0)),
-                                new TrangThai(null, 4, "Thất bại", loaiTrangThais.get(1)),
-                                new TrangThai(null, 5, "Còn hoạt động", loaiTrangThais.get(1)),
-                                new TrangThai(null, 6, "Đã hủy", loaiTrangThais.get(2))));
+                var trangThais = trangThaiRepo.saveAll(List.of(
+                                // Trạng thái khách hàng
+                                new TrangThai(null, "active", "Còn hoạt động", loaiTrangThais.get(0)),
+                                new TrangThai(null, "locked", "Đã hủy", loaiTrangThais.get(0)),
 
-                vaiTroRespo.save(new VaiTro(null, "Foo", "fOO", true, List.of()));
-                diaChiRespo.save(new DiaChi(null, 1, "foo", "foo", "foo", "foo"));
+                                // Trạng thái nhân viên
+                                new TrangThai(null, "active", "Còn hoạt động", loaiTrangThais.get(1)),
+                                new TrangThai(null, "locked", "Đã hủy", loaiTrangThais.get(1)),
+
+                                // Trạng thái tài khoản thanh toán
+                                new TrangThai(null, "active", "Còn hoạt động", loaiTrangThais.get(2)),
+                                new TrangThai(null, "locked", "Đã khóa", loaiTrangThais.get(2)),
+
+                                // Trạng thái giao dịch
+                                new TrangThai(null, "success", "Giao dịch thành công", loaiTrangThais.get(3)),
+                                new TrangThai(null, "failed", "Giao dịch thất bại", loaiTrangThais.get(3)),
+
+                                // Trạng thái phiếu gửi tiền
+                                new TrangThai(null, "settled", "Đã tất toán", loaiTrangThais.get(4)),
+                                new TrangThai(null, "unsettled", "Chưa tất toán", loaiTrangThais.get(4)),
+
+                                // Trạng thái tài khoản đăng nhập
+                                new TrangThai(null, "active", "Đang hoạt động", loaiTrangThais.get(5)),
+                                new TrangThai(null, "locked", "Đã khóa", loaiTrangThais.get(5))));
+
+                var vaiTro = vaiTroRepo.save(new VaiTro(null, "Foo", "fOO", true, List.of()));
+                var diaChi = diaChiRepo.save(new DiaChi(null, 1, "foo", "foo", "foo", "foo"));
+
+                var admin = nhanVienRepository.save(
+                        new NhanVien(null, "123", LocalDate.now(), "fawfawfaw", "foo@bar.com", diaChi, diaChi, LocalDate.now(), "admin", "123456789", vaiTro, trangThais.get(2))
+                );
 
                 Long temp = null;
                 hinhThucDaoHanRepo.saveAll(List.of(
@@ -104,7 +131,7 @@ public class DataInitializer implements CommandLineRunner {
                                                 "Cho phép rút một phần tiền trước hạn",
                                                 true, true, true)));
 
-                tanSuatNhanLaiRepo.saveAll(List.of(
+                var tanSuatNhanLais = tanSuatNhanLaiRepo.saveAll(List.of(
                                 new TanSuatNhanLai(null, "Hàng tháng", 01,
                                                 "Nhận lãi định kỳ hàng tháng", true),
                                 new TanSuatNhanLai(null, "Hàng quý", 02,
@@ -114,30 +141,101 @@ public class DataInitializer implements CommandLineRunner {
                                 new TanSuatNhanLai(null, "Đầu kỳ hạn", 04,
                                                 "Nhận lãi một lần khi đáo hạn", true)));
 
-                /*
-                 * Hào: Data mẫu để tui test đừng xóa làm ơn
-                 INSERT INTO `sweet`.`khach_hang` (`khach_hangid`, `cccd`, `email`, `ho_ten`,
-                 `mat_khau`, `ngay_dang_ky`,
-                 `ngay_sinh`, `ten_dang_nhap`, `dia_chi_lien_lac`, `dia_chi_thuong_tru`,
-                 `trang_thai_tai_khoan`, `vai_tro`)
-                 VALUES ('2', '123', 'jojijik', 'fawfawfaw', '123456', '2022-01-01',
-                 '2022-01-01', 'blabla', '1', '1', '1', '1');
+                var loaiKyHans = loaiKyHanRepository.saveAll(
+                        IntStream.rangeClosed(1, 24)
+                        .mapToObj(value -> new LoaiKyHan(null, value + " Tháng", value))
+                        .collect(Collectors.toList())
+                );
 
-                 INSERT INTO `sweet`.`tai_khoan_thanh_toan` (`so_tai_khoan`, `ngay_tao`,
-                 `so_du`, `khach_hang`, `trang_thai`)
-                 VALUES ('1', '2022-01-01', '900000', '1', '1');
+                var loaiTietKiems = loaiTietKiemRepository.saveAll(List.of(
+                      new LoaiTietKiem(null, "Tiết kiệm có kỳ hạn", 1,
+                              "Tiết kiệm có kỳ hạn", true, true, true),
+                        new LoaiTietKiem(null, "Tiết kiệm có kỳ hạn rút gốc linh hoạt", 1,
+                                "Tiết kiệm có kỳ hạn rút gốc linh hoạt", true, true, true)
+                ));
 
-                 INSERT INTO `sweet`.`tai_khoan_thanh_toan` (`so_tai_khoan`, `ngay_tao`,
-                 `so_du`, `khach_hang`, `trang_thai`)
-                 VALUES ('2', '2022-06-01', '100000', '1', '1');
+                var quyDinh1 = quyDinhLaiSuatRepository.save(
+                        new QuyDinhLaiSuat(null, LocalDate.now(), LocalDate.now(),
+                                "Blabla", admin, 0.1f, Integer.MAX_VALUE)
+                );
 
-                 INSERT INTO `sweet`.`nhan_vien` (`nhan_vienid`, `cccd`, `email`, `ho_ten`,
-                 `mat_khau`, `ngay_tuyen_dung`,
-                 `ngay_sinh`, `ten_dang_nhap`, `dia_chi_lien_lac`, `dia_chi_thuong_tru`,
-                 `trang_thai_tai_khoan`, `vai_tro`)
-                 VALUES ('1', '123', 'jojijik', 'fawfawfaw', '123456', '2022-01-01',
-                 '2022-01-01', 'blabla', '1', '1', '1', '1');
-                 */
+                chiTietQuyDinhLaiSuatRepository.saveAll(List.of(
+                        // Cuối kỳ hạn
+                        new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
+                                tanSuatNhanLais.get(2), loaiKyHans.get(0), 0.47f),
+                        new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
+                                tanSuatNhanLais.get(2), loaiKyHans.get(2), 0.44f),
+                        new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
+                                tanSuatNhanLais.get(2), loaiKyHans.get(5), 0.57f),
+                        new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
+                                tanSuatNhanLais.get(2), loaiKyHans.get(11), 0.6f),
+
+                        // Đầu kỳ hạn
+                        new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
+                                tanSuatNhanLais.get(3), loaiKyHans.get(0), 0.428f),
+                        new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
+                                tanSuatNhanLais.get(3), loaiKyHans.get(2), 0.443f),
+                        new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
+                                tanSuatNhanLais.get(3), loaiKyHans.get(5), 0.568f),
+                        new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
+                                tanSuatNhanLais.get(3), loaiKyHans.get(11), 0.557f),
+
+                        // Hàng tháng
+                        new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
+                                tanSuatNhanLais.get(0), loaiKyHans.get(2), 0.448f),
+                        new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
+                                tanSuatNhanLais.get(0), loaiKyHans.get(5), 0.581f),
+                        new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
+                                tanSuatNhanLais.get(0), loaiKyHans.get(11), 0.581f),
+                        new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
+                                tanSuatNhanLais.get(0), loaiKyHans.get(17), 0.57f),
+
+
+                        // Hàng quý
+                        new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
+                                tanSuatNhanLais.get(1), loaiKyHans.get(5), 0.585f),
+                        new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
+                                tanSuatNhanLais.get(1), loaiKyHans.get(11), 0.584f),
+                        new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
+                                tanSuatNhanLais.get(1), loaiKyHans.get(17), 0.573f),
+                        new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
+                                tanSuatNhanLais.get(1), loaiKyHans.get(23), 0.592f),
+
+                        // Hàng quý
+                        new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(1),
+                                null, loaiKyHans.get(0), 0.47f),
+                        new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(1),
+                                null, loaiKyHans.get(2), 0.44f),
+                        new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(1),
+                                null, loaiKyHans.get(5), 0.57f),
+                        new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(1),
+                                null, loaiKyHans.get(11), 0.6f)
+                ));
 
         }
 }
+
+/*
+Hào: Data mẫu để tui test đừng xóa làm ơn
+INSERT INTO `sweet`.`khach_hang` (`khach_hangid`, `cccd`, `email`, `ho_ten`,
+`mat_khau`, `ngay_dang_ky`,
+`ngay_sinh`, `ten_dang_nhap`, `dia_chi_lien_lac`, `dia_chi_thuong_tru`,
+`trang_thai_tai_khoan`, `vai_tro`)
+VALUES ('2', '123', 'jojijik', 'fawfawfaw', '123456', '2022-01-01',
+'2022-01-01', 'blabla', '1', '1', '1', '1');
+
+INSERT INTO `sweet`.`tai_khoan_thanh_toan` (`so_tai_khoan`, `ngay_tao`,
+`so_du`, `khach_hang`, `trang_thai`)
+VALUES ('1', '2022-01-01', '900000', '1', '1');
+
+INSERT INTO `sweet`.`tai_khoan_thanh_toan` (`so_tai_khoan`, `ngay_tao`,
+`so_du`, `khach_hang`, `trang_thai`)
+VALUES ('2', '2022-06-01', '100000', '1', '1');
+
+INSERT INTO `sweet`.`nhan_vien` (`nhan_vienid`, `cccd`, `email`, `ho_ten`,
+`mat_khau`, `ngay_tuyen_dung`,
+`ngay_sinh`, `ten_dang_nhap`, `dia_chi_lien_lac`, `dia_chi_thuong_tru`,
+`trang_thai_tai_khoan`, `vai_tro`)
+VALUES ('1', '123', 'jojijik', 'fawfawfaw', '123456', '2022-01-01',
+'2022-01-01', 'blabla', '1', '1', '1', '1');
+ */

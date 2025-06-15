@@ -17,7 +17,7 @@ public class TrangThai {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     private Long trangThaiID;
-    private int maTrangThai;
+    private String maTrangThai;
     private String tenTrangThai;
 
     @ManyToOne

@@ -26,7 +26,7 @@ public class LoaiGiaoDichController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteLoaiGiaoDich(@PathVariable int id) {
+    public void deleteLoaiGiaoDich(@PathVariable Long id) {
         respository.deleteById(id);
     }
 }

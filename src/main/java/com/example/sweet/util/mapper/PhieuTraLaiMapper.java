@@ -29,10 +29,42 @@ public class PhieuTraLaiMapper {
         PhieuTraLaiDTO dto = new PhieuTraLaiDTO();
 
         dto.setPhieuTraLaiID(phieuTraLai.getPhieuTraLaiID());
-        dto.setPhieuGuiTTienID(
+        dto.setPhieuGuiTienID(
                 phieuTraLai.getPhieuGuiTien() != null ? phieuTraLai.getPhieuGuiTien().getPhieuGuiTienID() : null);
         dto.setGiaoDichID(phieuTraLai.getGiaoDich() != null ? phieuTraLai.getGiaoDich().getGiaoDichID() : null);
         dto.setNgayTraLai(phieuTraLai.getNgayTraLai());
+
+        // Map thêm thông tin từ PhieuGuiTien
+        if (phieuTraLai.getPhieuGuiTien() != null) {
+            PhieuGuiTien pgt = phieuTraLai.getPhieuGuiTien();
+            dto.setMaPhieuGuiTien(pgt.getPhieuGuiTienID());
+            dto.setNgayGuiTien(pgt.getNgayGuiTien());
+            dto.setTienLaiNhanDinhKy(pgt.getTienLaiNhanDinhKy());
+            dto.setTienLaiDaNhanNhungChuaQuyetToan(pgt.getTienLaiDaNhanNhungChuaQuyetToan());
+            dto.setNgayDaoHan(pgt.getNgayDaoHan());
+
+            // Map thông tin từ KhachHang
+            if (pgt.getKhachHang() != null) {
+                dto.setMaKhachHang(pgt.getKhachHang().getKhachHangID().toString());
+                dto.setHoTen(pgt.getKhachHang().getHoTen());
+                dto.setCccd(pgt.getKhachHang().getCccd());
+            }
+
+            // Map thông tin từ LoaiTietKiem
+            if (pgt.getLoaiTietKiem() != null) {
+                dto.setLoaiTietKiem(pgt.getLoaiTietKiem().getTenLoaiTietKiem());
+            }
+
+            // Map thông tin từ TanSuatNhanLai
+            if (pgt.getTanSuatNhanLai() != null) {
+                dto.setTanSuatTraLai(pgt.getTanSuatNhanLai().getTenTanSoNhanLai());
+            }
+        }
+
+        // Map thông tin từ GiaoDich
+        if (phieuTraLai.getGiaoDich() != null) {
+            dto.setSoTienNhanDuocKhiTraLai(phieuTraLai.getPhieuGuiTien().getTienLaiNhanDinhKy());
+        }
 
         return dto;
     }
@@ -48,8 +80,8 @@ public class PhieuTraLaiMapper {
             entity.setPhieuTraLaiID(dto.getPhieuTraLaiID());
         }
 
-        if (dto.getPhieuGuiTTienID() != null) {
-            PhieuGuiTien phieuGuiTien = phieuGuiTienRepository.findById(dto.getPhieuGuiTTienID())
+        if (dto.getPhieuGuiTienID() != null) {
+            PhieuGuiTien phieuGuiTien = phieuGuiTienRepository.findById(dto.getPhieuGuiTienID())
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy phiếu gửi tiền"));
             entity.setPhieuGuiTien(phieuGuiTien);
         }

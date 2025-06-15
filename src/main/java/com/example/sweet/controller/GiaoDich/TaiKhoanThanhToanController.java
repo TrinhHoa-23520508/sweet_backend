@@ -32,12 +32,12 @@ public class TaiKhoanThanhToanController {
 
     @GetMapping("/loai/{id}")
     @ApiMessage("Mah balls")
-    public ResponseEntity<Optional<TaiKhoanThanhToan>> getTaiKhoanThanhToanByLoai(@PathVariable int id) {
+    public ResponseEntity<Optional<TaiKhoanThanhToan>> getTaiKhoanThanhToanByLoai(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTaiKhoanThanhToan(@PathVariable int id) {
+    public void deleteTaiKhoanThanhToan(@PathVariable Long id) {
         service.deleteById(id);
     }
 }

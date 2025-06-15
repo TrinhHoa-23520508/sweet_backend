@@ -21,8 +21,9 @@ public class LichSuGiaoDich_PhieuGuiTien {
     @JoinColumn(name = "phieu_gui_tien_id", nullable = false)
     private PhieuGuiTien phieuGuiTien;
 
-    @Column(name = "giao_dich_id")
-    private int giaoDichID;
+    @ManyToOne
+    @JoinColumn(name = "giao_dich_id", nullable = false)
+    private GiaoDich giaoDich;
 
     @Column(name = "so_tien_goc_giao_dich")
     private double soTienGocGiaoDich;
@@ -32,6 +33,9 @@ public class LichSuGiaoDich_PhieuGuiTien {
 
     @Column(name = "tien_lai_trong_gd")
     private double tienLai_TrongGD;
+
+    @Column(name = "lai_quyet_toan_trong_gd")
+    private double laiQuyetToan_TrongGD;
 
     @Column(name = "tien_lai_da_nhan_nhung_chua_quyet_toan_sau_gd")
     private double tienLaiDaNhanNhungChuaQuyetToan_SauGD;

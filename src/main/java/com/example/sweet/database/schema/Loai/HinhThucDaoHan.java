@@ -5,11 +5,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
+
 public class HinhThucDaoHan {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,36 +22,4 @@ public class HinhThucDaoHan {
     private String tenHinhThucDaoHang;
     private int maHinhThucDaoHang;
     private String moTa;
-
-    public Long getHinhThucDaoHangID() {
-        return hinhThucDaoHangID;
-    }
-
-    public void setHinhThucDaoHangID(Long hinhThucDaoHangID) {
-        this.hinhThucDaoHangID = hinhThucDaoHangID;
-    }
-
-    public String getTenHinhThucDaoHang() {
-        return tenHinhThucDaoHang;
-    }
-
-    public void setTenHinhThucDaoHang(String tenHinhThucDaoHang) {
-        this.tenHinhThucDaoHang = tenHinhThucDaoHang;
-    }
-
-    public int getMaHinhThucDaoHang() {
-        return maHinhThucDaoHang;
-    }
-
-    public void setMaHinhThucDaoHang(int maHinhThucDaoHang) {
-        this.maHinhThucDaoHang = maHinhThucDaoHang;
-    }
-
-    public String getMoTa() {
-        return moTa;
-    }
-
-    public void setMoTa(String moTa) {
-        this.moTa = moTa;
-    }
 }

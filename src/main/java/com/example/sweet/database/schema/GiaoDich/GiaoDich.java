@@ -23,16 +23,12 @@ public class GiaoDich {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long giaoDichID;
 
-    @ManyToOne
-    @JoinColumn(name = "tai_khoan_nguon", nullable = true)
-    private TaiKhoanThanhToan taiKhoanNguon;
+    private Long taiKhoanNguon;
     @ManyToOne
     @JoinColumn(name = "loai_tai_khoan_nguon", nullable = true)
     private LoaiTaiKhoan loaiTaiKhoanNguon;
 
-    @ManyToOne
-    @JoinColumn(name = "tai_khoan_dich", nullable = true)
-    private TaiKhoanThanhToan taiKhoanDich;
+    private Long taiKhoanDich;
     @ManyToOne
     @JoinColumn(name = "loai_tai_khoan_dich", nullable = true)
     private LoaiTaiKhoan loaiTaiKhoanDich;
@@ -49,7 +45,7 @@ public class GiaoDich {
     @JoinColumn(name = "nhan_vien_giao_dich", nullable = true)
     private NhanVien nhanVienGiaoDich;
 
-    private int soTienGiaoDich;
+    private Long soTienGiaoDich;
     private String noiDung;
     private Instant thoiGianGiaoDich;
 }

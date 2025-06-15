@@ -20,11 +20,11 @@ public class TaiKhoanThanhToanService {
         return taiKhoanRepo.save(taiKhoan);
     }
 
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
         taiKhoanRepo.deleteById(id);
     }
 
-    public Optional<TaiKhoanThanhToan> findById(int id) {
+    public Optional<TaiKhoanThanhToan> findById(Long id) {
         return taiKhoanRepo.findById(id);
     }
 }

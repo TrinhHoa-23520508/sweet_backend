@@ -16,7 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class LoaiGiaoDich {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long loaiGiaoDichID;
     private int maLoaiGiaoDich;
     private String tenLoaiGiaoDich;

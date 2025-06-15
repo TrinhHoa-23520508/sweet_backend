@@ -3,15 +3,18 @@ package com.example.sweet.services.GiaoDich;
 import org.springframework.stereotype.Service;
 
 import com.example.sweet.database.repository.TrangThaiRepository;
+import com.example.sweet.database.repository.GiaoDich.GiaoDichRepository;
+import com.example.sweet.database.repository.GiaoDich.KenhGiaoDichRepository;
+import com.example.sweet.database.repository.GiaoDich.LichSuGiaoDich_PhieuGuiTienRepository;
 import com.example.sweet.database.repository.GiaoDich.PhieuGuiTienRepository;
-import com.example.sweet.database.repository.Loai.HinhThucDaoHanRepository;
-import com.example.sweet.database.repository.Loai.LoaiKyHanRepository;
-import com.example.sweet.database.repository.Loai.LoaiTietKiemRepository;
-import com.example.sweet.database.repository.Loai.TanSuatNhanLaiRepository;
+import com.example.sweet.database.repository.Loai.*;
 import com.example.sweet.database.repository.TaiKhoan.KhachHangRepository;
 import com.example.sweet.database.repository.TaiKhoan.NhanVienRepository;
+import com.example.sweet.database.repository.TaiKhoan.TaiKhoanThanhToanRepository;
 import com.example.sweet.database.repository.dto.PhieuGuiTienDTO;
 import com.example.sweet.database.schema.TrangThai;
+import com.example.sweet.database.schema.GiaoDich.GiaoDich;
+import com.example.sweet.database.schema.GiaoDich.LichSuGiaoDich_PhieuGuiTien;
 import com.example.sweet.database.schema.GiaoDich.PhieuGuiTien;
 import com.example.sweet.database.schema.Loai.HinhThucDaoHan;
 import com.example.sweet.database.schema.Loai.LoaiKyHan;
@@ -19,27 +22,40 @@ import com.example.sweet.database.schema.Loai.LoaiTietKiem;
 import com.example.sweet.database.schema.Loai.TanSuatNhanLai;
 import com.example.sweet.database.schema.TaiKhoan.KhachHang;
 import com.example.sweet.database.schema.TaiKhoan.NhanVien;
+import com.example.sweet.database.schema.TaiKhoan.TaiKhoanThanhToan;
 import com.example.sweet.util.mapper.PhieuGuiTienMapper;
 
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 public class PhieuGuiTienService {
+    // Add repository
+    private final LoaiTaiKhoanRepository loaiTaiKhoanRepository;
+
+    private final LoaiGiaoDichRepository loaiGiaoDichRepository;
+    // Add GiaoDichService
+    private final GiaoDichService giaoDichService;
+    // Remove unnecessary repositories
 
     private final HinhThucDaoHanRepository hinhThucDaoHanRepository;
 
     private final LoaiKyHanRepository loaiKyHanRepository;
     private final TanSuatNhanLaiRepository tanSuatNhanLaiRepository;
-    private final TrangThaiRepository trangThaiRepository;
     private final PhieuGuiTienRepository phieuGuiTienRepository;
     private final KhachHangRepository khachHangRepository;
     private final NhanVienRepository nhanVienRepository;
     private final LoaiTietKiemRepository loaiTietKiemRepository;
     private final PhieuGuiTienMapper phieuGuiTienMapper;
+    private final TaiKhoanThanhToanRepository taiKhoanThanhToanRepository;
+    private final KenhGiaoDichRepository kenhGiaoDichRepository;
+    // Add new repository
+    private final LichSuGiaoDich_PhieuGuiTienRepository lichSuPGTRepo;
 
     public PhieuGuiTienService(
             PhieuGuiTienRepository phieuGuiTienRepository,
@@ -50,7 +66,14 @@ public class PhieuGuiTienService {
             LoaiKyHanRepository loaiKyHanRepository,
             HinhThucDaoHanRepository hinhThucDaoHanRepository,
             TrangThaiRepository trangThaiRepository,
-            PhieuGuiTienMapper phieuGuiTienMapper) {
+            PhieuGuiTienMapper phieuGuiTienMapper,
+            GiaoDichService giaoDichService,
+            GiaoDichRepository giaoDichRepository, LoaiGiaoDichRepository loaiGiaoDichRepository,
+            TaiKhoanThanhToanRepository taiKhoanThanhToanRepository,
+            KenhGiaoDichRepository kenhGiaoDichRepository,
+            LoaiTaiKhoanRepository loaiTaiKhoanRepository,
+            LichSuGiaoDich_PhieuGuiTienRepository lichSuPGTRepo) {
+        this.kenhGiaoDichRepository = kenhGiaoDichRepository;
         this.phieuGuiTienRepository = phieuGuiTienRepository;
         this.khachHangRepository = khachHangRepository;
         this.nhanVienRepository = nhanVienRepository;
@@ -59,7 +82,11 @@ public class PhieuGuiTienService {
         this.tanSuatNhanLaiRepository = tanSuatNhanLaiRepository;
         this.loaiKyHanRepository = loaiKyHanRepository;
         this.hinhThucDaoHanRepository = hinhThucDaoHanRepository;
-        this.trangThaiRepository = trangThaiRepository;
+        this.giaoDichService = giaoDichService;
+        this.loaiGiaoDichRepository = loaiGiaoDichRepository;
+        this.taiKhoanThanhToanRepository = taiKhoanThanhToanRepository;
+        this.loaiTaiKhoanRepository = loaiTaiKhoanRepository;
+        this.lichSuPGTRepo = lichSuPGTRepo;
     }
 
     @Transactional
@@ -68,8 +95,14 @@ public class PhieuGuiTienService {
             // B3-B8: Validate dữ liệu đầu vào
             validatePhieuGuiTien(phieuGuiTienDTO);
 
+            // Set trạng thái mặc định là "chưa tất toán" (ID = 9)
+            phieuGuiTienDTO.setTrangThaiId(9L);
+
+            // Set ngày gửi tiền to now
+            phieuGuiTienDTO.setNgayGuiTien(Instant.now());
+
             // B9: Tính ngày đáo hạn
-            LocalDate ngayDaoHan = tinhNgayDaoHan(
+            Instant ngayDaoHan = tinhNgayDaoHan(
                     phieuGuiTienDTO.getNgayGuiTien(),
                     phieuGuiTienDTO.getLoaiKyHanId());
 
@@ -93,16 +126,71 @@ public class PhieuGuiTienService {
             // Tính tiền lãi nhận định kỳ
             Long tienLaiNhanDinhKy = tongTienLaiDuKien / soLanNhanLai;
 
-            // Tạo entity và set các giá trị
+            // Tạo object GiaoDich trước
+            GiaoDich giaoDich = new GiaoDich();
+            giaoDich.setSoTienGiaoDich(phieuGuiTienDTO.getSoTienGuiBanDau());
+            giaoDich.setThoiGianGiaoDich(phieuGuiTienDTO.getNgayGuiTien());
+            giaoDich.setNoiDung("Tạo sổ tiết kiệm: " + phieuGuiTienDTO.getTenGoiNho());
+
+            // Set khách hàng và giao dịch viên
+            KhachHang khachHang = khachHangRepository.findById(phieuGuiTienDTO.getKhachHangId())
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy khách hàng"));
+
+            NhanVien giaoDichVien = nhanVienRepository.findById(phieuGuiTienDTO.getGiaoDichVienId())
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy giao dịch viên"));
+            giaoDich.setNhanVienGiaoDich(giaoDichVien);
+
+            // PhieuGuiTien chưa được tạo nên chưa có ID, sẽ set sau khi lưu
             PhieuGuiTien phieuGuiTien = phieuGuiTienMapper.toEntity(phieuGuiTienDTO);
+            phieuGuiTien.setSoDuHienTai(phieuGuiTienDTO.getSoTienGuiBanDau()); // Set số dư = số tiền gửi ban đầu
+            phieuGuiTien = phieuGuiTienRepository.save(phieuGuiTien); // Lưu trước để có ID
+
+            // Set tài khoản nguồn và đích
+            TaiKhoanThanhToan taiKhoanNguon = taiKhoanThanhToanRepository
+                    .findByKhachHangKhachHangID(khachHang.getKhachHangID())
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy tài khoản thanh toán"));
+            taiKhoanNguon = taiKhoanThanhToanRepository.save(taiKhoanNguon);
+            giaoDich.setTaiKhoanNguon(taiKhoanNguon.getSoTaiKhoan());
+            giaoDich.setLoaiTaiKhoanNguon(
+                    loaiTaiKhoanRepository.findById(1L)
+                            .orElseThrow(() -> new RuntimeException("Không tìm thấy loại tài khoản"))); // 1L cho tài
+                                                                                                        // khoản thanh
+                                                                                                        // toán
+
+            giaoDich.setTaiKhoanDich(phieuGuiTien.getPhieuGuiTienID()); // phieuGuiTien sẽ là tài khoản đích
+            giaoDich.setLoaiTaiKhoanDich(
+                    loaiTaiKhoanRepository.findById(2L)
+                            .orElseThrow(() -> new RuntimeException("Không tìm thấy loại tài khoản"))); // 2L cho tài
+                                                                                                        // khoản tiết
+                                                                                                        // kiệm
+
+            // Set loại và kênh giao dịch
+            giaoDich.setLoaiGiaoDich(loaiGiaoDichRepository.findById(3L).get());
+            giaoDich.setKenhGiaoDich(kenhGiaoDichRepository.findById(1L).get());
+
+            // Gọi service để tạo giao dịch
+            GiaoDich savedGiaoDich = giaoDichService.createGiaoDich(giaoDich);
+
+            // Sau khi có savedGiaoDich, lưu lịch sử giao dịch
+            LichSuGiaoDich_PhieuGuiTien lichSuPGT = new LichSuGiaoDich_PhieuGuiTien();
+            lichSuPGT.setPhieuGuiTien(phieuGuiTien);
+            lichSuPGT.setGiaoDich(savedGiaoDich);
+            lichSuPGT.setSoTienGocGiaoDich(phieuGuiTien.getSoDuHienTai());
+            lichSuPGT.setSoDuHienTai_SauGD(phieuGuiTien.getSoDuHienTai());
+            lichSuPGT.setTienLai_TrongGD(0.0);
+            lichSuPGT.setLaiQuyetToan_TrongGD(0.0);
+            lichSuPGT.setTienLaiDaNhanNhungChuaQuyetToan_SauGD(0.0);
+            lichSuPGT.setTongLaiQuyetToan_SauGD(0.0);
+
+            lichSuPGTRepo.save(lichSuPGT);
+
+            // Tiếp tục code tạo PhieuGuiTien như cũ
             phieuGuiTien.setNgayDaoHan(ngayDaoHan);
-            phieuGuiTien.setSoDuHienTai(soTienGui);
             phieuGuiTien.setTongTienLaiDuKien(tongTienLaiDuKien);
             phieuGuiTien.setTienLaiNhanDinhKy(tienLaiNhanDinhKy);
-            phieuGuiTien.setTienLaiDaNhanNhungChuaDuyetToan(false);
+            phieuGuiTien.setTienLaiDaNhanNhungChuaQuyetToan(0L);
             phieuGuiTien.setTongLaiQuyetToan(0L);
 
-            // B11: Lưu xuống database
             return phieuGuiTienMapper.toDTO(phieuGuiTienRepository.save(phieuGuiTien));
 
         } catch (Exception e) {
@@ -137,10 +225,10 @@ public class PhieuGuiTienService {
         }
     }
 
-    private LocalDate tinhNgayDaoHan(LocalDate ngayGui, Long loaiKyHanId) {
+    private Instant tinhNgayDaoHan(Instant ngayGui, Long loaiKyHanId) {
         LoaiKyHan loaiKyHan = loaiKyHanRepository.findById(loaiKyHanId)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy loại kỳ hạn"));
-        return ngayGui.plusMonths(loaiKyHan.getSoThang());
+        return ngayGui.plusMillis(loaiKyHan.getSoThang() * 30L * 24L * 60L * 60L * 1000L);
     }
 
     private int tinhSoLanNhanLai(String tanSuat, int kyHan) {
@@ -196,7 +284,7 @@ public class PhieuGuiTienService {
         existingPhieuGuiTien.setSoDuHienTai(phieuGuiTienDTO.getSoDuHienTai());
         existingPhieuGuiTien.setTongTienLaiDuKien(phieuGuiTienDTO.getTongTienLaiDuKien());
         existingPhieuGuiTien.setTienLaiNhanDinhKy(phieuGuiTienDTO.getTienLaiNhanDinhKy());
-        existingPhieuGuiTien.setTienLaiDaNhanNhungChuaDuyetToan(phieuGuiTienDTO.getTienLaiDaNhanNhungChuaDuyetToan());
+        existingPhieuGuiTien.setTienLaiDaNhanNhungChuaQuyetToan(phieuGuiTienDTO.getTienLaiDaNhanNhungChuaQuyetToan());
         existingPhieuGuiTien.setTongLaiQuyetToan(phieuGuiTienDTO.getTongLaiQuyetToan());
         existingPhieuGuiTien.setNgayDaoHan(phieuGuiTienDTO.getNgayDaoHan());
 

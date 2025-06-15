@@ -4,7 +4,6 @@ import org.springframework.stereotype.Component;
 
 import com.example.sweet.database.repository.dto.PhieuGuiTienDTO;
 import com.example.sweet.database.schema.TrangThai;
-import com.example.sweet.database.schema.GiaoDich.GiaoDich;
 import com.example.sweet.database.schema.GiaoDich.PhieuGuiTien;
 import com.example.sweet.database.schema.Loai.HinhThucDaoHan;
 import com.example.sweet.database.schema.Loai.LoaiKyHan;
@@ -30,7 +29,6 @@ public class PhieuGuiTienMapper {
     private final LoaiKyHanRepository loaiKyHanRepository;
     private final HinhThucDaoHanRepository hinhThucDaoHanRepository;
     private final TrangThaiRepository trangThaiRepository;
-    private final GiaoDichRepository giaoDichRepository;
 
     public PhieuGuiTienMapper(
             KhachHangRepository khachHangRepository,
@@ -48,7 +46,6 @@ public class PhieuGuiTienMapper {
         this.loaiKyHanRepository = loaiKyHanRepository;
         this.hinhThucDaoHanRepository = hinhThucDaoHanRepository;
         this.trangThaiRepository = trangThaiRepository;
-        this.giaoDichRepository = giaoDichRepository;
     }
 
     public PhieuGuiTienDTO toDTO(PhieuGuiTien phieuGuiTien) {
@@ -60,7 +57,6 @@ public class PhieuGuiTienMapper {
         dto.setPhieuGuiTienID(phieuGuiTien.getPhieuGuiTienID());
 
         dto.setKhachHangId(phieuGuiTien.getKhachHang() != null ? phieuGuiTien.getKhachHang().getKhachHangID() : null);
-        dto.setGiaoDichId(phieuGuiTien.getGiaoDich() != null ? phieuGuiTien.getGiaoDich().getGiaoDichID() : null);
         dto.setGiaoDichVienId(
                 phieuGuiTien.getGiaoDichVien() != null ? phieuGuiTien.getGiaoDichVien().getNhanVienID() : null);
         dto.setLoaiTietKiemId(
@@ -81,7 +77,7 @@ public class PhieuGuiTienMapper {
         dto.setSoDuHienTai(phieuGuiTien.getSoDuHienTai());
         dto.setTongTienLaiDuKien(phieuGuiTien.getTongTienLaiDuKien());
         dto.setTienLaiNhanDinhKy(phieuGuiTien.getTienLaiNhanDinhKy());
-        dto.setTienLaiDaNhanNhungChuaDuyetToan(phieuGuiTien.getTienLaiDaNhanNhungChuaDuyetToan());
+        dto.setTienLaiDaNhanNhungChuaQuyetToan(phieuGuiTien.getTienLaiDaNhanNhungChuaQuyetToan());
         dto.setTongLaiQuyetToan(phieuGuiTien.getTongLaiQuyetToan());
         dto.setNgayDaoHan(phieuGuiTien.getNgayDaoHan());
 
@@ -143,12 +139,6 @@ public class PhieuGuiTienMapper {
             entity.setTrangThai(trangThai);
         }
 
-        if (dto.getGiaoDichId() != null) {
-            GiaoDich giaoDich = giaoDichRepository.findById(dto.getGiaoDichId())
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy giao dịch"));
-            entity.setGiaoDich(giaoDich);
-        }
-
         // Set các trường dữ liệu cơ bản
         entity.setNgayGuiTien(dto.getNgayGuiTien());
         entity.setSoTienGuiBanDau(dto.getSoTienGuiBanDau());
@@ -159,7 +149,7 @@ public class PhieuGuiTienMapper {
         entity.setSoDuHienTai(dto.getSoDuHienTai());
         entity.setTongTienLaiDuKien(dto.getTongTienLaiDuKien());
         entity.setTienLaiNhanDinhKy(dto.getTienLaiNhanDinhKy());
-        entity.setTienLaiDaNhanNhungChuaDuyetToan(dto.getTienLaiDaNhanNhungChuaDuyetToan());
+        entity.setTienLaiDaNhanNhungChuaQuyetToan(dto.getTienLaiDaNhanNhungChuaQuyetToan());
         entity.setTongLaiQuyetToan(dto.getTongLaiQuyetToan());
         entity.setNgayDaoHan(dto.getNgayDaoHan());
 
