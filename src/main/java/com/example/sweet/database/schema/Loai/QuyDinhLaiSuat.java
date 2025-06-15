@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class QuyDinhLaiSuat {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int quyDinhLaiSuatID;
+    private Long quyDinhLaiSuatID;
     private LocalDate ngayBatDau;
     private LocalDate ngayKetThuc;
     private String moTa;

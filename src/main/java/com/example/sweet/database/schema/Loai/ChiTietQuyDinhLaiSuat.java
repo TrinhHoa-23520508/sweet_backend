@@ -16,7 +16,7 @@ public class ChiTietQuyDinhLaiSuat {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int chiTietQuyDinhID;
+    private Long chiTietQuyDinhID;
 
     @ManyToOne
     @JoinColumn(name = "tai_khoan_nguon", nullable = false)
@@ -27,10 +27,12 @@ public class ChiTietQuyDinhLaiSuat {
     private LoaiTietKiem loaiTietKiem;
 
     @ManyToOne
-    @JoinColumn(name = "tan_suat_nhan_lai", nullable = false)
+    @JoinColumn(name = "tan_suat_nhan_lai", nullable = true)
     private TanSuatNhanLai tanSuatNhanLai;
 
     @ManyToOne
     @JoinColumn(name = "loai_ky_han", nullable = false)
     private LoaiKyHan loaiKyHan;
+
+    private float laiSuat;
 }
