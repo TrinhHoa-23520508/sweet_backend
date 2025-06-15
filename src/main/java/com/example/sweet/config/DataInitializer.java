@@ -1,22 +1,12 @@
 package com.example.sweet.config;
 
+import com.example.sweet.database.repository.Loai.*;
 import com.example.sweet.database.schema.GiaoDich.KenhGiaoDich;
-import com.example.sweet.database.schema.Loai.HinhThucDaoHan;
-import com.example.sweet.database.schema.Loai.LoaiGiaoDich;
-import com.example.sweet.database.schema.Loai.LoaiTaiKhoan;
-import com.example.sweet.database.schema.Loai.LoaiTietKiem;
-import com.example.sweet.database.schema.Loai.LoaiTrangThai;
-import com.example.sweet.database.schema.Loai.TanSuatNhanLai;
+import com.example.sweet.database.schema.Loai.*;
 import com.example.sweet.database.schema.TaiKhoan.DiaChi;
 import com.example.sweet.database.schema.TaiKhoan.VaiTro;
 import com.example.sweet.database.repository.TrangThaiRepository;
 import com.example.sweet.database.repository.GiaoDich.KenhGiaoDichRepository;
-import com.example.sweet.database.repository.Loai.HinhThucDaoHanRepository;
-import com.example.sweet.database.repository.Loai.LoaiGiaoDichRepository;
-import com.example.sweet.database.repository.Loai.LoaiTaiKhoanRepository;
-import com.example.sweet.database.repository.Loai.LoaiTietKiemRepository;
-import com.example.sweet.database.repository.Loai.LoaiTrangThaiRepository;
-import com.example.sweet.database.repository.Loai.TanSuatNhanLaiRepository;
 import com.example.sweet.database.repository.TaiKhoan.DiaChiRepository;
 import com.example.sweet.database.repository.TaiKhoan.VaiTroRepository;
 import com.example.sweet.database.schema.TrangThai;
@@ -26,37 +16,42 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Component
 @AllArgsConstructor
 public class DataInitializer implements CommandLineRunner {
 
-        private LoaiTaiKhoanRepository ltkRespo;
-        private KenhGiaoDichRepository kgdRespo;
-        private LoaiGiaoDichRepository lgdRespo;
-        private TrangThaiRepository trangThaiRespo;
-        private LoaiTrangThaiRepository loaiTrangThaiRespo;
-        private DiaChiRepository diaChiRespo;
-        private VaiTroRepository vaiTroRespo;
+        private final LoaiTaiKhoanRepository loaiTaiKhoanRepository;
+        private final KenhGiaoDichRepository kenhGiaoDichRepository;
+        private final LoaiGiaoDichRepository loaiGiaoDichRepository;
+        private final TrangThaiRepository trangThaiRepo;
+        private final LoaiTrangThaiRepository loaiTrangThaiRepo;
+        private final DiaChiRepository diaChiRepo;
+        private final VaiTroRepository vaiTroRepo;
         private final HinhThucDaoHanRepository hinhThucDaoHanRepo;
         private final LoaiTietKiemRepository loaiTietKiemRepo;
         private final TanSuatNhanLaiRepository tanSuatNhanLaiRepo;
 
+        private final LoaiKyHanRepository loaiKyHanRepository;
+        private final LoaiTietKiemRepository loaiTietKiemRepository;
+
         @Override
         public void run(String... args) throws Exception {
-                if (ltkRespo.count() > 0)
+                if (loaiTaiKhoanRepository.count() > 0)
                         return;
-                ltkRespo.saveAll(List.of(
+                loaiTaiKhoanRepository.saveAll(List.of(
                                 new LoaiTaiKhoan(null, 1, "Tài khoản thanh toán", "Tài khoản thanh toán"),
                                 new LoaiTaiKhoan(null, 2, "Phiếu gửi tiền", "Phiếu gửi tiền"),
                                 new LoaiTaiKhoan(null, 3, "Tiền mặt tại quầy", "Tiền mặt tại quầy"),
                                 new LoaiTaiKhoan(null, 4, "Ngân hàng", "Ngân hàng")));
 
-                kgdRespo.saveAll(List.of(
+                kenhGiaoDichRepository.saveAll(List.of(
                                 new KenhGiaoDich(null, 1, "Giao dịch tại quầy", "Giao dịch tại quầy"),
                                 new KenhGiaoDich(null, 2, "Giao dịch trực tuyến", "Giao dịch trực tuyến")));
 
-                lgdRespo.saveAll(List.of(
+                loaiGiaoDichRepository.saveAll(List.of(
                                 new LoaiGiaoDich(null, 1, "Gửi tiền vào tài khoản thanh toán",
                                                 "Gửi tiền vào tài khoản thanh toán"),
                                 new LoaiGiaoDich(null, 2, "Rút tiền từ tài khoản thanh toán",
@@ -67,7 +62,7 @@ public class DataInitializer implements CommandLineRunner {
                                 new LoaiGiaoDich(null, 6, "Trả tiền lãi", "Trả tiền lãi"),
                                 new LoaiGiaoDich(null, 7, "Đáo hạn phiếu gửi tiền", "Đáo hạn phiếu gửi tiền")));
 
-                var insertedLTT = loaiTrangThaiRespo.saveAll(List.of(
+                var insertedLTT = loaiTrangThaiRepo.saveAll(List.of(
                                 new LoaiTrangThai(null, "customer", "Khách hàng", "Khách hàng"),
                                 new LoaiTrangThai(null, "employee", "Nhân viên", "Nhân viên"),
                                 new LoaiTrangThai(null, "payment_account", "Tài khoản thanh toán",
@@ -81,7 +76,7 @@ public class DataInitializer implements CommandLineRunner {
                         loaiTrangThais.add(insertedLTT.next());
                 }
 
-                trangThaiRespo.saveAll(List.of(
+                trangThaiRepo.saveAll(List.of(
                                 // Trạng thái khách hàng
                                 new TrangThai(null, "active", "Còn hoạt động", loaiTrangThais.get(0)),
                                 new TrangThai(null, "locked", "Đã hủy", loaiTrangThais.get(0)),
@@ -106,8 +101,8 @@ public class DataInitializer implements CommandLineRunner {
                                 new TrangThai(null, "active", "Đang hoạt động", loaiTrangThais.get(5)),
                                 new TrangThai(null, "locked", "Đã khóa", loaiTrangThais.get(5))));
 
-                vaiTroRespo.save(new VaiTro(null, "Foo", "fOO", true, List.of()));
-                diaChiRespo.save(new DiaChi(null, 1, "foo", "foo", "foo", "foo"));
+                vaiTroRepo.save(new VaiTro(null, "Foo", "fOO", true, List.of()));
+                diaChiRepo.save(new DiaChi(null, 1, "foo", "foo", "foo", "foo"));
 
                 Long temp = null;
                 hinhThucDaoHanRepo.saveAll(List.of(
@@ -135,6 +130,19 @@ public class DataInitializer implements CommandLineRunner {
                                                 "Nhận lãi một lần khi đáo hạn", true),
                                 new TanSuatNhanLai(null, "Đầu kỳ hạn", 04,
                                                 "Nhận lãi một lần khi đáo hạn", true)));
+
+                loaiKyHanRepository.saveAll(
+                        IntStream.rangeClosed(1, 12)
+                        .mapToObj(value -> new LoaiKyHan(null, value + " Tháng", value))
+                        .collect(Collectors.toList())
+                );
+
+                loaiTietKiemRepository.saveAll(List.of(
+                      new LoaiTietKiem(null, "Tiết kiệm có kỳ hạn", 1,
+                              "Tiết kiệm có kỳ hạn", true, true, true),
+                        new LoaiTietKiem(null, "Tiết kiệm có kỳ hạn rút gốc linh hoạt", 1,
+                                "Tiết kiệm có kỳ hạn rút gốc linh hoạt", true, true, true)
+                ));
         }
 }
 
