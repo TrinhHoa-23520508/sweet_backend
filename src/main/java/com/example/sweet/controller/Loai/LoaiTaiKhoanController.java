@@ -26,7 +26,7 @@ public class LoaiTaiKhoanController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteLoaiTaiKhoan(@PathVariable int id) {
+    public void deleteLoaiTaiKhoan(@PathVariable Long id) {
         respository.deleteById(id);
     }
 }

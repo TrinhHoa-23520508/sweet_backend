@@ -14,7 +14,6 @@ import lombok.Setter;
 public class PhieuGuiTienDTO {
     private Long phieuGuiTienID;
     private Long khachHangId;
-    private Long giaoDichId;
     private Long giaoDichVienId;
     private Long loaiTietKiemId;
     private Long tanSuatNhanLaiId;

@@ -27,9 +27,6 @@ public class PhieuGuiTien {
     @ManyToOne
     @JoinColumn(name = "khach_hang", nullable = false)
     private KhachHang khachHang;
-    @ManyToOne
-    @JoinColumn(name = "giao_dich")
-    private GiaoDich giaoDich;
 
     @ManyToOne
     @JoinColumn(name = "nhan_vien_giao_dich", nullable = false)

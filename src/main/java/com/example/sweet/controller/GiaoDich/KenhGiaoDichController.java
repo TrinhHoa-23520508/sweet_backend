@@ -26,7 +26,7 @@ public class KenhGiaoDichController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteKenhGiaoDich(@PathVariable int id) {
+    public void deleteKenhGiaoDich(@PathVariable Long id) {
         respository.deleteById(id);
     }
 }

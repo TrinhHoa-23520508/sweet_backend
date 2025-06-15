@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import com.example.sweet.database.repository.TrangThaiRepository;
 import com.example.sweet.database.repository.GiaoDich.GiaoDichRepository;
 import com.example.sweet.database.repository.GiaoDich.KenhGiaoDichRepository;
+import com.example.sweet.database.repository.GiaoDich.LichSuGiaoDich_PhieuGuiTienRepository;
 import com.example.sweet.database.repository.GiaoDich.PhieuGuiTienRepository;
 import com.example.sweet.database.repository.Loai.*;
 import com.example.sweet.database.repository.TaiKhoan.KhachHangRepository;
@@ -13,6 +14,7 @@ import com.example.sweet.database.repository.TaiKhoan.TaiKhoanThanhToanRepositor
 import com.example.sweet.database.repository.dto.PhieuGuiTienDTO;
 import com.example.sweet.database.schema.TrangThai;
 import com.example.sweet.database.schema.GiaoDich.GiaoDich;
+import com.example.sweet.database.schema.GiaoDich.LichSuGiaoDich_PhieuGuiTien;
 import com.example.sweet.database.schema.GiaoDich.PhieuGuiTien;
 import com.example.sweet.database.schema.Loai.HinhThucDaoHan;
 import com.example.sweet.database.schema.Loai.LoaiKyHan;
@@ -52,6 +54,8 @@ public class PhieuGuiTienService {
     private final PhieuGuiTienMapper phieuGuiTienMapper;
     private final TaiKhoanThanhToanRepository taiKhoanThanhToanRepository;
     private final KenhGiaoDichRepository kenhGiaoDichRepository;
+    // Add new repository
+    private final LichSuGiaoDich_PhieuGuiTienRepository lichSuPGTRepo;
 
     public PhieuGuiTienService(
             PhieuGuiTienRepository phieuGuiTienRepository,
@@ -67,7 +71,8 @@ public class PhieuGuiTienService {
             GiaoDichRepository giaoDichRepository, LoaiGiaoDichRepository loaiGiaoDichRepository,
             TaiKhoanThanhToanRepository taiKhoanThanhToanRepository,
             KenhGiaoDichRepository kenhGiaoDichRepository,
-            LoaiTaiKhoanRepository loaiTaiKhoanRepository) {
+            LoaiTaiKhoanRepository loaiTaiKhoanRepository,
+            LichSuGiaoDich_PhieuGuiTienRepository lichSuPGTRepo) {
         this.kenhGiaoDichRepository = kenhGiaoDichRepository;
         this.phieuGuiTienRepository = phieuGuiTienRepository;
         this.khachHangRepository = khachHangRepository;
@@ -81,6 +86,7 @@ public class PhieuGuiTienService {
         this.loaiGiaoDichRepository = loaiGiaoDichRepository;
         this.taiKhoanThanhToanRepository = taiKhoanThanhToanRepository;
         this.loaiTaiKhoanRepository = loaiTaiKhoanRepository;
+        this.lichSuPGTRepo = lichSuPGTRepo;
     }
 
     @Transactional
@@ -121,6 +127,7 @@ public class PhieuGuiTienService {
             GiaoDich giaoDich = new GiaoDich();
             giaoDich.setSoTienGiaoDich(phieuGuiTienDTO.getSoTienGuiBanDau());
             giaoDich.setThoiGianGiaoDich(phieuGuiTienDTO.getNgayGuiTien());
+            giaoDich.setNoiDung("Tạo sổ tiết kiệm: " + phieuGuiTienDTO.getTenGoiNho());
 
             // Set khách hàng và giao dịch viên
             KhachHang khachHang = khachHangRepository.findById(phieuGuiTienDTO.getKhachHangId())
@@ -132,6 +139,7 @@ public class PhieuGuiTienService {
 
             // PhieuGuiTien chưa được tạo nên chưa có ID, sẽ set sau khi lưu
             PhieuGuiTien phieuGuiTien = phieuGuiTienMapper.toEntity(phieuGuiTienDTO);
+            phieuGuiTien.setSoDuHienTai(phieuGuiTienDTO.getSoTienGuiBanDau()); // Set số dư = số tiền gửi ban đầu
             phieuGuiTien = phieuGuiTienRepository.save(phieuGuiTien); // Lưu trước để có ID
 
             // Set tài khoản nguồn và đích
@@ -160,16 +168,26 @@ public class PhieuGuiTienService {
             // Gọi service để tạo giao dịch
             GiaoDich savedGiaoDich = giaoDichService.createGiaoDich(giaoDich);
 
+            // Sau khi có savedGiaoDich, lưu lịch sử giao dịch
+            LichSuGiaoDich_PhieuGuiTien lichSuPGT = new LichSuGiaoDich_PhieuGuiTien();
+            lichSuPGT.setPhieuGuiTien(phieuGuiTien);
+            lichSuPGT.setGiaoDich(savedGiaoDich);
+            lichSuPGT.setSoTienGocGiaoDich(phieuGuiTien.getSoDuHienTai());
+            lichSuPGT.setSoDuHienTai_SauGD(phieuGuiTien.getSoDuHienTai());
+            lichSuPGT.setTienLai_TrongGD(0.0);
+            lichSuPGT.setLaiQuyetToan_TrongGD(0.0);
+            lichSuPGT.setTienLaiDaNhanNhungChuaQuyetToan_SauGD(0.0);
+            lichSuPGT.setTongLaiQuyetToan_SauGD(0.0);
+
+            lichSuPGTRepo.save(lichSuPGT);
+
             // Tiếp tục code tạo PhieuGuiTien như cũ
-            phieuGuiTien.setGiaoDich(savedGiaoDich);
             phieuGuiTien.setNgayDaoHan(ngayDaoHan);
-            phieuGuiTien.setSoDuHienTai(soTienGui);
             phieuGuiTien.setTongTienLaiDuKien(tongTienLaiDuKien);
             phieuGuiTien.setTienLaiNhanDinhKy(tienLaiNhanDinhKy);
             phieuGuiTien.setTienLaiDaNhanNhungChuaQuyetToan(0L);
             phieuGuiTien.setTongLaiQuyetToan(0L);
 
-            // B11: Lưu xuống database
             return phieuGuiTienMapper.toDTO(phieuGuiTienRepository.save(phieuGuiTien));
 
         } catch (Exception e) {

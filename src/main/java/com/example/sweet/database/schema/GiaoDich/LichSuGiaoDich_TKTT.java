@@ -16,7 +16,7 @@ public class LichSuGiaoDich_TKTT {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
-    private int lichSuGiaoDichID;
+    private Long lichSuGiaoDichID;
 
     @ManyToOne
     @JoinColumn(name = "tai_khoan", nullable = true)
