@@ -1,9 +1,8 @@
 package com.example.sweet.database.repository.dto;
 
-import java.time.LocalDate;
+import java.time.Instant;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +20,7 @@ public class PhieuGuiTienDTO {
     private Long tanSuatNhanLaiId;
     private Long loaiKyHanId;
     private Long hinhThucDaoHanId;
-    private LocalDate ngayGuiTien;
+    private Instant ngayGuiTien;
     private Long soTienGuiBanDau;
     private Float laiSuatCamKet;
     private String tenGoiNho;
@@ -29,7 +28,7 @@ public class PhieuGuiTienDTO {
     private Long soDuHienTai;
     private Long tongTienLaiDuKien;
     private Long tienLaiNhanDinhKy;
-    private Boolean tienLaiDaNhanNhungChuaDuyetToan;
+    private Long tienLaiDaNhanNhungChuaQuyetToan;
     private Long tongLaiQuyetToan;
-    private LocalDate ngayDaoHan;
+    private Instant ngayDaoHan;
 }

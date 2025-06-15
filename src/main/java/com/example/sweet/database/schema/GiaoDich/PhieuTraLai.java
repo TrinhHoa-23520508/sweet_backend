@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Getter
@@ -25,6 +25,6 @@ public class PhieuTraLai {
     @JoinColumn(name = "phieu_gui_tien", nullable = false)
     private PhieuGuiTien phieuGuiTien;
 
-    private LocalDateTime ngayTraLai;
+    private Instant ngayTraLai;
 
 }

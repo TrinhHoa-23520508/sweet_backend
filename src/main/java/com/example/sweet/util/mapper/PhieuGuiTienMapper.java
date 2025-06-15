@@ -81,7 +81,7 @@ public class PhieuGuiTienMapper {
         dto.setSoDuHienTai(phieuGuiTien.getSoDuHienTai());
         dto.setTongTienLaiDuKien(phieuGuiTien.getTongTienLaiDuKien());
         dto.setTienLaiNhanDinhKy(phieuGuiTien.getTienLaiNhanDinhKy());
-        dto.setTienLaiDaNhanNhungChuaDuyetToan(phieuGuiTien.getTienLaiDaNhanNhungChuaDuyetToan());
+        dto.setTienLaiDaNhanNhungChuaQuyetToan(phieuGuiTien.getTienLaiDaNhanNhungChuaQuyetToan());
         dto.setTongLaiQuyetToan(phieuGuiTien.getTongLaiQuyetToan());
         dto.setNgayDaoHan(phieuGuiTien.getNgayDaoHan());
 
@@ -159,7 +159,7 @@ public class PhieuGuiTienMapper {
         entity.setSoDuHienTai(dto.getSoDuHienTai());
         entity.setTongTienLaiDuKien(dto.getTongTienLaiDuKien());
         entity.setTienLaiNhanDinhKy(dto.getTienLaiNhanDinhKy());
-        entity.setTienLaiDaNhanNhungChuaDuyetToan(dto.getTienLaiDaNhanNhungChuaDuyetToan());
+        entity.setTienLaiDaNhanNhungChuaQuyetToan(dto.getTienLaiDaNhanNhungChuaQuyetToan());
         entity.setTongLaiQuyetToan(dto.getTongLaiQuyetToan());
         entity.setNgayDaoHan(dto.getNgayDaoHan());
 

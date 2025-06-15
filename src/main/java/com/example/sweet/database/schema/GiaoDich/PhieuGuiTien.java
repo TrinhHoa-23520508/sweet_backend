@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.Instant;
 
 @Entity
 @Getter
@@ -28,7 +28,7 @@ public class PhieuGuiTien {
     @JoinColumn(name = "khach_hang", nullable = false)
     private KhachHang khachHang;
     @ManyToOne
-    @JoinColumn(name = "giao_dich", nullable = false)
+    @JoinColumn(name = "giao_dich")
     private GiaoDich giaoDich;
 
     @ManyToOne
@@ -49,7 +49,7 @@ public class PhieuGuiTien {
     @JoinColumn(name = "hinh_thuc_dao_han", nullable = false)
     private HinhThucDaoHan hinhThucDaoHan;
 
-    private LocalDate ngayGuiTien;
+    private Instant ngayGuiTien;
     private Long soTienGuiBanDau;
     private Float laiSuatCamKet;
     private String tenGoiNho;
@@ -60,7 +60,7 @@ public class PhieuGuiTien {
     private Long soDuHienTai;
     private Long tongTienLaiDuKien;
     private Long tienLaiNhanDinhKy;
-    private Boolean tienLaiDaNhanNhungChuaDuyetToan;
+    private Long tienLaiDaNhanNhungChuaQuyetToan;
     private Long tongLaiQuyetToan;
-    private LocalDate ngayDaoHan;
+    private Instant ngayDaoHan;
 }

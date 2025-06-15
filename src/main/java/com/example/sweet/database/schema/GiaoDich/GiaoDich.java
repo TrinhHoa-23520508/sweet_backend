@@ -45,7 +45,7 @@ public class GiaoDich {
     @JoinColumn(name = "nhan_vien_giao_dich", nullable = true)
     private NhanVien nhanVienGiaoDich;
 
-    private int soTienGiaoDich;
+    private Long soTienGiaoDich;
     private String noiDung;
     private Instant thoiGianGiaoDich;
 }

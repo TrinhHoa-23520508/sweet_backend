@@ -14,7 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor()
 public class LichSuGiaoDich_TKTT {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     private int lichSuGiaoDichID;
 
@@ -26,5 +26,5 @@ public class LichSuGiaoDich_TKTT {
     @JoinColumn(name = "giao_dich", nullable = false)
     private GiaoDich giaoDich;
 
-    private int SoDuSauGD;
+    private Long soDuSauGD;
 }
