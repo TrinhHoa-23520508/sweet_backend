@@ -1,8 +1,6 @@
 package com.example.sweet.services.GiaoDich;
 
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -85,7 +83,7 @@ public class PhieuTraLaiService {
             phieuGuiTien.setTienLaiDaNhanNhungChuaQuyetToan(tienLaiChuaQuyetToanMoi);
 
             // B9: Kiểm tra điều kiện đặc biệt
-            String tanSuat = phieuGuiTien.getTanSuatNhanLai().getTenTanSoNhanLai();
+            String tanSuat = phieuGuiTien.getChiTietQuyDinhLaiSuat().getTanSuatNhanLai().getTenTanSoNhanLai();
             String hinhThucDaoHan = phieuGuiTien.getHinhThucDaoHan().getTenHinhThucDaoHang();
 
             if ("Cuối kỳ hạn".equals(tanSuat) &&
@@ -168,7 +166,7 @@ public class PhieuTraLaiService {
     }
 
     private void validateNgayTraLai(Instant ngayTraLai, PhieuGuiTien phieuGuiTien) {
-        String tanSuat = phieuGuiTien.getTanSuatNhanLai().getTenTanSoNhanLai();
+        String tanSuat = phieuGuiTien.getChiTietQuyDinhLaiSuat().getTanSuatNhanLai().getTenTanSoNhanLai();
 
         Instant ngayGui = phieuGuiTien.getNgayGuiTien();
         Instant ngayDaoHan = phieuGuiTien.getNgayDaoHan();

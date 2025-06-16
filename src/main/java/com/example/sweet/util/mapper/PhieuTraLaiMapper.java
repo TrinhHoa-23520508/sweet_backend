@@ -51,13 +51,13 @@ public class PhieuTraLaiMapper {
             }
 
             // Map thông tin từ LoaiTietKiem
-            if (pgt.getLoaiTietKiem() != null) {
-                dto.setLoaiTietKiem(pgt.getLoaiTietKiem().getTenLoaiTietKiem());
+            if (pgt.getChiTietQuyDinhLaiSuat().getLoaiTietKiem() != null) {
+                dto.setLoaiTietKiem(pgt.getChiTietQuyDinhLaiSuat().getLoaiTietKiem().getTenLoaiTietKiem());
             }
 
             // Map thông tin từ TanSuatNhanLai
-            if (pgt.getTanSuatNhanLai() != null) {
-                dto.setTanSuatTraLai(pgt.getTanSuatNhanLai().getTenTanSoNhanLai());
+            if (pgt.getChiTietQuyDinhLaiSuat().getTanSuatNhanLai() != null) {
+                dto.setTanSuatTraLai(pgt.getChiTietQuyDinhLaiSuat().getTanSuatNhanLai().getTenTanSoNhanLai());
             }
         }
 
