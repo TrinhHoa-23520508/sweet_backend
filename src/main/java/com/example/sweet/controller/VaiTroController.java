@@ -2,7 +2,7 @@ package com.example.sweet.controller;
 
 import com.example.sweet.database.schema.TaiKhoan.VaiTro;
 import com.example.sweet.domain.request.VaiTroDTO;
-import com.example.sweet.service.VaiTroService;
+import com.example.sweet.services.VaiTroService;
 import com.example.sweet.util.annotation.ApiMessage;
 import com.turkraft.springfilter.boot.Filter;
 import jakarta.validation.Valid;

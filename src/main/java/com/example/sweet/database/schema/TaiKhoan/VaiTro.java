@@ -28,14 +28,12 @@ public class VaiTro {
     @Column(columnDefinition = "MEDIUMTEXT")
     private String description;
 
-    private Boolean active;
-
-
+    private boolean active;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = {"vaiTros"})
-    @JoinTable(name = "vaitro_quyenhan",
-            joinColumns = @JoinColumn(name = "vaitro_id"),
-            inverseJoinColumns = @JoinColumn(name = "quyenhan_id"))
+    @JsonIgnoreProperties(value = { "vaiTros" })
+    @JoinTable(name = "vaitro_quyenhan", joinColumns = @JoinColumn(name = "vaitro_id"), inverseJoinColumns = @JoinColumn(name = "quyenhan_id"))
     private List<QuyenHan> quyenHans;
+
+
 }

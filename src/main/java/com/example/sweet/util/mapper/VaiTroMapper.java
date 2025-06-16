@@ -1,6 +1,6 @@
 package com.example.sweet.util.mapper;
 
-import com.example.sweet.database.respository.TaiKhoan.QuyenHanRespository;
+import com.example.sweet.database.repository.TaiKhoan.QuyenHanRepository;
 import com.example.sweet.database.schema.TaiKhoan.QuyenHan;
 import com.example.sweet.database.schema.TaiKhoan.VaiTro;
 import com.example.sweet.domain.request.VaiTroDTO;
@@ -10,10 +10,10 @@ import java.util.List;
 
 @Component
 public class VaiTroMapper {
-    private final QuyenHanRespository quyenHanRespository;
+    private final QuyenHanRepository quyenHanRepository;
 
-    public VaiTroMapper(QuyenHanRespository quyenHanRespository) {
-        this.quyenHanRespository = quyenHanRespository;
+    public VaiTroMapper(QuyenHanRepository quyenHanRepository) {
+        this.quyenHanRepository = quyenHanRepository;
     }
 
     public VaiTro toVaiTroEntity(VaiTroDTO vaiTroDTO) {
@@ -27,7 +27,7 @@ public class VaiTroMapper {
         vaiTro.setDescription(vaiTroDTO.getDescription());
         vaiTro.setActive(vaiTroDTO.getActive());
 
-        List<QuyenHan> quyenHans = this.quyenHanRespository.findAllByIdIn(vaiTroDTO.getQuyenHanIds());
+        List<QuyenHan> quyenHans = this.quyenHanRepository.findAllByIdIn(vaiTroDTO.getQuyenHanIds());
 
         vaiTro.setQuyenHans(quyenHans);
 

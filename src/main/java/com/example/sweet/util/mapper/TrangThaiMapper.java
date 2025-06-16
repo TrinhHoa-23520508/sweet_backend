@@ -1,18 +1,18 @@
 package com.example.sweet.util.mapper;
 
-import com.example.sweet.database.respository.Loai.LoaiTrangThaiRespository;
+import com.example.sweet.database.repository.Loai.LoaiTrangThaiRepository;
 import com.example.sweet.database.schema.Loai.LoaiTrangThai;
 import com.example.sweet.database.schema.TrangThai;
 import com.example.sweet.domain.request.TrangThaiDTO;
-import com.example.sweet.util.error.IdInvalidException;
+import com.example.sweet.util.error.NotFoundException;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TrangThaiMapper {
 
-    private LoaiTrangThaiRespository loaiTrangThaiRespository;
-    public TrangThaiMapper(LoaiTrangThaiRespository loaiTrangThaiRespository) {
-        this.loaiTrangThaiRespository = loaiTrangThaiRespository;
+    private LoaiTrangThaiRepository loaiTrangThaiRepository;
+    public TrangThaiMapper(LoaiTrangThaiRepository loaiTrangThaiRepository) {
+        this.loaiTrangThaiRepository = loaiTrangThaiRepository;
     }
 
     public TrangThaiDTO toTrangThaiDTO(TrangThai trangThai) {
@@ -39,8 +39,8 @@ public class TrangThaiMapper {
         trangThai.setMaTrangThai(trangThaiDTO.getMaTrangThai());
         trangThai.setTenTrangThai(trangThaiDTO.getTenTrangThai());
         if(trangThaiDTO.getLoaiTrangThaiID() != null){
-            LoaiTrangThai LoaiTrangThai = loaiTrangThaiRespository.findById(trangThaiDTO.getLoaiTrangThaiID())
-                    .orElseThrow(() -> new IdInvalidException("LoaiTrangThai with id " + trangThaiDTO.getLoaiTrangThaiID() + " not found."));
+            LoaiTrangThai LoaiTrangThai = loaiTrangThaiRepository.findById(trangThaiDTO.getLoaiTrangThaiID())
+                    .orElseThrow(() -> new NotFoundException("LoaiTrangThai with id " + trangThaiDTO.getLoaiTrangThaiID() + " not found."));
             trangThai.setLoaiTrangThai(LoaiTrangThai);
         }
 

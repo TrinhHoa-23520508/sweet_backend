@@ -1,14 +1,10 @@
 package com.example.sweet.controller;
 
-import com.example.sweet.database.respository.TaiKhoan.NhanVienRespository;
-import com.example.sweet.database.respository.ThamSoRespository;
-import com.example.sweet.database.schema.TaiKhoan.NhanVien;
 import com.example.sweet.database.schema.ThamSo;
-import com.example.sweet.service.ThamSoService;
+import com.example.sweet.services.ThamSoService;
 import com.example.sweet.util.annotation.ApiMessage;
 import com.turkraft.springfilter.boot.Filter;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

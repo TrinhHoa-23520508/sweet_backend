@@ -2,7 +2,7 @@ package com.example.sweet.controller;
 
 import com.example.sweet.database.schema.TrangThai;
 import com.example.sweet.domain.request.TrangThaiDTO;
-import com.example.sweet.service.TrangThaiService;
+import com.example.sweet.services.TrangThaiService;
 import com.example.sweet.util.annotation.ApiMessage;
 import com.turkraft.springfilter.boot.Filter;
 import jakarta.validation.Valid;

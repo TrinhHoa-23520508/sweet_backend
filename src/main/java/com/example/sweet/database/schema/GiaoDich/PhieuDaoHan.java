@@ -1,14 +1,24 @@
 package com.example.sweet.database.schema.GiaoDich;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PhieuDaoHan {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int phieuDaoHanID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
+    private Long phieuDaoHanID;
     @ManyToOne
     @JoinColumn(name = "phieu_gui_tien_ky_truoc", nullable = false)
     private PhieuGuiTien phieuGuiTienKyTruoc;
@@ -18,35 +28,4 @@ public class PhieuDaoHan {
 
     private LocalDateTime ngayDaoHan;
 
-    public int getPhieuDaoHanID() {
-        return phieuDaoHanID;
-    }
-
-    public void setPhieuDaoHanID(int phieuDaoHanID) {
-        this.phieuDaoHanID = phieuDaoHanID;
-    }
-
-    public PhieuGuiTien getPhieuGuiTienKyTruoc() {
-        return phieuGuiTienKyTruoc;
-    }
-
-    public void setPhieuGuiTienKyTruoc(PhieuGuiTien phieuGuiTienKyTruoc) {
-        this.phieuGuiTienKyTruoc = phieuGuiTienKyTruoc;
-    }
-
-    public PhieuGuiTien getPhieuGuiTienTiepTheo() {
-        return phieuGuiTienTiepTheo;
-    }
-
-    public void setPhieuGuiTienTiepTheo(PhieuGuiTien phieuGuiTienTiepTheo) {
-        this.phieuGuiTienTiepTheo = phieuGuiTienTiepTheo;
-    }
-
-    public LocalDateTime getNgayDaoHan() {
-        return ngayDaoHan;
-    }
-
-    public void setNgayDaoHan(LocalDateTime ngayDaoHan) {
-        this.ngayDaoHan = ngayDaoHan;
-    }
 }

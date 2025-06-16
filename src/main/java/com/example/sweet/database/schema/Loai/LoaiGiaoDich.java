@@ -4,45 +4,22 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoaiGiaoDich {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int loaiGiaoDichID;
-    private String tenLoaiGiaoDich;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long loaiGiaoDichID;
     private int maLoaiGiaoDich;
+    private String tenLoaiGiaoDich;
     private String moTa;
 
-    public int getLoaiGiaoDichID() {
-        return loaiGiaoDichID;
-    }
-
-    public void setLoaiGiaoDichID(int loaiGiaoDichID) {
-        this.loaiGiaoDichID = loaiGiaoDichID;
-    }
-
-    public String getTenLoaiGiaoDich() {
-        return tenLoaiGiaoDich;
-    }
-
-    public void setTenLoaiGiaoDich(String tenLoaiGiaoDich) {
-        this.tenLoaiGiaoDich = tenLoaiGiaoDich;
-    }
-
-    public int getMaLoaiGiaoDich() {
-        return maLoaiGiaoDich;
-    }
-
-    public void setMaLoaiGiaoDich(int maLoaiGiaoDich) {
-        this.maLoaiGiaoDich = maLoaiGiaoDich;
-    }
-
-    public String getMoTa() {
-        return moTa;
-    }
-
-    public void setMoTa(String moTa) {
-        this.moTa = moTa;
-    }
 }

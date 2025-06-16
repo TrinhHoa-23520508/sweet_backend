@@ -4,45 +4,22 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class KenhGiaoDich {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int kenhGiaoDichID;
-    private String tenKenhGiaoDich;
+    @Getter
+    private Long kenhGiaoDichID;
     private int maKenhGiaoDich;
+    private String tenKenhGiaoDich;
     private String moTa;
-
-    public String getMoTa() {
-        return moTa;
-    }
-
-    public void setMoTa(String moTa) {
-        this.moTa = moTa;
-    }
-
-    public int getMaKenhGiaoDich() {
-        return maKenhGiaoDich;
-    }
-
-    public void setMaKenhGiaoDich(int maKenhGiaoDich) {
-        this.maKenhGiaoDich = maKenhGiaoDich;
-    }
-
-    public String getTenKenhGiaoDich() {
-        return tenKenhGiaoDich;
-    }
-
-    public void setTenKenhGiaoDich(String tenKenhGiaoDich) {
-        this.tenKenhGiaoDich = tenKenhGiaoDich;
-    }
-
-    public int getKenhGiaoDichID() {
-        return kenhGiaoDichID;
-    }
-
-    public void setKenhGiaoDichID(int kenhGiaoDichID) {
-        this.kenhGiaoDichID = kenhGiaoDichID;
-    }
 }

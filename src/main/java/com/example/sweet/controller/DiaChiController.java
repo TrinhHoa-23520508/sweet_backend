@@ -1,7 +1,7 @@
 package com.example.sweet.controller;
 
 import com.example.sweet.database.schema.TaiKhoan.DiaChi;
-import com.example.sweet.service.DiaChiService;
+import com.example.sweet.services.DiaChiService;
 import com.example.sweet.util.annotation.ApiMessage;
 import com.turkraft.springfilter.boot.Filter;
 import jakarta.validation.Valid;

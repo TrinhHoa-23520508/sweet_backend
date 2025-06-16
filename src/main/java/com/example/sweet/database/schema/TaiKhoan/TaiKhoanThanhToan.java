@@ -10,14 +10,14 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
 @Setter
-@NoArgsConstructor
+@Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class TaiKhoanThanhToan {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int soTaiKhoan;
+    private Long soTaiKhoan;
 
     @ManyToOne
     @JoinColumn(name = "khach_hang", nullable = false)
@@ -28,6 +28,8 @@ public class TaiKhoanThanhToan {
     private TrangThai trangThai;
 
     private LocalDateTime ngayTao;
+
+    private Long soDu;
 
 
 

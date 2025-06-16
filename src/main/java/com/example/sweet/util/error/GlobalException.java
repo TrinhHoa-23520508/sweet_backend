@@ -30,7 +30,9 @@ public class GlobalException {
             HttpMessageNotReadableException.class,
             HttpRequestMethodNotSupportedException.class,
             DuplicateResourceException.class,
-            IdInvalidException.class
+            IdInvalidException.class,
+            RuntimeException.class,
+            NotFoundException.class,
     })
     public ResponseEntity<RestResponse<Object>> handleIdException(Exception ex) {
         RestResponse<Object> res = new RestResponse<Object>();
@@ -51,8 +53,7 @@ public class GlobalException {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(res);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class
-    )
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<RestResponse<Object>> validationError(MethodArgumentNotValidException ex) {
         BindingResult bindingResult = ex.getBindingResult();
         final List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -60,20 +61,21 @@ public class GlobalException {
         RestResponse<Object> res = new RestResponse<Object>();
         res.setStatusCode(HttpStatus.BAD_REQUEST.value());
         res.setError(ex.getBody().getDetail());
-        List<String> errs = fieldErrors.stream().map(f->f.getDefaultMessage()).collect(Collectors.toList());
-        res.setMessage(errs.size()>1?errs:errs.get(0));
+        List<String> errs = fieldErrors.stream().map(f -> f.getDefaultMessage()).collect(Collectors.toList());
+        res.setMessage(errs.size() > 1 ? errs : errs.get(0));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
 
     }
 
-//    @ExceptionHandler(value = {
-//            StorageException.class
-//    })
-//    public ResponseEntity<RestResponse<Object>> handleStorageException(Exception ex) {
-//        RestResponse<Object> res = new RestResponse<Object>();
-//        res.setStatusCode(HttpStatus.BAD_REQUEST.value());
-//        res.setError(ex.getMessage());
-//        res.setMessage("Can not upload file. Something went wrong");
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
-//    }
+    // @ExceptionHandler(value = {
+    // StorageException.class
+    // })
+    // public ResponseEntity<RestResponse<Object>> handleStorageException(Exception
+    // ex) {
+    // RestResponse<Object> res = new RestResponse<Object>();
+    // res.setStatusCode(HttpStatus.BAD_REQUEST.value());
+    // res.setError(ex.getMessage());
+    // res.setMessage("Can not upload file. Something went wrong");
+    // return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+    // }
 }

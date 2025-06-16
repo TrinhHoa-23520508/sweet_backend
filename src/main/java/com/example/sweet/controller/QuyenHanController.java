@@ -1,7 +1,7 @@
 package com.example.sweet.controller;
 
 import com.example.sweet.database.schema.TaiKhoan.QuyenHan;
-import com.example.sweet.service.QuyenHanService;
+import com.example.sweet.services.QuyenHanService;
 import com.example.sweet.util.annotation.ApiMessage;
 import com.turkraft.springfilter.boot.Filter;
 import jakarta.validation.Valid;

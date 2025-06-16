@@ -4,22 +4,26 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class TanSuatNhanLai {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int tanSoNhanLaiID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long tanSoNhanLaiID;
     private String tenTanSoNhanLai;
     private int maTanSoNhanLai;
     private String moTa;
     private boolean coHoatDong;
 
-    public int getTanSoNhanLaiID() {
+    public Long getTanSoNhanLaiID() {
         return tanSoNhanLaiID;
     }
 
-    public void setTanSoNhanLaiID(int tanSoNhanLaiID) {
+    public void setTanSoNhanLaiID(Long tanSoNhanLaiID) {
         this.tanSoNhanLaiID = tanSoNhanLaiID;
     }
 

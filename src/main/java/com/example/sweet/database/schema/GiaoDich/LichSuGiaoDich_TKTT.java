@@ -2,52 +2,29 @@ package com.example.sweet.database.schema.GiaoDich;
 
 import com.example.sweet.database.schema.TaiKhoan.TaiKhoanThanhToan;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor()
 public class LichSuGiaoDich_TKTT {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int lichSuGiaoDichID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
+    private Long lichSuGiaoDichID;
 
     @ManyToOne
-    @JoinColumn(name = "tai_khoan", nullable = false)
+    @JoinColumn(name = "tai_khoan", nullable = true)
     private TaiKhoanThanhToan taiKhoan;
 
     @ManyToOne
     @JoinColumn(name = "giao_dich", nullable = false)
     private GiaoDich giaoDich;
 
-    private int SoDuSauGD;
-
-    public int getLichSuGiaoDichID() {
-        return lichSuGiaoDichID;
-    }
-
-    public void setLichSuGiaoDichID(int lichSuGiaoDichID) {
-        this.lichSuGiaoDichID = lichSuGiaoDichID;
-    }
-
-    public TaiKhoanThanhToan getTaiKhoan() {
-        return taiKhoan;
-    }
-
-    public void setTaiKhoan(TaiKhoanThanhToan taiKhoan) {
-        this.taiKhoan = taiKhoan;
-    }
-
-    public GiaoDich getGiaoDich() {
-        return giaoDich;
-    }
-
-    public void setGiaoDich(GiaoDich giaoDich) {
-        this.giaoDich = giaoDich;
-    }
-
-    public int getSoDuSauGD() {
-        return SoDuSauGD;
-    }
-
-    public void setSoDuSauGD(int soDuSauGD) {
-        SoDuSauGD = soDuSauGD;
-    }
+    private Long soDuSauGD;
 }
