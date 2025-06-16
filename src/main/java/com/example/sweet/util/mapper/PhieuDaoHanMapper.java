@@ -1,5 +1,6 @@
 package com.example.sweet.util.mapper;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,12 +56,12 @@ public class PhieuDaoHanMapper {
 
     public PhieuDaoHan toEntity(PhieuDaoHanDTO_inp dto) {
         PhieuDaoHan entity = new PhieuDaoHan();
-        entity.setNgayDaoHan(LocalDateTime.now());
+        entity.setNgayDaoHan(Instant.now());
         PhieuGuiTien phieuGuiTienKyTruoc = phieuGuiTienRepository.findById(dto.getMaPhieuGuiTien())
                 .orElseThrow(() -> new IllegalArgumentException("PhieuGuiTienKyTruoc not found"));
         entity.setPhieuGuiTienKyTruoc(phieuGuiTienKyTruoc);
         entity.setPhieuGuiTienTiepTheo(null); // Assuming this will be set later
-        entity.setNgayDaoHan(LocalDateTime.now()); // Set the current date and time
+        entity.setNgayDaoHan(Instant.now()); // Set the current date and time
         // Set other fields if necessary, e.g., entity.setSomeField(dto.getSomeField());
 
         return entity;

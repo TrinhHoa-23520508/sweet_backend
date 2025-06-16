@@ -15,6 +15,8 @@ import com.example.sweet.database.repository.TaiKhoan.NhanVienRepository;
 import com.example.sweet.database.repository.dto.PhieuDaoHanDTO;
 import com.example.sweet.database.repository.dto.PhieuDaoHanDTO_inp;
 import com.example.sweet.database.schema.GiaoDich.PhieuDaoHan;
+import com.example.sweet.database.schema.GiaoDich.PhieuGuiTien;
+import com.example.sweet.database.schema.TaiKhoan.KhachHang;
 import com.example.sweet.util.mapper.PhieuDaoHanMapper;
 import com.example.sweet.util.mapper.PhieuGuiTienMapper;
 
@@ -74,7 +76,28 @@ public class PhieuDaoHanService {
             phieuDaoHanRepository.save(phieuDaoHan);
         }
 
+        PhieuGuiTien phieuGuiTienKyTruoc = phieuDaoHan.getPhieuGuiTienKyTruoc();
+
         PhieuDaoHanDTO phieuDaoHanDTO = new PhieuDaoHanDTO(phieuDaoHan);
+
+        PhieuGuiTien phieuGuiTienKySau = phieuDaoHanDTO.taoPhieuGuiTienKiSau(phieuGuiTienKyTruoc);
+        phieuGuiTienKySau = this.phieuGuiTienRepository.saveAndFlush(phieuGuiTienKySau);
+
+        {
+            KhachHang khachHang = this.khachHangRepository.findById(phieuDaoHanDTO_inp.getMaKH())
+                    .orElseThrow(() -> new IllegalArgumentException("KhachHang not found"));
+            phieuDaoHanDTO.setMaPhieuDaoHan(phieuDaoHan.getPhieuDaoHanID());
+            phieuDaoHanDTO.setMaKhachHang(phieuDaoHanDTO_inp.getMaKH());
+            phieuDaoHanDTO.setCccdKhachHang(khachHang.getCccd());
+            phieuDaoHanDTO.setHoTenKhachHang(khachHang.getHoTen());
+            phieuDaoHanDTO.setMaPhieuGuiTien(phieuDaoHanDTO_inp.getMaPhieuGuiTien());
+        }
+
+        phieuDaoHanDTO.tinhToan(phieuGuiTienKyTruoc, phieuGuiTienKySau);
+        phieuGuiTienRepository.save(phieuGuiTienKyTruoc);
+        phieuDaoHanRepository.save(phieuDaoHan);
+        phieuGuiTienRepository.save(phieuGuiTienKySau);
         return;
     }
+
 }
