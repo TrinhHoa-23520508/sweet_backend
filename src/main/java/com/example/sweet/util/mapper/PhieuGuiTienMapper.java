@@ -5,14 +5,13 @@ import org.springframework.stereotype.Component;
 import com.example.sweet.database.repository.dto.PhieuGuiTienDTO;
 import com.example.sweet.database.schema.TrangThai;
 import com.example.sweet.database.schema.GiaoDich.PhieuGuiTien;
+import com.example.sweet.database.schema.Loai.ChiTietQuyDinhLaiSuat;
 import com.example.sweet.database.schema.Loai.HinhThucDaoHan;
-import com.example.sweet.database.schema.Loai.LoaiKyHan;
-import com.example.sweet.database.schema.Loai.LoaiTietKiem;
-import com.example.sweet.database.schema.Loai.TanSuatNhanLai;
 import com.example.sweet.database.schema.TaiKhoan.KhachHang;
 import com.example.sweet.database.schema.TaiKhoan.NhanVien;
 import com.example.sweet.database.repository.TaiKhoan.KhachHangRepository;
 import com.example.sweet.database.repository.TaiKhoan.NhanVienRepository;
+import com.example.sweet.database.repository.Loai.ChiTietQuyDinhLaiSuatRepository;
 import com.example.sweet.database.repository.Loai.HinhThucDaoHanRepository;
 import com.example.sweet.database.repository.Loai.LoaiKyHanRepository;
 import com.example.sweet.database.repository.Loai.LoaiTietKiemRepository;
@@ -24,11 +23,9 @@ import com.example.sweet.database.repository.GiaoDich.GiaoDichRepository;
 public class PhieuGuiTienMapper {
     private final KhachHangRepository khachHangRepository;
     private final NhanVienRepository nhanVienRepository;
-    private final LoaiTietKiemRepository loaiTietKiemRepository;
-    private final TanSuatNhanLaiRepository tanSuatNhanLaiRepository;
-    private final LoaiKyHanRepository loaiKyHanRepository;
     private final HinhThucDaoHanRepository hinhThucDaoHanRepository;
     private final TrangThaiRepository trangThaiRepository;
+    private final ChiTietQuyDinhLaiSuatRepository chiTietQuyDinhLaiSuatRepository;
 
     public PhieuGuiTienMapper(
             KhachHangRepository khachHangRepository,
@@ -38,12 +35,11 @@ public class PhieuGuiTienMapper {
             LoaiKyHanRepository loaiKyHanRepository,
             HinhThucDaoHanRepository hinhThucDaoHanRepository,
             TrangThaiRepository trangThaiRepository,
-            GiaoDichRepository giaoDichRepository) {
+            GiaoDichRepository giaoDichRepository,
+            ChiTietQuyDinhLaiSuatRepository chiTietQuyDinhLaiSuatRepository) {
+        this.chiTietQuyDinhLaiSuatRepository = chiTietQuyDinhLaiSuatRepository;
         this.khachHangRepository = khachHangRepository;
         this.nhanVienRepository = nhanVienRepository;
-        this.loaiTietKiemRepository = loaiTietKiemRepository;
-        this.tanSuatNhanLaiRepository = tanSuatNhanLaiRepository;
-        this.loaiKyHanRepository = loaiKyHanRepository;
         this.hinhThucDaoHanRepository = hinhThucDaoHanRepository;
         this.trangThaiRepository = trangThaiRepository;
     }
@@ -59,17 +55,15 @@ public class PhieuGuiTienMapper {
         dto.setKhachHangId(phieuGuiTien.getKhachHang() != null ? phieuGuiTien.getKhachHang().getKhachHangID() : null);
         dto.setGiaoDichVienId(
                 phieuGuiTien.getGiaoDichVien() != null ? phieuGuiTien.getGiaoDichVien().getNhanVienID() : null);
-        dto.setLoaiTietKiemId(
-                phieuGuiTien.getLoaiTietKiem() != null ? phieuGuiTien.getLoaiTietKiem().getLoaiTietKiemID() : null);
-        dto.setTanSuatNhanLaiId(
-                phieuGuiTien.getTanSuatNhanLai() != null ? phieuGuiTien.getTanSuatNhanLai().getTanSoNhanLaiID() : null);
-        dto.setLoaiKyHanId(phieuGuiTien.getLoaiKyHan() != null ? phieuGuiTien.getLoaiKyHan().getLoaiKyHanID() : null);
+        dto.setChiTietQuyDinhLaiSuatId(
+                phieuGuiTien.getChiTietQuyDinhLaiSuat() != null
+                        ? phieuGuiTien.getChiTietQuyDinhLaiSuat().getChiTietQuyDinhID()
+                        : null);
         dto.setHinhThucDaoHanId(
                 phieuGuiTien.getHinhThucDaoHan() != null ? phieuGuiTien.getHinhThucDaoHan().getHinhThucDaoHangID()
                         : null);
         dto.setNgayGuiTien(phieuGuiTien.getNgayGuiTien());
         dto.setSoTienGuiBanDau(phieuGuiTien.getSoTienGuiBanDau());
-        dto.setLaiSuatCamKet(phieuGuiTien.getLaiSuatCamKet());
         dto.setTenGoiNho(phieuGuiTien.getTenGoiNho());
         dto.setTrangThaiId(phieuGuiTien.getTrangThai() != null ? phieuGuiTien.getTrangThai().getTrangThaiID() : null);
 
@@ -109,22 +103,11 @@ public class PhieuGuiTienMapper {
             entity.setGiaoDichVien(giaoDichVien);
         }
 
-        if (dto.getLoaiTietKiemId() != null) {
-            LoaiTietKiem loaiTietKiem = loaiTietKiemRepository.findById(dto.getLoaiTietKiemId())
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy loại tiết kiệm"));
-            entity.setLoaiTietKiem(loaiTietKiem);
-        }
-
-        if (dto.getTanSuatNhanLaiId() != null) {
-            TanSuatNhanLai tanSuatNhanLai = tanSuatNhanLaiRepository.findById(dto.getTanSuatNhanLaiId())
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy tần suất nhận lãi"));
-            entity.setTanSuatNhanLai(tanSuatNhanLai);
-        }
-
-        if (dto.getLoaiKyHanId() != null) {
-            LoaiKyHan loaiKyHan = loaiKyHanRepository.findById(dto.getLoaiKyHanId())
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy loại kỳ hạn"));
-            entity.setLoaiKyHan(loaiKyHan);
+        if (dto.getChiTietQuyDinhLaiSuatId() != null) {
+            ChiTietQuyDinhLaiSuat chiTietQuyDinhLaiSuat = chiTietQuyDinhLaiSuatRepository
+                    .findById(dto.getChiTietQuyDinhLaiSuatId())
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy chi tiết quy định lãi suất"));
+            entity.setChiTietQuyDinhLaiSuat(chiTietQuyDinhLaiSuat);
         }
 
         if (dto.getHinhThucDaoHanId() != null) {
@@ -142,7 +125,6 @@ public class PhieuGuiTienMapper {
         // Set các trường dữ liệu cơ bản
         entity.setNgayGuiTien(dto.getNgayGuiTien());
         entity.setSoTienGuiBanDau(dto.getSoTienGuiBanDau());
-        entity.setLaiSuatCamKet(dto.getLaiSuatCamKet());
         entity.setTenGoiNho(dto.getTenGoiNho());
 
         // Add new fields

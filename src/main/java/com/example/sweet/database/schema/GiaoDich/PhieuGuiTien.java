@@ -1,11 +1,9 @@
 package com.example.sweet.database.schema.GiaoDich;
 
+import com.example.sweet.database.schema.Loai.ChiTietQuyDinhLaiSuat;
 import com.example.sweet.database.schema.Loai.HinhThucDaoHan;
-import com.example.sweet.database.schema.Loai.LoaiKyHan;
-import com.example.sweet.database.schema.Loai.LoaiTietKiem;
 import com.example.sweet.database.schema.TaiKhoan.KhachHang;
 import com.example.sweet.database.schema.TaiKhoan.NhanVien;
-import com.example.sweet.database.schema.Loai.TanSuatNhanLai;
 import com.example.sweet.database.schema.TrangThai;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,14 +31,8 @@ public class PhieuGuiTien {
     private NhanVien giaoDichVien;
 
     @ManyToOne
-    @JoinColumn(name = "loai_tiet_kiem", nullable = false)
-    private LoaiTietKiem loaiTietKiem;
-    @ManyToOne
-    @JoinColumn(name = "tan_suat_nhan_lai", nullable = false)
-    private TanSuatNhanLai tanSuatNhanLai;
-    @ManyToOne
-    @JoinColumn(name = "loai_ky_han", nullable = false)
-    private LoaiKyHan loaiKyHan;
+    @JoinColumn(name = "chi_tiet_quy_dinh_lai_suat", nullable = false)
+    private ChiTietQuyDinhLaiSuat chiTietQuyDinhLaiSuat;
 
     @ManyToOne
     @JoinColumn(name = "hinh_thuc_dao_han", nullable = false)
@@ -48,7 +40,6 @@ public class PhieuGuiTien {
 
     private Instant ngayGuiTien;
     private Long soTienGuiBanDau;
-    private Float laiSuatCamKet;
     private String tenGoiNho;
     @ManyToOne
     @JoinColumn(name = "trang_thai", nullable = false)

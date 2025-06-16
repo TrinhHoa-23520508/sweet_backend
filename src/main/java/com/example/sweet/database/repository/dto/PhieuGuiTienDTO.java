@@ -15,13 +15,10 @@ public class PhieuGuiTienDTO {
     private Long phieuGuiTienID;
     private Long khachHangId;
     private Long giaoDichVienId;
-    private Long loaiTietKiemId;
-    private Long tanSuatNhanLaiId;
-    private Long loaiKyHanId;
+    private Long chiTietQuyDinhLaiSuatId;
     private Long hinhThucDaoHanId;
     private Instant ngayGuiTien;
     private Long soTienGuiBanDau;
-    private Float laiSuatCamKet;
     private String tenGoiNho;
     private Long trangThaiId;
     private Long soDuHienTai;
