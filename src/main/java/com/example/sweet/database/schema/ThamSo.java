@@ -1,57 +1,26 @@
 package com.example.sweet.database.schema;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class ThamSo {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int thamSoID;
+    private Long thamSoID;
     private String tenThamSo;
+
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String moTa;
-    private int maThamSo;
-    private int giaTri;
+    private String maThamSo;
+    private String giaTri;
 
-    public int getThamSoID() {
-        return thamSoID;
-    }
 
-    public void setThamSoID(int thamSoID) {
-        this.thamSoID = thamSoID;
-    }
-
-    public String getTenThamSo() {
-        return tenThamSo;
-    }
-
-    public void setTenThamSo(String tenThamSo) {
-        this.tenThamSo = tenThamSo;
-    }
-
-    public String getMoTa() {
-        return moTa;
-    }
-
-    public void setMoTa(String moTa) {
-        this.moTa = moTa;
-    }
-
-    public int getMaThamSo() {
-        return maThamSo;
-    }
-
-    public void setMaThamSo(int maThamSo) {
-        this.maThamSo = maThamSo;
-    }
-
-    public int getGiaTri() {
-        return giaTri;
-    }
-
-    public void setGiaTri(int giaTri) {
-        this.giaTri = giaTri;
-    }
 }

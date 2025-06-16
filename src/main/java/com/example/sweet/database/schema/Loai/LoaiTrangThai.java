@@ -1,49 +1,40 @@
 package com.example.sweet.database.schema.Loai;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.sweet.database.schema.TrangThai;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
 
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoaiTrangThai {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int loaiTrangThaiID;
-    private int maLoaiTrangThai;
+    private Long loaiTrangThaiID;
+
+    @NotBlank(message = "maLoaiTrangThai không được để trống")
+    private String maLoaiTrangThai;
+
     private String tenLoaiTrangThai;
     private String moTa;
 
-    public int getLoaiTrangThaiID() {
-        return loaiTrangThaiID;
-    }
+    @Column(nullable = false)
+    private Boolean deleted = Boolean.FALSE;
 
-    public void setLoaiTrangThaiID(int loaiTrangThaiID) {
-        this.loaiTrangThaiID = loaiTrangThaiID;
-    }
+    @OneToMany(mappedBy = "loaiTrangThai", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<TrangThai> TrangThais;
 
-    public int getMaLoaiTrangThai() {
-        return maLoaiTrangThai;
-    }
 
-    public void setMaLoaiTrangThai(int maLoaiTrangThai) {
-        this.maLoaiTrangThai = maLoaiTrangThai;
-    }
 
-    public String getTenLoaiTrangThai() {
-        return tenLoaiTrangThai;
-    }
-
-    public void setTenLoaiTrangThai(String tenLoaiTrangThai) {
-        this.tenLoaiTrangThai = tenLoaiTrangThai;
-    }
-
-    public String getMoTa() {
-        return moTa;
-    }
-
-    public void setMoTa(String moTa) {
-        this.moTa = moTa;
-    }
 }

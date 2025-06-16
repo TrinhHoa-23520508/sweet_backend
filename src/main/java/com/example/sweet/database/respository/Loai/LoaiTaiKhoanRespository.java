@@ -2,7 +2,11 @@ package com.example.sweet.database.respository.Loai;
 
 import com.example.sweet.database.schema.Loai.LoaiKyHan;
 import com.example.sweet.database.schema.Loai.LoaiTaiKhoan;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface LoaiTaiKhoanRespository extends CrudRepository<LoaiTaiKhoan, Integer> {
+@Repository
+public interface LoaiTaiKhoanRespository extends JpaRepository<LoaiTaiKhoan, Long>, JpaSpecificationExecutor<LoaiTaiKhoan> {
 }

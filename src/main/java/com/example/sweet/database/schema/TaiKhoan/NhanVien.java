@@ -19,18 +19,19 @@ import java.time.LocalDateTime;
 public class NhanVien {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private int nhanVienID;
+    private Long nhanVienID;
     private String hoTen;
     private LocalDate ngaySinh;
     private String cccd;
+    private String soDienThoai;
     private String email;
 
     @ManyToOne
     @JoinColumn(name = "dia_chi_thuong_tru", nullable = false)
-    private DiaChi diaChiThuongTruID;
+    private DiaChi diaChiThuongTru;
     @ManyToOne
     @JoinColumn(name = "dia_chi_lien_lac", nullable = false)
-    private DiaChi diaChiLienLacID;
+    private DiaChi diaChiLienLac;
     private LocalDate ngayTuyenDung;
     private String tenDangNhap;
     private String matKhau;
@@ -42,6 +43,10 @@ public class NhanVien {
     @ManyToOne
     @JoinColumn(name = "trang_thai_tai_khoan", nullable = false)
     private TrangThai trangThaiTaiKhoan;
+
+    @ManyToOne
+    @JoinColumn(name = "trang_thai_nhan_vien", nullable = false)
+    private TrangThai trangThaiNhanVien;
 
 
 }
