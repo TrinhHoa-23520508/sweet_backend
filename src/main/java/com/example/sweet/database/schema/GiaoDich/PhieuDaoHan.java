@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity
@@ -26,6 +27,6 @@ public class PhieuDaoHan {
     @JoinColumn(name = "phieu_gui_tien_tiep_theo", nullable = false)
     private PhieuGuiTien phieuGuiTienTiepTheo;
 
-    private LocalDateTime ngayDaoHan;
+    private Instant ngayDaoHan;
 
 }
