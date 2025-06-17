@@ -35,14 +35,9 @@ public class NhanVienRequestDTO {
 //    @NotNull(message = "Địa chỉ liên lạc không được null")
     private Long diaChiLienLacId;
 
-    @NotNull(message = "Ngày tuyển dụng không được để trống")
-    private LocalDate ngayTuyenDung;
 
 //    @NotNull(message = "Trạng thái nhân viên không được null")
     private Long trangThaiNhanVienId;
-
-    @NotBlank(message = "Tên đăng nhập không được để trống")
-    private String tenDangNhap;
 
     @NotBlank(message = "Mật khẩu không được để trống")
     @Size(min = 6, message = "Mật khẩu phải có ít nhất 6 ký tự")

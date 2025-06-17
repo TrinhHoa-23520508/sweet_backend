@@ -22,6 +22,7 @@ public class NhanVien {
     private Long nhanVienID;
     private String hoTen;
     private LocalDate ngaySinh;
+    private int tuoi;
     private String cccd;
     private String soDienThoai;
     private String email;
@@ -33,7 +34,6 @@ public class NhanVien {
     @JoinColumn(name = "dia_chi_lien_lac", nullable = false)
     private DiaChi diaChiLienLac;
     private LocalDate ngayTuyenDung;
-    private String tenDangNhap;
     private String matKhau;
 
     @ManyToOne
@@ -44,9 +44,7 @@ public class NhanVien {
     @JoinColumn(name = "trang_thai_tai_khoan", nullable = false)
     private TrangThai trangThaiTaiKhoan;
 
-    @ManyToOne
-    @JoinColumn(name = "trang_thai_nhan_vien", nullable = false)
-    private TrangThai trangThaiNhanVien;
+
 
 
 }

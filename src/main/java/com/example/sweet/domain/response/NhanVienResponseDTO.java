@@ -1,5 +1,6 @@
 package com.example.sweet.domain.response;
 
+import com.example.sweet.domain.request.VaiTroDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ public class NhanVienResponseDTO {
     private LocalDate ngayTuyenDung;
     private Long trangThaiNhanVienId;
     private String tenDangNhap;
-    private Long vaiTroId;
+    private VaiTroDTO vaiTro;
     private Long trangThaiTaiKhoanId;
 }
 

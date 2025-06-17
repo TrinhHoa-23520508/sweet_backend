@@ -35,5 +35,11 @@ public class VaiTro {
     @JoinTable(name = "vaitro_quyenhan", joinColumns = @JoinColumn(name = "vaitro_id"), inverseJoinColumns = @JoinColumn(name = "quyenhan_id"))
     private List<QuyenHan> quyenHans;
 
+    @OneToMany(mappedBy = "vaiTro", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<NhanVien> nhanViens;
 
+    @OneToMany(mappedBy = "vaiTro", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<KhachHang> khachHangs;
 }

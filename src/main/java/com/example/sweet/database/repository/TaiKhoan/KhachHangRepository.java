@@ -10,4 +10,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface KhachHangRepository extends JpaRepository<KhachHang, Long>, JpaSpecificationExecutor<KhachHang> {
+
+    boolean existsByEmailOrCccd(String email, String cccd);
+
+    boolean existsByEmailOrCccdAndKhachHangIDNot(String email, String cccd, Long id);
 }

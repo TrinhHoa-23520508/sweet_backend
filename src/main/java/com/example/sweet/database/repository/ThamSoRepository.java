@@ -7,9 +7,13 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ThamSoRepository extends JpaRepository<ThamSo, Long>, JpaSpecificationExecutor<ThamSo> {
     boolean existsByMaThamSo(String maThamSo);
 
     boolean existsByMaThamSoAndThamSoIDNot(String maThamSo, Long thamSoID);
+
+    Optional<ThamSo> findByMaThamSo(String maThamSo);
 }
