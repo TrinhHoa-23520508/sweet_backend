@@ -29,7 +29,10 @@ public class GlobalException {
             IllegalArgumentException.class,
             HttpMessageNotReadableException.class,
             HttpRequestMethodNotSupportedException.class,
-            RuntimeException.class
+            DuplicateResourceException.class,
+            IdInvalidException.class,
+            RuntimeException.class,
+            NotFoundException.class,
     })
     public ResponseEntity<RestResponse<Object>> handleIdException(Exception ex) {
         RestResponse<Object> res = new RestResponse<Object>();

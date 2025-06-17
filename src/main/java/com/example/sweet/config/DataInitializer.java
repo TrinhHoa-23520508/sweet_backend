@@ -71,8 +71,7 @@ public class DataInitializer implements CommandLineRunner {
                 var insertedLTT = loaiTrangThaiRepo.saveAll(List.of(
                                 new LoaiTrangThai(null, "customer", "Khách hàng", "Khách hàng"),
                                 new LoaiTrangThai(null, "employee", "Nhân viên", "Nhân viên"),
-                                new LoaiTrangThai(null, "payment_account", "Tài khoản thanh toán",
-                                                "Tài khoản thanh toán"),
+                                new LoaiTrangThai(null, "payment_account", "Tài khoản thanh toán", "Tài khoản thanh toán"),
                                 new LoaiTrangThai(null, "transaction", "Giao dịch", "Giao dịch"),
                                 new LoaiTrangThai(null, "deposit_receipt", "Phiếu gửi tiền", "Phiếu gửi tiền"),
                                 new LoaiTrangThai(null, "login_account", "Tài khoản đăng nhập", "Tài khoản đăng nhập")))

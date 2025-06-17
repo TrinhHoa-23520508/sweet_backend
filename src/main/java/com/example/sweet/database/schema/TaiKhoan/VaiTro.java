@@ -35,7 +35,5 @@ public class VaiTro {
     @JoinTable(name = "vaitro_quyenhan", joinColumns = @JoinColumn(name = "vaitro_id"), inverseJoinColumns = @JoinColumn(name = "quyenhan_id"))
     private List<QuyenHan> quyenHans;
 
-    // public VaiTro(Long id, String name, String description, boolean active) {
-    //
-    // }
+
 }
