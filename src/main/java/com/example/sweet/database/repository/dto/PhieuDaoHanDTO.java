@@ -79,9 +79,9 @@ public class PhieuDaoHanDTO {
 	public void tinhToan(PhieuGuiTien phieuGuiTienKiTruoc, PhieuGuiTien phieuGuiTienMoi) {
 		this.ngayGuiTien = phieuGuiTienKiTruoc.getNgayGuiTien();
 		this.soTienGui = phieuGuiTienKiTruoc.getSoTienGuiBanDau();
-		this.loaiTietKiem = phieuGuiTienKiTruoc.getLoaiTietKiem();
-		this.tanSuatNhanLai = phieuGuiTienKiTruoc.getTanSuatNhanLai();
-		this.laiSuat = phieuGuiTienKiTruoc.getLaiSuatCamKet();
+		this.loaiTietKiem = phieuGuiTienKiTruoc.getChiTietQuyDinhLaiSuat().getLoaiTietKiem();
+		this.tanSuatNhanLai = phieuGuiTienKiTruoc.getChiTietQuyDinhLaiSuat().getTanSuatNhanLai();
+		this.laiSuat = phieuGuiTienKiTruoc.getChiTietQuyDinhLaiSuat().getLaiSuat();
 		this.tongLaiDinhKi = phieuGuiTienKiTruoc.getTienLaiNhanDinhKy();
 		tinhLaiSuatDaoHan(phieuGuiTienKiTruoc); // B5
 		xuLiHinhThucDaoHan(phieuGuiTienKiTruoc, phieuGuiTienMoi); // B6
@@ -101,14 +101,15 @@ public class PhieuDaoHanDTO {
 			default:
 				phieuGuiTienMoi.setTongTienLaiDuKien(
 						Long.valueOf(Math.round(phieuGuiTienKiTruoc.getSoDuHienTai() *
-								phieuGuiTienKiTruoc.getLoaiKyHan().getSoThang() *
-								phieuGuiTienKiTruoc.getLaiSuatCamKet() / 12)));
+								phieuGuiTienKiTruoc.getChiTietQuyDinhLaiSuat().getLoaiKyHan().getSoThang() *
+								phieuGuiTienKiTruoc.getChiTietQuyDinhLaiSuat().getLaiSuat() / 12)));
 				this.tongLaiDuKienKiSau = phieuGuiTienMoi.getTongTienLaiDuKien();
 				this.soDuHienTaiKiSau = phieuGuiTienMoi.getSoDuHienTai();
-				this.laiSuatKiSau = phieuGuiTienMoi.getLaiSuatCamKet();
+				this.laiSuatKiSau = phieuGuiTienMoi.getChiTietQuyDinhLaiSuat().getLaiSuat();
 				this.tongLaiDinhKiKiSau = phieuGuiTienMoi.getTongTienLaiDuKien()
-						/ (tinhSoLanNhanLai(phieuGuiTienKiTruoc.getTanSuatNhanLai().getTenTanSoNhanLai(),
-								phieuGuiTienKiTruoc.getLoaiKyHan().getSoThang()));
+						/ (tinhSoLanNhanLai(
+								phieuGuiTienKiTruoc.getChiTietQuyDinhLaiSuat().getTanSuatNhanLai().getTenTanSoNhanLai(),
+								phieuGuiTienKiTruoc.getChiTietQuyDinhLaiSuat().getLoaiKyHan().getSoThang()));
 				phieuGuiTienMoi.setTienLaiNhanDinhKy(this.tongLaiDinhKiKiSau);
 				// tiền lãi đã nhận nhưng chưa quyết toán của kỳ hạn kế tiếp = 0
 				phieuGuiTienMoi.setTienLaiDaNhanNhungChuaQuyetToan(0L);
@@ -141,16 +142,14 @@ public class PhieuDaoHanDTO {
 
 	public PhieuGuiTien taoPhieuGuiTienKiSau(PhieuGuiTien phieuGuiTienKiTruoc) {
 		// init data
+
 		PhieuGuiTien phieuGuiTienMoi = new PhieuGuiTien(null,
 				phieuGuiTienKiTruoc.getKhachHang(),
 				phieuGuiTienKiTruoc.getGiaoDichVien(),
-				phieuGuiTienKiTruoc.getLoaiTietKiem(),
-				phieuGuiTienKiTruoc.getTanSuatNhanLai(),
-				phieuGuiTienKiTruoc.getLoaiKyHan(),
+				phieuGuiTienKiTruoc.getChiTietQuyDinhLaiSuat(),
 				phieuGuiTienKiTruoc.getHinhThucDaoHan(),
 				Instant.now(), // ngayGuiTien
 				0L, // soTienGuiBanDau
-				phieuGuiTienKiTruoc.getLaiSuatCamKet(),
 				phieuGuiTienKiTruoc.getTenGoiNho(),
 				phieuGuiTienKiTruoc.getTrangThai(),
 				0L, // soDuHienTai
@@ -160,6 +159,7 @@ public class PhieuDaoHanDTO {
 				0L, // tongLaiQuyetToan
 				phieuGuiTienKiTruoc.getNgayDaoHan() // ngayDaoHan
 		);
+
 		return phieuGuiTienMoi;
 	}
 
