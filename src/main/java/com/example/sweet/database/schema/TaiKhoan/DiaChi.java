@@ -1,9 +1,6 @@
 package com.example.sweet.database.schema.TaiKhoan;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,13 +13,22 @@ import lombok.Setter;
 @AllArgsConstructor
 public class DiaChi {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Getter
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long diaChiID;
-    private int soNha;
+
+    @Column(length = 100)
+    private String soNha;
+
+    @Column(length = 100)
     private String tenDuong;
+
+    @Column(length = 100)
     private String phuongXa;
+
+    @Column(length = 100)
     private String quanHuyen;
+
+    @Column(length = 100)
     private String tinhTP;
 
 
