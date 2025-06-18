@@ -8,10 +8,14 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface KhachHangRepository extends JpaRepository<KhachHang, Long>, JpaSpecificationExecutor<KhachHang> {
 
     boolean existsByEmailOrCccd(String email, String cccd);
 
     boolean existsByEmailOrCccdAndKhachHangIDNot(String email, String cccd, Long id);
+
+    Optional<KhachHang> findByEmail(String email);
 }

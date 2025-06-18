@@ -8,10 +8,14 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface NhanVienRepository extends JpaRepository<NhanVien, Long>, JpaSpecificationExecutor<NhanVien> {
 
     boolean existsByEmailOrCccd(String email, String cccd);
 
     boolean existsByEmailOrCccdAndNhanVienIDNot(String email, String cccd, Long nhanVienID);
+
+    Optional<NhanVien> findByEmail(String email);
 }
