@@ -75,7 +75,7 @@ public class PhieuTraLaiService {
             }
 
             // B6: Kiểm tra tần suất trả lãi
-            validateNgayTraLai(dto.getNgayTraLai(), phieuGuiTien);
+            // validateNgayTraLai(dto.getNgayTraLai(), phieuGuiTien);
 
             // B7-B8: Tính toán và cập nhật tiền lãi
             Long tienLaiNhanDuoc = phieuGuiTien.getTienLaiNhanDinhKy();
