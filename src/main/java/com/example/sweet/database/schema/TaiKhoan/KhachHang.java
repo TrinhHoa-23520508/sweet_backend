@@ -22,6 +22,7 @@ public class KhachHang {
     private Long khachHangID;
     private String hoTen;
     private LocalDate ngaySinh;
+    private int tuoi;
     private String soDienThoai;
     private String cccd;
     private String email;
@@ -34,7 +35,6 @@ public class KhachHang {
     @JoinColumn(name = "dia_chi_lien_lac")
     private DiaChi diaChiLienLac;
     private LocalDate ngayDangKy;
-    private String tenDangNhap;
     private String matKhau;
 
     @ManyToOne

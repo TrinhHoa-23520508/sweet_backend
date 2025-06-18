@@ -33,4 +33,24 @@ public class VaiTroMapper {
 
         return vaiTro;
     }
+
+    public VaiTroDTO toVaiTroDTO(VaiTro vaiTro) {
+        if (vaiTro == null) {
+            return null;
+        }
+
+        VaiTroDTO vaiTroDTO = new VaiTroDTO();
+        vaiTroDTO.setId(vaiTro.getId());
+        vaiTroDTO.setName(vaiTro.getName());
+        vaiTroDTO.setDescription(vaiTro.getDescription());
+        vaiTroDTO.setActive(vaiTro.isActive());
+
+        List<Long> quyenHanIds = vaiTro.getQuyenHans().stream()
+                .map(QuyenHan::getId)
+                .toList();
+
+        vaiTroDTO.setQuyenHanIds(quyenHanIds);
+
+        return vaiTroDTO;
+    }
 }

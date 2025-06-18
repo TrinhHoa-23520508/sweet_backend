@@ -1,7 +1,10 @@
 package com.example.sweet.domain.request;
 
 import com.example.sweet.util.constant.TypeUserEnum;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +22,6 @@ public class ReqLoginDTO {
     @NotBlank(message = "password không được để trống")
     private String password;
 
-    @NotBlank(message = "type không được để trống")
+    @NotNull(message = "type không được để trống")
     private TypeUserEnum type;
 }

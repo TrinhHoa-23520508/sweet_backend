@@ -29,29 +29,10 @@ public class NhanVienRequestDTO {
     @Pattern(regexp = "^0\\d{9}$", message = "Số điện thoại phải gồm 10 số và bắt đầu bằng 0")
     private String soDienThoai;
 
-//    @NotNull(message = "Địa chỉ thường trú không được null")
     private Long diaChiThuongTruId;
-
-//    @NotNull(message = "Địa chỉ liên lạc không được null")
     private Long diaChiLienLacId;
-
-    @NotNull(message = "Ngày tuyển dụng không được để trống")
-    private LocalDate ngayTuyenDung;
-
-//    @NotNull(message = "Trạng thái nhân viên không được null")
-    private Long trangThaiNhanVienId;
-
-    @NotBlank(message = "Tên đăng nhập không được để trống")
-    private String tenDangNhap;
-
-    @NotBlank(message = "Mật khẩu không được để trống")
-    @Size(min = 6, message = "Mật khẩu phải có ít nhất 6 ký tự")
     private String matKhau;
-
-//    @NotNull(message = "Vai trò không được null")
     private Long vaiTroId;
-
-//    @NotNull(message = "Trạng thái tài khoản không được null")
     private Long trangThaiTaiKhoanId;
 }
 

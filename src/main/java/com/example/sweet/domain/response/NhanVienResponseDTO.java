@@ -1,5 +1,7 @@
 package com.example.sweet.domain.response;
 
+import com.example.sweet.domain.request.TrangThaiDTO;
+import com.example.sweet.domain.request.VaiTroDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,18 +14,17 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NhanVienResponseDTO {
-    private Long nhanVienId;
+    private Long nhanVienID;
     private String hoTen;
     private LocalDate ngaySinh;
     private String cccd;
     private String email;
+    private int tuoi;
     private String soDienThoai;
     private Long diaChiThuongTruId;
     private Long diaChiLienLacId;
     private LocalDate ngayTuyenDung;
-    private Long trangThaiNhanVienId;
-    private String tenDangNhap;
-    private Long vaiTroId;
-    private Long trangThaiTaiKhoanId;
+    private VaiTroDTO vaiTro;
+    private TrangThaiDTO trangThaiTaiKhoan;
 }
 

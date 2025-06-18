@@ -1,4 +1,175 @@
 package com.example.sweet.services;
 
+import com.example.sweet.database.repository.Loai.LoaiTrangThaiRepository;
+import com.example.sweet.database.repository.TaiKhoan.NhanVienRepository;
+import com.example.sweet.database.repository.TaiKhoan.VaiTroRepository;
+import com.example.sweet.database.repository.ThamSoRepository;
+import com.example.sweet.database.repository.TrangThaiRepository;
+import com.example.sweet.database.schema.Loai.LoaiTrangThai;
+import com.example.sweet.database.schema.TaiKhoan.KhachHang;
+import com.example.sweet.database.schema.TaiKhoan.NhanVien;
+import com.example.sweet.database.schema.TaiKhoan.NhanVien;
+import com.example.sweet.database.schema.TaiKhoan.VaiTro;
+import com.example.sweet.database.schema.ThamSo;
+import com.example.sweet.database.schema.TrangThai;
+import com.example.sweet.domain.request.NhanVienRequestDTO;
+import com.example.sweet.domain.response.NhanVienResponseDTO;
+import com.example.sweet.util.constant.StatusEnum;
+import com.example.sweet.util.constant.SystemParameterEnum;
+import com.example.sweet.util.constant.TypeStatusEnum;
+import com.example.sweet.util.error.DuplicateResourceException;
+import com.example.sweet.util.error.NotFoundException;
+import com.example.sweet.util.mapper.NhanVienMapper;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.List;
+
+@Service
 public class NhanVienService {
+
+    private final NhanVienRepository nhanVienRepository;
+    private final NhanVienMapper nhanVienMapper;
+    private final ThamSoRepository thamSoRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final LoaiTrangThaiRepository loaiTrangThaiRepository;
+    private final TrangThaiRepository trangThaiRepository;
+    private final VaiTroRepository vaiTroRepository;
+
+    public NhanVienService(NhanVienRepository nhanVienRepository,
+                           NhanVienMapper nhanVienMapper,
+                           ThamSoRepository thamSoRepository,
+                           PasswordEncoder passwordEncoder,
+                           LoaiTrangThaiRepository loaiTrangThaiRepository,
+                           TrangThaiRepository trangThaiRepository,
+                           VaiTroRepository vaiTroRepository) {
+        this.nhanVienRepository = nhanVienRepository;
+        this.nhanVienMapper = nhanVienMapper;
+        this.thamSoRepository = thamSoRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.loaiTrangThaiRepository = loaiTrangThaiRepository;
+        this.trangThaiRepository = trangThaiRepository;
+        this.vaiTroRepository = vaiTroRepository;
+    }
+
+    public boolean checkDuplicate(NhanVien nhanVien) {
+        if (nhanVien.getNhanVienID() == null) {
+            return this.nhanVienRepository.existsByEmailOrCccd(nhanVien.getEmail(), nhanVien.getCccd());
+        } else {
+            return this.nhanVienRepository.existsByEmailOrCccdAndNhanVienIDNot(nhanVien.getEmail(), nhanVien.getCccd(), nhanVien.getNhanVienID());
+        }
+    }
+
+    public void validateAge(int age) {
+        if (age <= 0) {
+            throw new IllegalArgumentException("Tuổi phải lớn hơn 0");
+        }
+        ThamSo thamSoTuoiNV = this.thamSoRepository.findByMaThamSo(SystemParameterEnum.MIN_AGE_EMPLOYEE.toString()).orElseThrow(
+                () -> new NotFoundException("Tham số tuổi nhân viên không được tìm thấy")
+        );
+        int minAge = Integer.parseInt(thamSoTuoiNV.getGiaTri());
+        if (age < minAge) {
+            throw new IllegalArgumentException("Tuổi nhân viên phải lớn hơn hoặc bằng " + minAge);
+        }
+    }
+
+    public NhanVienResponseDTO createNhanVien(NhanVienRequestDTO nhanVienRequestDTO) {
+        NhanVien newNhanVien = this.nhanVienMapper.toNhanVienEntity(nhanVienRequestDTO);
+        if (checkDuplicate(newNhanVien)) {
+            throw new DuplicateResourceException("Nhân viên với email hoặc CCCD đã tồn tại");
+        }
+
+        if (newNhanVien.getNgaySinh() != null) {
+            newNhanVien.setTuoi(Period.between(newNhanVien.getNgaySinh(), LocalDate.now()).getYears());
+            validateAge(newNhanVien.getTuoi());
+        }
+        newNhanVien.setNgayTuyenDung(LocalDate.now());
+        newNhanVien.setMatKhau(passwordEncoder.encode(newNhanVien.getMatKhau()));
+
+        if (newNhanVien.getTrangThaiTaiKhoan() == null) {
+            LoaiTrangThai loaiTrangThai_TK = this.loaiTrangThaiRepository.findByMaLoaiTrangThai("TRANGTHAI_TAIKHOAN")
+                    .orElseThrow(() -> new IllegalArgumentException("Loại trạng thái tài khoản không tồn tại"));
+            TrangThai active_default_TK = this.trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai("HOAT_DONG", loaiTrangThai_TK)
+                    .orElseThrow(() -> new IllegalArgumentException("Trạng thái HOAT_DONG không tồn tại cho loại trạng thái tài khoản"));
+            newNhanVien.setTrangThaiTaiKhoan(active_default_TK);
+        }
+
+        if (newNhanVien.getVaiTro() == null) {
+            VaiTro vaiTro_default = this.vaiTroRepository.findByName("KHONG_QUYEN_HE_THONG").orElseThrow(() -> new IllegalArgumentException("Vai trò không tồn tại"));
+            newNhanVien.setVaiTro(vaiTro_default);
+        }
+
+        return this.nhanVienMapper.toNhanVienResponseDTO(
+                this.nhanVienRepository.save(newNhanVien)
+        );
+
+    }
+
+    public NhanVienResponseDTO getNhanVienById(Long id) {
+        NhanVien nhanVien = this.nhanVienRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Nhân viên không tồn tại với ID: " + id));
+        return this.nhanVienMapper.toNhanVienResponseDTO(nhanVien);
+    }
+
+    public List<NhanVienResponseDTO> getAllNhanVien(Specification<NhanVien> specification) {
+        List<NhanVien> nhanVienList = this.nhanVienRepository.findAll(specification);
+
+        return nhanVienList.stream()
+                .map(this.nhanVienMapper::toNhanVienResponseDTO)
+                .toList();
+    }
+
+    public NhanVienResponseDTO updateNhanVien(Long id, NhanVienRequestDTO nhanVienRequestDTO) {
+        NhanVien updateNhanVien = this.nhanVienMapper.toNhanVienEntity(nhanVienRequestDTO);
+        updateNhanVien.setNhanVienID(id);
+        if (checkDuplicate(updateNhanVien)) {
+            throw new DuplicateResourceException("Nhân viên đã tồn tại với email hoặc CCCD: " + updateNhanVien.getEmail() + " hoặc " + updateNhanVien.getCccd());
+        }
+        NhanVien existingNhanVien = this.nhanVienRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("Nhân viên không tồn tại với ID: " + id)
+        );
+        existingNhanVien.setHoTen(updateNhanVien.getHoTen());
+        existingNhanVien.setEmail(updateNhanVien.getEmail());
+        existingNhanVien.setCccd(updateNhanVien.getCccd());
+        existingNhanVien.setSoDienThoai(updateNhanVien.getSoDienThoai());
+        existingNhanVien.setNgaySinh(updateNhanVien.getNgaySinh());
+        if (existingNhanVien.getNgaySinh() != null) {
+            existingNhanVien.setTuoi(Period.between(existingNhanVien.getNgaySinh(), LocalDate.now()).getYears());
+            validateAge(existingNhanVien.getTuoi());
+        }
+        existingNhanVien.setDiaChiLienLac(updateNhanVien.getDiaChiLienLac());
+        existingNhanVien.setDiaChiThuongTru(updateNhanVien.getDiaChiThuongTru());
+        existingNhanVien.setTrangThaiTaiKhoan(updateNhanVien.getTrangThaiTaiKhoan());
+        existingNhanVien.setVaiTro(updateNhanVien.getVaiTro());
+
+        return this.nhanVienMapper.toNhanVienResponseDTO(this.nhanVienRepository.save(existingNhanVien));
+    }
+
+    public void deactivateNhanVien(Long id) {
+        NhanVien existingNhanVien = this.nhanVienRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("Nhân viên không tồn tại với ID: " + id)
+        );
+        LoaiTrangThai loaiTrangThai_TK = this.loaiTrangThaiRepository.findByMaLoaiTrangThai(TypeStatusEnum.TRANGTHAI_TAIKHOAN.toString())
+                .orElseThrow(() -> new IllegalArgumentException("Loại trạng thái không tồn tại"));
+        TrangThai inactiveTrangThai = this.trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai(StatusEnum.VO_HIEU_HOA.toString(), loaiTrangThai_TK)
+                .orElseThrow(() -> new IllegalArgumentException("Trạng thái không tồn tại cho loại trạng thái tài khoản"));
+        existingNhanVien.setTrangThaiTaiKhoan(inactiveTrangThai);
+        this.nhanVienRepository.save(existingNhanVien);
+    }
+
+    public void activateNhanVien(Long id) {
+        NhanVien existingNhanVien = this.nhanVienRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("Nhân viên không tồn tại với ID: " + id)
+        );
+        LoaiTrangThai loaiTrangThai_TK = this.loaiTrangThaiRepository.findByMaLoaiTrangThai(TypeStatusEnum.TRANGTHAI_TAIKHOAN.toString())
+                .orElseThrow(() -> new IllegalArgumentException("Loại trạng thái không tồn tại"));
+        TrangThai activeTrangThai = this.trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai(StatusEnum.HOAT_DONG.toString(), loaiTrangThai_TK)
+                .orElseThrow(() -> new IllegalArgumentException("Trạng thái không tồn tại cho loại trạng thái tài khoản"));
+        existingNhanVien.setTrangThaiTaiKhoan(activeTrangThai);
+        this.nhanVienRepository.save(existingNhanVien);
+
+    }
 }
