@@ -27,8 +27,8 @@ public class KhachHangController {
     //create a new Khach Hang (Customer)
     @PostMapping("/khach-hang")
     @ApiMessage("Create a new Khach Hang (Customer)")
-    public ResponseEntity<KhachHang> createKhachHang(@Valid @RequestBody KhachHangRequestDTO requestDTO) {
-        KhachHang newKhachHang = khachHangService.createKhachHang(requestDTO);
+    public ResponseEntity<KhachHangResponseDTO> createKhachHang(@Valid @RequestBody KhachHangRequestDTO requestDTO) {
+        KhachHangResponseDTO newKhachHang = khachHangService.createKhachHang(requestDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(newKhachHang);
     }
 
@@ -58,11 +58,19 @@ public class KhachHangController {
         return ResponseEntity.status(HttpStatus.OK).body(updatedKhachHang);
     }
 
-    //Delete a khach hang
-    @DeleteMapping("/khach-hang/{id}")
-    @ApiMessage("Delete a Khach Hang (Customer)")
-    public ResponseEntity<Void> deleteKhachHang(@PathVariable Long id) {
-        khachHangService.deleteKhachHang(id);
+    //vo hieu hoa khach hang
+    @PutMapping("/khach-hang/{id}/vo-hieu-hoa")
+    @ApiMessage("Vo Hieu Hoa Khach Hang (Deactivate Customer)")
+    public ResponseEntity<Void> deactivateKhachHang(@PathVariable Long id) {
+        khachHangService.deactivateKhachHang(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    //active tai khoan
+    @PutMapping("/khach-hang/{id}/kich-hoat")
+    @ApiMessage("Hoat Dong Tai Khoan Khach Hang (Activate Customer Account)")
+    public ResponseEntity<Void> activateKhachHang(@PathVariable Long id) {
+        khachHangService.activateKhachHang(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

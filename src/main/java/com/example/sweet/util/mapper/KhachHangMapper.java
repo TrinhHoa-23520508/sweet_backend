@@ -42,35 +42,35 @@ public class KhachHangMapper {
         khachHang.setCccd(requestDTO.getCccd());
         khachHang.setEmail(requestDTO.getEmail());
         khachHang.setSoDienThoai(requestDTO.getSoDienThoai());
-        if(requestDTO.getDiaChiThuongTruId() != null) {
+        if (requestDTO.getDiaChiThuongTruId() != null) {
             DiaChi diaChiThuongTru = diaChiRepository.findById(requestDTO.getDiaChiThuongTruId())
                     .orElseThrow(() -> new IllegalArgumentException("Dia chi thuong tru not found with id: " + requestDTO.getDiaChiThuongTruId()));
             khachHang.setDiaChiThuongTru(diaChiThuongTru);
 
-        }else{
+        } else {
             khachHang.setDiaChiThuongTru(null);
         }
-        if(requestDTO.getDiaChiLienLacId() != null) {
+        if (requestDTO.getDiaChiLienLacId() != null) {
             DiaChi diaChiLienLac = diaChiRepository.findById(requestDTO.getDiaChiLienLacId())
                     .orElseThrow(() -> new IllegalArgumentException("Dia chi lien lac not found with id: " + requestDTO.getDiaChiLienLacId()));
             khachHang.setDiaChiLienLac(diaChiLienLac);
-        }else {
+        } else {
             khachHang.setDiaChiLienLac(null);
         }
-        if(requestDTO.getTrangThaiKhachHangId() != null) {
+        if (requestDTO.getTrangThaiKhachHangId() != null) {
             TrangThai trangThai = trangThaiRepository.findById(requestDTO.getTrangThaiKhachHangId())
                     .orElseThrow(() -> new IllegalArgumentException("Trang thai khach hang not found with id: " + requestDTO.getTrangThaiKhachHangId()));
             khachHang.setTrangThaiKhachHang(trangThai);
         } else {
             khachHang.setTrangThaiKhachHang(null);
         }
-        if(requestDTO.getVaiTroId() != null) {
+        if (requestDTO.getVaiTroId() != null) {
             khachHang.setVaiTro(vaiTroRepository.findById(requestDTO.getVaiTroId())
                     .orElseThrow(() -> new IllegalArgumentException("Vai tro not found with id: " + requestDTO.getVaiTroId())));
         } else {
             khachHang.setVaiTro(null);
         }
-        if(requestDTO.getTrangThaiTaiKhoanId() != null) {
+        if (requestDTO.getTrangThaiTaiKhoanId() != null) {
             TrangThai trangThaiTaiKhoan = trangThaiRepository.findById(requestDTO.getTrangThaiTaiKhoanId())
                     .orElseThrow(() -> new IllegalArgumentException("Trang thai tai khoan not found with id: " + requestDTO.getTrangThaiTaiKhoanId()));
             khachHang.setTrangThaiTaiKhoan(trangThaiTaiKhoan);
@@ -78,8 +78,6 @@ public class KhachHangMapper {
             khachHang.setTrangThaiTaiKhoan(null);
         }
         khachHang.setMatKhau(requestDTO.getMatKhau());
-
-
 
 
         return khachHang;
@@ -98,16 +96,16 @@ public class KhachHangMapper {
         responseDTO.setEmail(khachHang.getEmail());
         responseDTO.setSoDienThoai(khachHang.getSoDienThoai());
         responseDTO.setTuoi(khachHang.getTuoi());
-        responseDTO.setDiaChiThuongTruId(khachHang.getDiaChiThuongTru()!=null?
+        responseDTO.setDiaChiThuongTruId(khachHang.getDiaChiThuongTru() != null ?
                 khachHang.getDiaChiThuongTru().getDiaChiID() : null);
-        responseDTO.setDiaChiLienLacId(khachHang.getDiaChiLienLac()!=null?
+        responseDTO.setDiaChiLienLacId(khachHang.getDiaChiLienLac() != null ?
                 khachHang.getDiaChiLienLac().getDiaChiID() : null);
         responseDTO.setNgayDangKy(khachHang.getNgayDangKy());
-        responseDTO.setTrangThaiKhachHang(khachHang.getTrangThaiKhachHang()!=null?
+        responseDTO.setTrangThaiKhachHang(khachHang.getTrangThaiKhachHang() != null ?
                 this.trangThaiMapper.toTrangThaiDTO(khachHang.getTrangThaiKhachHang()) : null);
-        responseDTO.setVaiTro(khachHang.getVaiTro()!=null?
+        responseDTO.setVaiTro(khachHang.getVaiTro() != null ?
                 this.vaiTroMapper.toVaiTroDTO(khachHang.getVaiTro()) : null);
-        responseDTO.setTrangThaiTaiKhoan(khachHang.getTrangThaiTaiKhoan()!=null?
+        responseDTO.setTrangThaiTaiKhoan(khachHang.getTrangThaiTaiKhoan() != null ?
                 this.trangThaiMapper.toTrangThaiDTO(khachHang.getTrangThaiTaiKhoan()) : null);
         return responseDTO;
     }

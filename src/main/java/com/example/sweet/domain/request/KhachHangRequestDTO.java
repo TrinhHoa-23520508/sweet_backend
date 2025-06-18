@@ -28,16 +28,9 @@ public class KhachHangRequestDTO {
     @Pattern(regexp = "^0\\d{9}$", message = "Số điện thoại phải gồm 10 số và bắt đầu bằng 0")
     private String soDienThoai;
 
-
     private Long diaChiThuongTruId;
-
-
     private Long diaChiLienLacId;
-
-
     private Long trangThaiKhachHangId;
-
-
     private String matKhau;
     private Long vaiTroId;
     private Long trangThaiTaiKhoanId;

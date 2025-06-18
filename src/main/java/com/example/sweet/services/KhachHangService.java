@@ -13,13 +13,16 @@ import com.example.sweet.database.schema.ThamSo;
 import com.example.sweet.database.schema.TrangThai;
 import com.example.sweet.domain.request.KhachHangRequestDTO;
 import com.example.sweet.domain.response.KhachHangResponseDTO;
+import com.example.sweet.util.constant.StatusEnum;
 import com.example.sweet.util.constant.SystemParameterEnum;
+import com.example.sweet.util.constant.TypeStatusEnum;
 import com.example.sweet.util.error.DuplicateResourceException;
 import com.example.sweet.util.error.NotFoundException;
 import com.example.sweet.util.mapper.KhachHangMapper;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -71,7 +74,7 @@ public class KhachHangService {
         }
     }
 
-    public KhachHang createKhachHang(KhachHangRequestDTO requestDTO) {
+    public KhachHangResponseDTO createKhachHang(KhachHangRequestDTO requestDTO) {
         KhachHang newKhachHang = this.khachHangMapper.toKhachHangEntity(requestDTO);
         if (checkDuplicate(newKhachHang)) {
             throw new DuplicateResourceException("Khách hàng đã tồn tại với email hoặc CCCD: " + newKhachHang.getEmail() + " hoặc " + newKhachHang.getCccd());
@@ -107,7 +110,7 @@ public class KhachHangService {
             VaiTro vaiTro_default = this.vaiTroRepository.findByName("KHONG_QUYEN").orElseThrow(() -> new IllegalArgumentException("Vai trò KHONG_QUYEN không tồn tại"));
             newKhachHang.setVaiTro(vaiTro_default);
         }
-        return this.khachHangRepository.save(newKhachHang);
+        return this.khachHangMapper.toKhachHangResponseDTO(this.khachHangRepository.save(newKhachHang));
 
     }
 
@@ -154,20 +157,30 @@ public class KhachHangService {
 
     }
 
-    public void deleteKhachHang(Long id) {
-        KhachHang khachHang = this.khachHangRepository.findById(id).orElseThrow(
+    public void deactivateKhachHang(Long id) {
+
+        KhachHang existingKhachHang = this.khachHangRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Khách hàng không tồn tại với ID: " + id)
         );
+        LoaiTrangThai loaiTrangThai_TK = this.loaiTrangThaiRepository.findByMaLoaiTrangThai(TypeStatusEnum.TRANGTHAI_TAIKHOAN.toString())
+                .orElseThrow(() -> new IllegalArgumentException("Loại trạng thái không tồn tại"));
+        TrangThai inactiveTrangThai = this.trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai(StatusEnum.VO_HIEU_HOA.toString(), loaiTrangThai_TK)
+                .orElseThrow(() -> new IllegalArgumentException("Trạng thái không tồn tại cho loại trạng thái tài khoản"));
+        existingKhachHang.setTrangThaiTaiKhoan(inactiveTrangThai);
+        this.khachHangRepository.save(existingKhachHang);
 
-        LoaiTrangThai loaiTrangThai_KH = this.loaiTrangThaiRepository.findByMaLoaiTrangThai("TRANGTHAI_KHACHHANG")
-                .orElseThrow(() -> new NotFoundException("Loại trạng thái khách hàng không tồn tại"));
+    }
 
-        TrangThai delete_KH = this.trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai("DA_HUY", loaiTrangThai_KH)
-                .orElseThrow(() -> new IllegalArgumentException("Trạng thái DA_HUY không tồn tại cho loại trạng thái khách hàng"));
-
-        khachHang.setTrangThaiKhachHang(delete_KH);
-        khachHangRepository.save(khachHang);
-
+    public void activateKhachHang(Long id) {
+        KhachHang existingKhachHang = this.khachHangRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("Khách hàng không tồn tại với ID: " + id)
+        );
+        LoaiTrangThai loaiTrangThai_TK = this.loaiTrangThaiRepository.findByMaLoaiTrangThai(TypeStatusEnum.TRANGTHAI_TAIKHOAN.toString())
+                .orElseThrow(() -> new IllegalArgumentException("Loại trạng thái không tồn tại"));
+        TrangThai activeTrangThai = this.trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai(StatusEnum.HOAT_DONG.toString(), loaiTrangThai_TK)
+                .orElseThrow(() -> new IllegalArgumentException("Trạng thái không tồn tại cho loại trạng thái tài khoản"));
+        existingKhachHang.setTrangThaiTaiKhoan(activeTrangThai);
+        this.khachHangRepository.save(existingKhachHang);
     }
 
 }

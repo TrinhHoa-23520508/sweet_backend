@@ -10,4 +10,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface NhanVienRepository extends JpaRepository<NhanVien, Long>, JpaSpecificationExecutor<NhanVien> {
+
+    boolean existsByEmailOrCccd(String email, String cccd);
+
+    boolean existsByEmailOrCccdAndNhanVienIDNot(String email, String cccd, Long nhanVienID);
 }
