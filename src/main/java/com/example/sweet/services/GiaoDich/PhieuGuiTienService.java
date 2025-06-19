@@ -55,8 +55,11 @@ public class PhieuGuiTienService {
 
             // Get ChiTietQuyDinhLaiSuat
             ChiTietQuyDinhLaiSuat chiTietQuyDinh = chiTietQuyDinhLaiSuatRepository
-                    .findById(dto.getChiTietQuyDinhLaiSuatId())
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy quy định lãi suất"));
+                    .findByLoaiKyHan_LoaiKyHanIDAndLoaiTietKiem_LoaiTietKiemIDAndTanSuatNhanLai_TanSoNhanLaiID(
+                    dto.getLoaiKyHanId(),
+                    dto.getLoaiTietKiemId(),
+                    dto.getTanSuatNhanLaiId())
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy quy định lãi suất phù hợp"));
 
             // Set trạng thái mặc định là "chưa tất toán" (ID = 10L)
             dto.setTrangThaiId(10L);
@@ -168,9 +171,17 @@ public class PhieuGuiTienService {
     }
 
     private void validatePhieuGuiTien(PhieuGuiTienDTO dto) {
+        // Validate required IDs exist
+        if (dto.getLoaiKyHanId() == null || dto.getLoaiTietKiemId() == null || dto.getTanSuatNhanLaiId() == null) {
+            throw new RuntimeException("Thiếu thông tin về loại kỳ hạn, loại tiết kiệm hoặc tần suất nhận lãi");
+        }
+
         // Validate ChiTietQuyDinhLaiSuat exists
         ChiTietQuyDinhLaiSuat chiTietQuyDinh = chiTietQuyDinhLaiSuatRepository
-                .findById(dto.getChiTietQuyDinhLaiSuatId())
+                .findByLoaiKyHan_LoaiKyHanIDAndLoaiTietKiem_LoaiTietKiemIDAndTanSuatNhanLai_TanSoNhanLaiID(
+                    dto.getLoaiKyHanId(),
+                    dto.getLoaiTietKiemId(),
+                    dto.getTanSuatNhanLaiId())
                 .orElseThrow(() -> new RuntimeException("Quy định lãi suất không hợp lệ"));
 
         // Validate minimum deposit amount

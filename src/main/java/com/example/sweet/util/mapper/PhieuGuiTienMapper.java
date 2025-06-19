@@ -55,10 +55,18 @@ public class PhieuGuiTienMapper {
         dto.setKhachHangId(phieuGuiTien.getKhachHang() != null ? phieuGuiTien.getKhachHang().getKhachHangID() : null);
         dto.setGiaoDichVienId(
                 phieuGuiTien.getGiaoDichVien() != null ? phieuGuiTien.getGiaoDichVien().getNhanVienID() : null);
-        dto.setChiTietQuyDinhLaiSuatId(
-                phieuGuiTien.getChiTietQuyDinhLaiSuat() != null
-                        ? phieuGuiTien.getChiTietQuyDinhLaiSuat().getChiTietQuyDinhID()
-                        : null);
+        dto.setLoaiKyHanId(phieuGuiTien.getChiTietQuyDinhLaiSuat().getLoaiKyHan() != null
+                ? phieuGuiTien.getChiTietQuyDinhLaiSuat().getLoaiKyHan().getLoaiKyHanID()
+                : null);
+        dto.setLoaiTietKiemId(phieuGuiTien.getChiTietQuyDinhLaiSuat().getLoaiTietKiem() != null
+                ? phieuGuiTien.getChiTietQuyDinhLaiSuat().getLoaiTietKiem().getLoaiTietKiemID()
+                : null);
+        dto.setTanSuatNhanLaiId(phieuGuiTien.getChiTietQuyDinhLaiSuat().getTanSuatNhanLai() != null
+                ? phieuGuiTien.getChiTietQuyDinhLaiSuat().getTanSuatNhanLai().getTanSoNhanLaiID()
+                : null);
+        dto.setChiTietQuyDinhLaiSuatId(phieuGuiTien.getChiTietQuyDinhLaiSuat() != null
+                ? phieuGuiTien.getChiTietQuyDinhLaiSuat().getChiTietQuyDinhID()
+                : null);
         dto.setHinhThucDaoHanId(
                 phieuGuiTien.getHinhThucDaoHan() != null ? phieuGuiTien.getHinhThucDaoHan().getHinhThucDaoHangID()
                         : null);
@@ -103,10 +111,13 @@ public class PhieuGuiTienMapper {
             entity.setGiaoDichVien(giaoDichVien);
         }
 
-        if (dto.getChiTietQuyDinhLaiSuatId() != null) {
+        if (dto.getLoaiKyHanId() != null && dto.getLoaiTietKiemId() != null && dto.getTanSuatNhanLaiId() != null) {
             ChiTietQuyDinhLaiSuat chiTietQuyDinhLaiSuat = chiTietQuyDinhLaiSuatRepository
-                    .findById(dto.getChiTietQuyDinhLaiSuatId())
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy chi tiết quy định lãi suất"));
+                    .findByLoaiKyHan_LoaiKyHanIDAndLoaiTietKiem_LoaiTietKiemIDAndTanSuatNhanLai_TanSoNhanLaiID(
+                            dto.getLoaiKyHanId(),
+                            dto.getLoaiTietKiemId(),
+                            dto.getTanSuatNhanLaiId())
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy chi tiết quy định lãi suất phù hợp"));
             entity.setChiTietQuyDinhLaiSuat(chiTietQuyDinhLaiSuat);
         }
 
@@ -137,4 +148,5 @@ public class PhieuGuiTienMapper {
 
         return entity;
     }
+
 }

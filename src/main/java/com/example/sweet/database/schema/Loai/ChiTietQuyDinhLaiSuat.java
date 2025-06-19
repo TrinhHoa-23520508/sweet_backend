@@ -15,11 +15,11 @@ import lombok.Setter;
 public class ChiTietQuyDinhLaiSuat {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chiTietQuyDinhID;
 
     @ManyToOne
-    @JoinColumn(name = "tai_khoan_nguon", nullable = false)
+    @JoinColumn(name = "quy_dinh_lai_suat", nullable = false)
     private QuyDinhLaiSuat quyDinhLaiSuat;
 
     @ManyToOne

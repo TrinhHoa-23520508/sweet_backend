@@ -27,4 +27,7 @@ public class PhieuGuiTienDTO {
     private Long tienLaiDaNhanNhungChuaQuyetToan;
     private Long tongLaiQuyetToan;
     private Instant ngayDaoHan;
+    private Long loaiKyHanId;
+    private Long loaiTietKiemId;
+    private Long tanSuatNhanLaiId;
 }
