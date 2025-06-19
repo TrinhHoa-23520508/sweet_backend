@@ -23,8 +23,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-//@Configuration
-//@EnableWebSecurity
+@Configuration
+@EnableWebSecurity
 public class SecurityConfiguration {
 
     @Value("${jwt.secret}")
@@ -37,9 +37,9 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
-        http.csrf(c->c.disable())
+        http.csrf(c -> c.disable())
                 .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(authz -> authz.requestMatchers("/", "/api/v1/auth/login", "/api/v1/auth/refresh","/api/v1/auth/register", "/storage/**", "/api/v1/**")
+                .authorizeHttpRequests(authz -> authz.requestMatchers("/", "/api/v1/auth/login", "/api/v1/auth/refresh", "/api/v1/auth/register", "/storage/**")
                         .permitAll()
                         .anyRequest().authenticated()
                 )
