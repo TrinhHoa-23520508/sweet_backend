@@ -188,8 +188,7 @@
          ));
 
          var quyDinh1 = quyDinhLaiSuatRepository.save(
-             new QuyDinhLaiSuat(null, LocalDate.now(), LocalDate.now(),
-             "Blabla", admin, 0.1f, Integer.MAX_VALUE)
+             new QuyDinhLaiSuat(null, LocalDate.now(), LocalDate.now(), "Blabla", admin, 0.1f, Integer.MAX_VALUE, List.of())
          );
 
          chiTietQuyDinhLaiSuatRepository.saveAll(List.of(

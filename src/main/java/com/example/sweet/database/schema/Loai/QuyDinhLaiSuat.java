@@ -1,6 +1,7 @@
 package com.example.sweet.database.schema.Loai;
 
 import com.example.sweet.database.schema.TaiKhoan.NhanVien;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,4 +30,8 @@ public class QuyDinhLaiSuat {
 
     private float laiSuatKhongKyHan;
     private int soTienGuiToiThieu;
+
+    @OneToMany(mappedBy = "quyDinhLaiSuat", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<ChiTietQuyDinhLaiSuat> chiTietQuyDinhLaiSuats;
 }
