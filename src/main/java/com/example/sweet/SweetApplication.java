@@ -8,17 +8,13 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.example.sweet.database.repository.TaiKhoan.NhanVienRepository;
 
-//@SpringBootApplication
+
+@SpringBootApplication
 @EnableScheduling
-// disable security
-@SpringBootApplication(exclude = {
-		org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
-		org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration.class
-})
 public class SweetApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SweetApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SweetApplication.class, args);
+    }
 
 }

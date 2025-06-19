@@ -1,5 +1,6 @@
 package com.example.sweet.util;
 
+import com.example.sweet.domain.response.ResLoginDTO;
 import com.nimbusds.jose.util.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-//@Service
+@Service
 public class SecurityUtil {
     public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS512;
     public final JwtEncoder jwtEncoder;
@@ -41,13 +42,12 @@ public class SecurityUtil {
     }
 
 
-
     private SecretKey getSecretKey() {
         byte[] keyBytes = Base64.from(jwtKey).decode();
         return new SecretKeySpec(keyBytes, 0, keyBytes.length, SecurityUtil.JWT_ALGORITHM.getName());
     }
 
-    public Jwt checkValidRefreshToken(String refreshToken){
+    public Jwt checkValidRefreshToken(String refreshToken) {
         NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withSecretKey(getSecretKey()).macAlgorithm(SecurityUtil.JWT_ALGORITHM).build();
         try {
             Jwt decodeToken = jwtDecoder.decode(refreshToken);
@@ -61,30 +61,31 @@ public class SecurityUtil {
     }
 
 
-//    public String createAccessToken(String email, ResLoginDTO dto) {
-//        ResLoginDTO.UserInsideToken userInsideToken = new ResLoginDTO.UserInsideToken();
-//        userInsideToken.setId(dto.getUser().getId());
-//        userInsideToken.setEmail(dto.getUser().getEmail());
-//        userInsideToken.setName(dto.getUser().getUserName());
-//        Instant now = Instant.now();
-//        Instant validity = now.plus(this.accessTokenExpiration, ChronoUnit.SECONDS);
-//
-//        List<String> listAuthority = new ArrayList<String>();
-//        listAuthority.add("ROLE_USER_CREATE");
-//        listAuthority.add("ROLE_USER_UPDATE");
-//        // @formatter:off
-//        JwtClaimsSet claims = JwtClaimsSet.builder()
-//                .issuedAt(now)
-//                .expiresAt(validity)
-//                .subject(email)
-//                .claim("user", userInsideToken)
-//                .claim("permission", listAuthority)
-//                .build();
-//
-//        JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
-//        return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader,
-//                claims)).getTokenValue();
-//    }
+    public String createAccessToken(String email, ResLoginDTO dto) {
+        ResLoginDTO.UserInsideToken userInsideToken = new ResLoginDTO.UserInsideToken();
+        userInsideToken.setId(dto.getUser().getId());
+        userInsideToken.setEmail(dto.getUser().getEmail());
+        userInsideToken.setHoTen(dto.getUser().getHoTen());
+        userInsideToken.setType(dto.getType());
+        Instant now = Instant.now();
+        Instant validity = now.plus(this.accessTokenExpiration, ChronoUnit.SECONDS);
+
+        List<String> listAuthority = new ArrayList<String>();
+        listAuthority.add("ROLE_USER_CREATE");
+        listAuthority.add("ROLE_USER_UPDATE");
+        // @formatter:off
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+                .issuedAt(now)
+                .expiresAt(validity)
+                .subject(email)
+                .claim("user", userInsideToken)
+                .claim("permission", listAuthority)
+                .build();
+
+        JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
+        return this.jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader,
+                claims)).getTokenValue();
+    }
 //
 //    public String createRefreshToken(String email, ResLoginDTO dto) {
 //        ResLoginDTO.UserInsideToken userInsideToken = new ResLoginDTO.UserInsideToken();
