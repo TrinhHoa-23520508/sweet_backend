@@ -14,12 +14,14 @@ import com.example.sweet.database.schema.ThamSo;
 import com.example.sweet.database.schema.TrangThai;
 import com.example.sweet.domain.request.NhanVienRequestDTO;
 import com.example.sweet.domain.response.NhanVienResponseDTO;
+import com.example.sweet.domain.response.ResLoginDTO;
 import com.example.sweet.util.constant.StatusEnum;
 import com.example.sweet.util.constant.SystemParameterEnum;
 import com.example.sweet.util.constant.TypeStatusEnum;
 import com.example.sweet.util.error.DuplicateResourceException;
 import com.example.sweet.util.error.NotFoundException;
 import com.example.sweet.util.mapper.NhanVienMapper;
+import com.example.sweet.util.mapper.UserLoginMapper;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,7 @@ public class NhanVienService {
     private final LoaiTrangThaiRepository loaiTrangThaiRepository;
     private final TrangThaiRepository trangThaiRepository;
     private final VaiTroRepository vaiTroRepository;
+    private final UserLoginMapper userLoginMapper;
 
     public NhanVienService(NhanVienRepository nhanVienRepository,
                            NhanVienMapper nhanVienMapper,
@@ -45,7 +48,8 @@ public class NhanVienService {
                            PasswordEncoder passwordEncoder,
                            LoaiTrangThaiRepository loaiTrangThaiRepository,
                            TrangThaiRepository trangThaiRepository,
-                           VaiTroRepository vaiTroRepository) {
+                           VaiTroRepository vaiTroRepository,
+                           UserLoginMapper userLoginMapper) {
         this.nhanVienRepository = nhanVienRepository;
         this.nhanVienMapper = nhanVienMapper;
         this.thamSoRepository = thamSoRepository;
@@ -53,6 +57,7 @@ public class NhanVienService {
         this.loaiTrangThaiRepository = loaiTrangThaiRepository;
         this.trangThaiRepository = trangThaiRepository;
         this.vaiTroRepository = vaiTroRepository;
+        this.userLoginMapper = userLoginMapper;
     }
 
     public boolean checkDuplicate(NhanVien nhanVien) {
@@ -170,6 +175,16 @@ public class NhanVienService {
                 .orElseThrow(() -> new IllegalArgumentException("Trạng thái không tồn tại cho loại trạng thái tài khoản"));
         existingNhanVien.setTrangThaiTaiKhoan(activeTrangThai);
         this.nhanVienRepository.save(existingNhanVien);
+
+    }
+
+    public ResLoginDTO.UserGetAccount getUserAccountByEmail(String email) {
+        NhanVien nhanVien = this.nhanVienRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("Nhân viên không tồn tại với email: " + email));
+        ResLoginDTO.UserGetAccount userGetAccount = this.userLoginMapper.NhanVienResToUserGetAccount(
+                this.nhanVienMapper.toNhanVienResponseDTO(nhanVien)
+        );
+        return userGetAccount;
 
     }
 }
