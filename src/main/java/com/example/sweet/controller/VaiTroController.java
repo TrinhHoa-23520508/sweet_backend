@@ -32,12 +32,12 @@ public class VaiTroController {
     }
 
     //Get all vai tro
-     @GetMapping("/vai-tro")
-     @ApiMessage("Get all Vai Tro")
+    @GetMapping("/vai-tro")
+    @ApiMessage("Get all Vai Tro")
     public ResponseEntity<List<VaiTro>> getAllVaiTro(@Filter Specification<VaiTro> specification) {
         List<VaiTro> vaiTroList = vaiTroService.getAllVaiTro(specification);
         return ResponseEntity.ok(vaiTroList);
-     }
+    }
 
     //Get vai tro by ID
     @GetMapping("/vai-tro/{id}")
@@ -61,7 +61,7 @@ public class VaiTroController {
     @ApiMessage("Delete Vai Tro by ID")
     public ResponseEntity<Void> deleteVaiTro(@PathVariable("id") Long id) {
         vaiTroService.deleteVaiTro(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
 }

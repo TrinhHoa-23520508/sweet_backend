@@ -59,6 +59,6 @@ public class QuyenHanController {
     @ApiMessage("Delete Quyen Han by ID")
     public ResponseEntity<Void> deleteQuyenHan(@PathVariable("id") Long id) {
         quyenHanService.deleteQuyenHan(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 }
