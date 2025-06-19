@@ -1,4 +1,4 @@
-package com.example.sweet.config;
+package com.example.sweet.util.constant;
 
 import java.util.HashMap;
 import java.util.Map;

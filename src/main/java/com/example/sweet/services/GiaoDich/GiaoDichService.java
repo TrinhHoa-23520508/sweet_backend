@@ -8,10 +8,16 @@ import com.example.sweet.database.repository.GiaoDich.PhieuGuiTienRepository;
 import com.example.sweet.database.repository.Loai.LoaiTaiKhoanRepository;
 import com.example.sweet.database.schema.GiaoDich.GiaoDich;
 import com.example.sweet.database.schema.GiaoDich.LichSuGiaoDich_TKTT;
-import com.example.sweet.database.schema.GiaoDich.LichSuGiaoDich_PhieuGuiTien;
 import com.example.sweet.database.schema.TaiKhoan.TaiKhoanThanhToan;
+import com.example.sweet.domain.request.GiaoDich.GiaoDichRequestDTO;
+import com.example.sweet.domain.response.GiaoDich.GiaoDichResponseDTO;
+import com.example.sweet.util.mapper.GiaoDich.GiaoDichMapper;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -22,19 +28,29 @@ public class GiaoDichService {
     private final TaiKhoanThanhToanRepository taiKhoanThanhToanRepo;
     private final PhieuGuiTienRepository phieuGuiTienRepo;
     private final LoaiTaiKhoanRepository loaiTaiKhoanRepo;
+    private final GiaoDichMapper giaoDichMapper;
 
-    public Iterable<GiaoDich> findAll() {
-        return giaoDichRepo.findAll();
+    public List<GiaoDichResponseDTO> findAll() {
+        return giaoDichRepo.findAll().stream().map(giaoDichMapper::toGiaoDichResponseDTO).toList();
     }
 
+    public Optional<GiaoDichResponseDTO> findById(Long id) {
+        return giaoDichRepo.findById(id).map(giaoDichMapper::toGiaoDichResponseDTO);
+    }
+
+    public GiaoDich createGiaoDich(GiaoDichRequestDTO giaoDichRequest) {
+        GiaoDich giaoDich = giaoDichMapper.toGiaoDich(giaoDichRequest);
+
+        return createGiaoDich(giaoDich);
+    }
+
+    @Transactional
     public GiaoDich createGiaoDich(GiaoDich giaoDich) {
         // Xác định loại tài khoản nguồn
-        var loaiTKNguon = loaiTaiKhoanRepo.findById(giaoDich.getLoaiTaiKhoanNguon().getLoaiTaiKhoanID())
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy loại tài khoản nguồn"));
+        var loaiTKNguon = giaoDich.getLoaiTaiKhoanNguon();
 
         // Xác định loại tài khoản đích
-        var loaiTKDich = loaiTaiKhoanRepo.findById(giaoDich.getLoaiTaiKhoanDich().getLoaiTaiKhoanID())
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy loại tài khoản đích"));
+        var loaiTKDich = giaoDich.getLoaiTaiKhoanDich();
 
         // Lấy tài khoản nguồn dựa vào loại
         Object taiKhoanNguon = null;
