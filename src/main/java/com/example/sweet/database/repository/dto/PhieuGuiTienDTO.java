@@ -2,6 +2,8 @@ package com.example.sweet.database.repository.dto;
 
 import java.time.Instant;
 
+import com.example.sweet.database.schema.TaiKhoan.KhachHang;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PhieuGuiTienDTO {
     private Long phieuGuiTienID;
-    private Long khachHangId;
+    private KhachHang khachHang;
     private Long giaoDichVienId;
     private Long chiTietQuyDinhLaiSuatId;
     private Long hinhThucDaoHanId;
@@ -27,7 +29,7 @@ public class PhieuGuiTienDTO {
     private Long tienLaiDaNhanNhungChuaQuyetToan;
     private Long tongLaiQuyetToan;
     private Instant ngayDaoHan;
-    private Long loaiKyHanId;
+    private Integer soThang;
     private Long loaiTietKiemId;
     private Long tanSuatNhanLaiId;
     private Float laiSuat;

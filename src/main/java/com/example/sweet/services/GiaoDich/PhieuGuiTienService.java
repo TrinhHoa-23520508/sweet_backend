@@ -94,7 +94,7 @@ public class PhieuGuiTienService {
             giaoDich.setNoiDung("Tạo sổ tiết kiệm: " + dto.getTenGoiNho());
 
             // Set khách hàng và giao dịch viên
-            KhachHang khachHang = khachHangRepository.findById(dto.getKhachHangId())
+            KhachHang khachHang = khachHangRepository.findById(dto.getKhachHang().getKhachHangID())
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy khách hàng"));
 
             NhanVien giaoDichVien = nhanVienRepository.findById(dto.getGiaoDichVienId())

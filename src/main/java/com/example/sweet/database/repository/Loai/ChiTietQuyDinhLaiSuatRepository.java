@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ChiTietQuyDinhLaiSuatRepository extends JpaRepository<ChiTietQuyDinhLaiSuat, Long> {
     Optional<ChiTietQuyDinhLaiSuat> findByLoaiKyHan_LoaiKyHanIDAndLoaiTietKiem_LoaiTietKiemIDAndTanSuatNhanLai_TanSoNhanLaiID(
-            Long loaiKyHanId,
+            Integer loaiKyHanId,
             Long loaiTietKiemId,
             Long tanSuatNhanLaiId);
 }

@@ -52,13 +52,13 @@ public class PhieuGuiTienMapper {
                 PhieuGuiTienDTO dto = new PhieuGuiTienDTO();
                 dto.setPhieuGuiTienID(phieuGuiTien.getPhieuGuiTienID());
 
-                dto.setKhachHangId(phieuGuiTien.getKhachHang() != null ? phieuGuiTien.getKhachHang().getKhachHangID()
+                dto.setKhachHang(phieuGuiTien.getKhachHang() != null ? phieuGuiTien.getKhachHang()
                                 : null);
                 dto.setGiaoDichVienId(
                                 phieuGuiTien.getGiaoDichVien() != null ? phieuGuiTien.getGiaoDichVien().getNhanVienID()
                                                 : null);
-                dto.setLoaiKyHanId(phieuGuiTien.getChiTietQuyDinhLaiSuat().getLoaiKyHan() != null
-                                ? phieuGuiTien.getChiTietQuyDinhLaiSuat().getLoaiKyHan().getLoaiKyHanID()
+                dto.setSoThang(phieuGuiTien.getChiTietQuyDinhLaiSuat().getLoaiKyHan() != null
+                                ? phieuGuiTien.getChiTietQuyDinhLaiSuat().getLoaiKyHan().getSoThang()
                                 : null);
                 dto.setLoaiTietKiemId(phieuGuiTien.getChiTietQuyDinhLaiSuat().getLoaiTietKiem() != null
                                 ? phieuGuiTien.getChiTietQuyDinhLaiSuat().getLoaiTietKiem().getLoaiTietKiemID()
@@ -108,8 +108,8 @@ public class PhieuGuiTienMapper {
                 }
 
                 // Set các đối tượng tham chiếu
-                if (dto.getKhachHangId() != null) {
-                        KhachHang khachHang = khachHangRepository.findById(dto.getKhachHangId())
+                if (dto.getKhachHang() != null) {
+                        KhachHang khachHang = khachHangRepository.findById(dto.getKhachHang().getKhachHangID())
                                         .orElseThrow(() -> new RuntimeException("Không tìm thấy khách hàng"));
                         entity.setKhachHang(khachHang);
                 }
@@ -120,11 +120,11 @@ public class PhieuGuiTienMapper {
                         entity.setGiaoDichVien(giaoDichVien);
                 }
 
-                if (dto.getLoaiKyHanId() != null && dto.getLoaiTietKiemId() != null
+                if (dto.getSoThang() != null && dto.getLoaiTietKiemId() != null
                                 && dto.getTanSuatNhanLaiId() != null) {
                         ChiTietQuyDinhLaiSuat chiTietQuyDinhLaiSuat = chiTietQuyDinhLaiSuatRepository
                                         .findByLoaiKyHan_LoaiKyHanIDAndLoaiTietKiem_LoaiTietKiemIDAndTanSuatNhanLai_TanSoNhanLaiID(
-                                                        dto.getLoaiKyHanId(),
+                                                        dto.getSoThang(),
                                                         dto.getLoaiTietKiemId(),
                                                         dto.getTanSuatNhanLaiId())
                                         .orElseThrow(() -> new RuntimeException(
