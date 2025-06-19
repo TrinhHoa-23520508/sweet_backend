@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PhieuGuiTienRepository extends JpaRepository<PhieuGuiTien, Long> {
     List<PhieuGuiTien> findByTrangThaiMaTrangThai(String maTrangThai);
+
+    List<PhieuGuiTien> findByKhachHang_KhachHangID(Long khachHangId);
 }

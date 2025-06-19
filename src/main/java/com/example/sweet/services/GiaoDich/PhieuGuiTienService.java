@@ -56,9 +56,9 @@ public class PhieuGuiTienService {
             // Get ChiTietQuyDinhLaiSuat
             ChiTietQuyDinhLaiSuat chiTietQuyDinh = chiTietQuyDinhLaiSuatRepository
                     .findByLoaiKyHan_LoaiKyHanIDAndLoaiTietKiem_LoaiTietKiemIDAndTanSuatNhanLai_TanSoNhanLaiID(
-                    dto.getLoaiKyHanId(),
-                    dto.getLoaiTietKiemId(),
-                    dto.getTanSuatNhanLaiId())
+                            dto.getLoaiKyHanId(),
+                            dto.getLoaiTietKiemId(),
+                            dto.getTanSuatNhanLaiId())
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy quy định lãi suất phù hợp"));
 
             // Set trạng thái mặc định là "chưa tất toán" (ID = 10L)
@@ -179,9 +179,9 @@ public class PhieuGuiTienService {
         // Validate ChiTietQuyDinhLaiSuat exists
         ChiTietQuyDinhLaiSuat chiTietQuyDinh = chiTietQuyDinhLaiSuatRepository
                 .findByLoaiKyHan_LoaiKyHanIDAndLoaiTietKiem_LoaiTietKiemIDAndTanSuatNhanLai_TanSoNhanLaiID(
-                    dto.getLoaiKyHanId(),
-                    dto.getLoaiTietKiemId(),
-                    dto.getTanSuatNhanLaiId())
+                        dto.getLoaiKyHanId(),
+                        dto.getLoaiTietKiemId(),
+                        dto.getTanSuatNhanLaiId())
                 .orElseThrow(() -> new RuntimeException("Quy định lãi suất không hợp lệ"));
 
         // Validate minimum deposit amount
@@ -217,6 +217,13 @@ public class PhieuGuiTienService {
     @Transactional
     public void deletePhieuGuiTien(Long id) {
         phieuGuiTienRepository.deleteById(id);
+    }
+
+    public List<PhieuGuiTienDTO> getPhieuGuiTienByKhachHangId(Long khachHangId) {
+        List<PhieuGuiTien> phieuGuiTiens = phieuGuiTienRepository.findByKhachHang_KhachHangID(khachHangId);
+        return phieuGuiTiens.stream()
+                .map(phieuGuiTienMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
 }
