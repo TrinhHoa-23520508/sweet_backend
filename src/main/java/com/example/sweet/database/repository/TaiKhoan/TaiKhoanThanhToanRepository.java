@@ -14,5 +14,5 @@ public interface TaiKhoanThanhToanRepository extends JpaRepository<TaiKhoanThanh
     // Find TaiKhoanThanhToan by KhachHangID
     Optional<TaiKhoanThanhToan> findByKhachHangKhachHangID(Long khachHangId);
 
-    Optional<TaiKhoanThanhToan> findByKhachHang_KhachHangId(Long khachHangId);
+    Optional<TaiKhoanThanhToan> findByKhachHang_KhachHangID(Long khachHangId);
 }
