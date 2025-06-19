@@ -5,5 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PhieuRutTienRepository extends CrudRepository<PhieuRutTien, Integer> {
+public interface PhieuRutTienRepository extends CrudRepository<PhieuRutTien, Long> {
+    PhieuRutTien saveAndFlush(PhieuRutTien phieuRutTien);
 }

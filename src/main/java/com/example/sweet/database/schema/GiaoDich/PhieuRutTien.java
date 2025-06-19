@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,9 +16,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class PhieuRutTien {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
-    private int phieuRutTienID;
+    private Long phieuRutTienID;
     @ManyToOne
     @JoinColumn(name = "phieu_gui_tien", nullable = false)
     private PhieuGuiTien phieuGuiTien;
@@ -26,7 +27,7 @@ public class PhieuRutTien {
     private GiaoDich giaoDich;
 
     private int soTienRut;
-    private LocalDateTime ngayRut;
+    private Instant ngayRut;
     private float laiSuatKhongKyHan;
 
 }

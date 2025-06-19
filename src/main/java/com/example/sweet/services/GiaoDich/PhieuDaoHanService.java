@@ -1,5 +1,7 @@
 package com.example.sweet.services.GiaoDich;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,11 +65,20 @@ public class PhieuDaoHanService {
     }
 
     @Transactional
+    public List<PhieuDaoHan> handleGetAllPhieuDaoHan() {
+        List<PhieuDaoHan> phieuDaoHans = (List<PhieuDaoHan>) this.phieuDaoHanRepository.findAll();
+        if (phieuDaoHans.isEmpty()) {
+            throw new IllegalArgumentException("No PhieuDaoHan found");
+        }
+        return phieuDaoHans;
+    }
+
+    @Transactional
     /**
      * Handles the creation of a PhieuDaoHan (Maturity Receipt).
      * This method maps the input DTO to an entity and saves it to the database.
      */
-    public void handleCreatePhieuDaoHan(PhieuDaoHanDTO_inp phieuDaoHanDTO_inp) {
+    public PhieuDaoHanDTO handleCreatePhieuDaoHan(PhieuDaoHanDTO_inp phieuDaoHanDTO_inp) {
         if (phieuDaoHanRepository.existsByPhieuGuiTienKyTruoc_PhieuGuiTienID(phieuDaoHanDTO_inp.getMaPhieuGuiTien())) {
             throw new IllegalArgumentException("PhieuDaoHan with this ID already exists");
         }
@@ -97,7 +108,7 @@ public class PhieuDaoHanService {
         phieuGuiTienRepository.save(phieuGuiTienKyTruoc);
         phieuDaoHanRepository.save(phieuDaoHan);
         phieuGuiTienRepository.save(phieuGuiTienKySau);
-        return;
+        return phieuDaoHanDTO;
     }
 
 }
