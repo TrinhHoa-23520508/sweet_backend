@@ -3,8 +3,11 @@ package com.example.sweet.controller.GiaoDich;
 import com.example.sweet.database.schema.TaiKhoan.TaiKhoanThanhToan;
 import com.example.sweet.database.repository.TaiKhoan.TaiKhoanThanhToanRepository;
 import com.example.sweet.database.schema.ThamSo;
+import com.example.sweet.domain.request.GiaoDich.TKTTRequestDTO;
+import com.example.sweet.domain.response.GiaoDich.TKTTResponseDTO;
 import com.example.sweet.services.GiaoDich.TaiKhoanThanhToanService;
 import com.example.sweet.util.annotation.ApiMessage;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,19 +23,17 @@ public class TaiKhoanThanhToanController {
     private TaiKhoanThanhToanService service;
 
     @GetMapping("")
-    @ApiMessage("Mah balls")
-    public ResponseEntity<Iterable<TaiKhoanThanhToan>> getAllTaiKhoanThanhToan() {
+    public ResponseEntity<Iterable<TKTTResponseDTO>> getAllTaiKhoanThanhToan() {
         return ResponseEntity.ok(service.findAll());
     }
 
     @PostMapping("")
-    public ResponseEntity<TaiKhoanThanhToan> insertTaiKhoanThanhToan(@RequestBody TaiKhoanThanhToan taiKhoan) {
+    public ResponseEntity<TaiKhoanThanhToan> insertTaiKhoanThanhToan(@Valid @RequestBody TKTTRequestDTO taiKhoan) {
         return ResponseEntity.ok(service.save(taiKhoan));
     }
 
-    @GetMapping("/loai/{id}")
-    @ApiMessage("Mah balls")
-    public ResponseEntity<Optional<TaiKhoanThanhToan>> getTaiKhoanThanhToanByLoai(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<TKTTResponseDTO>> getTaiKhoanThanhToanById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 

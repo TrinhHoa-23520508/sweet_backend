@@ -13,27 +13,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.sweet.database.repository.dto.PhieuGuiTienDTO;
+import com.example.sweet.database.repository.dto.PhieuTraLaiDTO;
 import com.example.sweet.services.GiaoDich.PhieuGuiTienService;
+import com.example.sweet.services.GiaoDich.PhieuTraLaiService;
 import com.example.sweet.util.annotation.ApiMessage;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/phieu-gui-tien")
 public class PhieuGuiTienController {
     private final PhieuGuiTienService phieuGuiTienService;
+    private final PhieuTraLaiService phieuTraLaiService;
 
-    public PhieuGuiTienController(PhieuGuiTienService phieuGuiTienService) {
+    public PhieuGuiTienController(PhieuGuiTienService phieuGuiTienService, PhieuTraLaiService phieuTraLaiService) {
         this.phieuGuiTienService = phieuGuiTienService;
+        this.phieuTraLaiService = phieuTraLaiService;
     }
 
-    @GetMapping("/phieu-gui-tien")
+    @GetMapping
     @ApiMessage("Lấy tất cả phiếu gửi tiền")
     public ResponseEntity<List<PhieuGuiTienDTO>> getAllPhieuGuiTien() {
         return ResponseEntity.ok(this.phieuGuiTienService.getAllPhieuGuiTien());
     }
 
-    @PostMapping("/phieu-gui-tien")
+    @PostMapping
     @ApiMessage("Tạo mới phiếu gửi tiền")
     public ResponseEntity<PhieuGuiTienDTO> createPhieuGuiTien(
             @Valid @RequestBody PhieuGuiTienDTO phieuGuiTienDTO) {
@@ -49,10 +53,27 @@ public class PhieuGuiTienController {
     // return ResponseEntity.ok(this.phieuGuiTienService.getPhieuGuiTienById(id));
     // }
 
-    @DeleteMapping("/phieu-gui-tien/{id}")
+    @DeleteMapping("/{id}")
     @ApiMessage("Xóa phiếu gửi tiền")
     public ResponseEntity<Void> deletePhieuGuiTien(@PathVariable Long id) {
         phieuGuiTienService.deletePhieuGuiTien(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{khachHangId}")
+    public ResponseEntity<List<PhieuGuiTienDTO>> getPhieuGuiTienByKhachHangId(@PathVariable Long khachHangId) {
+        List<PhieuGuiTienDTO> phieuGuiTiens = phieuGuiTienService.getPhieuGuiTienByKhachHangId(khachHangId);
+        return ResponseEntity.ok(phieuGuiTiens);
+    }
+
+    @GetMapping("/{id}/phieu-tra-lai")
+    public ResponseEntity<?> getPhieuTraLaiByPhieuGuiTienId(@PathVariable Long id) {
+        try {
+            List<PhieuTraLaiDTO> phieuTraLais = phieuTraLaiService.getPhieuTraLaiByPhieuGuiTienId(id);
+            return ResponseEntity.ok(
+                    phieuTraLais);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 }

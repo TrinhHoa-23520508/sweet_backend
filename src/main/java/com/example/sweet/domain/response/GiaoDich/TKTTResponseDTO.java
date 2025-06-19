@@ -1,6 +1,8 @@
-package com.example.sweet.database.schema.TaiKhoan;
+package com.example.sweet.domain.response.GiaoDich;
 
+import com.example.sweet.database.schema.TaiKhoan.KhachHang;
 import com.example.sweet.database.schema.TrangThai;
+import com.example.sweet.domain.response.KhachHangResponseDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,30 +10,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
-@Entity
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TaiKhoanThanhToan {
-    @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+public class TKTTResponseDTO {
     private Long soTaiKhoan;
 
-    @ManyToOne
-    @JoinColumn(name = "khach_hang", nullable = false)
-    private KhachHang khachHang;
+    private KhachHangResponseDTO khachHang;
 
-    @ManyToOne
-    @JoinColumn(name = "trang_thai", nullable = false)
     private TrangThai trangThai;
 
     private Instant ngayTao;
 
     private Long soDu;
-
-
 
 }

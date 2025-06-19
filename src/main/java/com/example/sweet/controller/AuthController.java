@@ -1,6 +1,9 @@
 package com.example.sweet.controller;
 
+import com.example.sweet.domain.request.KhachHangRequestDTO;
+import com.example.sweet.domain.request.RegisterDTO;
 import com.example.sweet.domain.request.ReqLoginDTO;
+import com.example.sweet.domain.response.KhachHangResponseDTO;
 import com.example.sweet.domain.response.ResLoginDTO;
 import com.example.sweet.services.KhachHangService;
 import com.example.sweet.services.NhanVienService;
@@ -8,6 +11,7 @@ import com.example.sweet.util.SecurityUtil;
 import com.example.sweet.util.annotation.ApiMessage;
 import com.example.sweet.util.constant.TypeUserEnum;
 import com.example.sweet.util.error.IdInvalidException;
+import com.example.sweet.util.error.NotFoundException;
 import com.example.sweet.util.mapper.UserLoginMapper;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -101,5 +105,39 @@ public class AuthController {
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(null);
 
     }
+
+    @GetMapping("/auth/account")
+    @ApiMessage("Get account information")
+    public ResponseEntity<ResLoginDTO.UserGetAccount> getAccount() {
+
+        String emailHasPrefix = SecurityUtil.getCurrentUserLogin()
+                .isPresent() ?
+                SecurityUtil.getCurrentUserLogin().get()
+                : "";
+        if (emailHasPrefix.equals("")) {
+            throw new NotFoundException("Token truyền lên không hợp lệ");
+        }
+        ResLoginDTO.UserGetAccount userGetAccount = new ResLoginDTO.UserGetAccount();
+        if (emailHasPrefix.startsWith("kh.")) {
+            String email = emailHasPrefix.substring(3);
+            userGetAccount = this.khachHangService.getUserAccountByEmail(email);
+
+        } else if (emailHasPrefix.startsWith("nv.")) {
+            String email = emailHasPrefix.substring(3);
+            userGetAccount = this.nhanVienService.getUserAccountByEmail(email);
+        }
+        return ResponseEntity.ok().body(userGetAccount);
+    }
+
+    @PostMapping("/auth/register")
+    @ApiMessage("Register account")
+    public ResponseEntity<RegisterDTO<KhachHangResponseDTO>> register(@Valid @RequestBody KhachHangRequestDTO khachHangRequestDTO) {
+        KhachHangResponseDTO responseDTO = this.khachHangService.createKhachHang(khachHangRequestDTO);
+        RegisterDTO<KhachHangResponseDTO> registerDTO = new RegisterDTO<>();
+        registerDTO.setData(responseDTO);
+        registerDTO.setType(TypeUserEnum.KHACHHANG);
+        return ResponseEntity.ok().body(registerDTO);
+    }
+
 
 }

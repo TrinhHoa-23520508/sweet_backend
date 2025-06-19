@@ -17,6 +17,7 @@ import java.util.List;
 public class LoaiTrangThaiController {
 
     private final LoaiTrangThaiService loaiTrangThaiService;
+
     public LoaiTrangThaiController(LoaiTrangThaiService loaiTrangThaiService) {
         this.loaiTrangThaiService = loaiTrangThaiService;
     }
@@ -58,7 +59,7 @@ public class LoaiTrangThaiController {
     @ApiMessage("Delete Loai Trang Thai by ID")
     public ResponseEntity<Void> deleteLoaiTrangThai(@PathVariable("id") Long id) {
         loaiTrangThaiService.deleteLoaiTrangThai(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
 

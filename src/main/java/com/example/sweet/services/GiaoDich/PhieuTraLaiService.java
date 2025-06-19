@@ -202,4 +202,15 @@ public class PhieuTraLaiService {
                 break;
         }
     }
+
+    public List<PhieuTraLaiDTO> getPhieuTraLaiByPhieuGuiTienId(Long phieuGuiTienId) {
+        PhieuGuiTien phieuGuiTien = phieuGuiTienRepository.findById(phieuGuiTienId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy phiếu gửi tiền với ID: " + phieuGuiTienId));
+
+        List<PhieuTraLai> phieuTraLais = phieuTraLaiRepository.findByPhieuGuiTien(phieuGuiTien);
+
+        return phieuTraLais.stream()
+                .map(phieuTraLaiMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 }
