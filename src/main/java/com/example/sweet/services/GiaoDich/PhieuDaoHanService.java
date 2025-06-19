@@ -1,5 +1,7 @@
 package com.example.sweet.services.GiaoDich;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,6 +62,15 @@ public class PhieuDaoHanService {
         this.loaiKyHanRepository = loaiKyHanRepository;
         this.hinhThucDaoHanRepository = hinhThucDaoHanRepository;
         this.phieuDaoHanMapper = phieuDaoHanMapper;
+    }
+
+    @Transactional
+    public List<PhieuDaoHan> handleGetAllPhieuDaoHan() {
+        List<PhieuDaoHan> phieuDaoHans = (List<PhieuDaoHan>) this.phieuDaoHanRepository.findAll();
+        if (phieuDaoHans.isEmpty()) {
+            throw new IllegalArgumentException("No PhieuDaoHan found");
+        }
+        return phieuDaoHans;
     }
 
     @Transactional

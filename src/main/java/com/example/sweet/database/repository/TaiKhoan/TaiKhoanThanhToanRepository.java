@@ -13,4 +13,6 @@ import java.util.Optional;
 public interface TaiKhoanThanhToanRepository extends JpaRepository<TaiKhoanThanhToan, Long> {
     // Find TaiKhoanThanhToan by KhachHangID
     Optional<TaiKhoanThanhToan> findByKhachHangKhachHangID(Long khachHangId);
+
+    Optional<TaiKhoanThanhToan> findByKhachHang_KhachHangId(Long khachHangId);
 }
