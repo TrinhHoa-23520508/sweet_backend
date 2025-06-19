@@ -30,4 +30,5 @@ public class PhieuGuiTienDTO {
     private Long loaiKyHanId;
     private Long loaiTietKiemId;
     private Long tanSuatNhanLaiId;
+    private Float laiSuat;
 }

@@ -227,26 +227,27 @@
 // }
 
 // /*
-// Hào: Data mẫu để tui test đừng xóa làm ơn
-// INSERT INTO `sweet`.`khach_hang` (`khach_hangid`, `cccd`, `email`, `ho_ten`,
-// `mat_khau`, `ngay_dang_ky`,
-// `ngay_sinh`, `ten_dang_nhap`, `dia_chi_lien_lac`, `dia_chi_thuong_tru`,
-// `trang_thai_tai_khoan`, `vai_tro`)
-// VALUES ('2', '123', 'jojijik', 'fawfawfaw', '123456', '2022-01-01',
-// '2022-01-01', 'blabla', '1', '1', '1', '1');
-
-// INSERT INTO `sweet`.`tai_khoan_thanh_toan` (`so_tai_khoan`, `ngay_tao`,
-// `so_du`, `khach_hang`, `trang_thai`)
-// VALUES ('1', '2022-01-01', '900000', '1', '1');
-
-// INSERT INTO `sweet`.`tai_khoan_thanh_toan` (`so_tai_khoan`, `ngay_tao`,
-// `so_du`, `khach_hang`, `trang_thai`)
-// VALUES ('2', '2022-06-01', '100000', '1', '1');
-
-// INSERT INTO `sweet`.`nhan_vien` (`nhan_vienid`, `cccd`, `email`, `ho_ten`,
-// `mat_khau`, `ngay_tuyen_dung`,
-// `ngay_sinh`, `ten_dang_nhap`, `dia_chi_lien_lac`, `dia_chi_thuong_tru`,
-// `trang_thai_tai_khoan`, `vai_tro`)
-// VALUES ('1', '123', 'jojijik', 'fawfawfaw', '123456', '2022-01-01',
-// '2022-01-01', 'blabla', '1', '1', '1', '1');
+// * Hào: Data mẫu để tui test đừng xóa làm ơn
+// * INSERT INTO `sweet`.`khach_hang` (`khach_hangid`, `cccd`, `email`,
+// `ho_ten`,
+// * `mat_khau`, `ngay_dang_ky`,
+// * `ngay_sinh`, `ten_dang_nhap`, `dia_chi_lien_lac`, `dia_chi_thuong_tru`,
+// * `trang_thai_tai_khoan`, `vai_tro`)
+// * VALUES ('2', '123', 'jojijik', 'fawfawfaw', '123456', '2022-01-01',
+// * '2022-01-01', 'blabla', '1', '1', '1', '1');
+// *
+// * INSERT INTO `sweet`.`tai_khoan_thanh_toan` (`so_tai_khoan`, `ngay_tao`,
+// * `so_du`, `khach_hang`, `trang_thai`)
+// * VALUES ('1', '2022-01-01', '900000', '1', '1');
+// *
+// * INSERT INTO `sweet`.`tai_khoan_thanh_toan` (`so_tai_khoan`, `ngay_tao`,
+// * `so_du`, `khach_hang`, `trang_thai`)
+// * VALUES ('2', '2022-06-01', '100000', '1', '1');
+// *
+// * INSERT INTO `sweet`.`nhan_vien` (`nhan_vienid`, `cccd`, `email`, `ho_ten`,
+// * `mat_khau`, `ngay_tuyen_dung`,
+// * `ngay_sinh`, `ten_dang_nhap`, `dia_chi_lien_lac`, `dia_chi_thuong_tru`,
+// * `trang_thai_tai_khoan`, `vai_tro`)
+// * VALUES ('1', '123', 'jojijik', 'fawfawfaw', '123456', '2022-01-01',
+// * '2022-01-01', 'blabla', '1', '1', '1', '1');
 // */
