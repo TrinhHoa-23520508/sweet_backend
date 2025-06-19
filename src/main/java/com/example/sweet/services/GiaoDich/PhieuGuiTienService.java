@@ -56,7 +56,7 @@ public class PhieuGuiTienService {
             // Get ChiTietQuyDinhLaiSuat
             ChiTietQuyDinhLaiSuat chiTietQuyDinh = chiTietQuyDinhLaiSuatRepository
                     .findByLoaiKyHan_LoaiKyHanIDAndLoaiTietKiem_LoaiTietKiemIDAndTanSuatNhanLai_TanSoNhanLaiID(
-                            dto.getLoaiKyHanId(),
+                            dto.getSoThang(),
                             dto.getLoaiTietKiemId(),
                             dto.getTanSuatNhanLaiId())
                     .orElseThrow(() -> new RuntimeException("Không tìm thấy quy định lãi suất phù hợp"));
@@ -172,14 +172,14 @@ public class PhieuGuiTienService {
 
     private void validatePhieuGuiTien(PhieuGuiTienDTO dto) {
         // Validate required IDs exist
-        if (dto.getLoaiKyHanId() == null || dto.getLoaiTietKiemId() == null || dto.getTanSuatNhanLaiId() == null) {
+        if (dto.getSoThang() == null || dto.getLoaiTietKiemId() == null || dto.getTanSuatNhanLaiId() == null) {
             throw new RuntimeException("Thiếu thông tin về loại kỳ hạn, loại tiết kiệm hoặc tần suất nhận lãi");
         }
 
         // Validate ChiTietQuyDinhLaiSuat exists
         ChiTietQuyDinhLaiSuat chiTietQuyDinh = chiTietQuyDinhLaiSuatRepository
                 .findByLoaiKyHan_LoaiKyHanIDAndLoaiTietKiem_LoaiTietKiemIDAndTanSuatNhanLai_TanSoNhanLaiID(
-                        dto.getLoaiKyHanId(),
+                        dto.getSoThang(),
                         dto.getLoaiTietKiemId(),
                         dto.getTanSuatNhanLaiId())
                 .orElseThrow(() -> new RuntimeException("Quy định lãi suất không hợp lệ"));
