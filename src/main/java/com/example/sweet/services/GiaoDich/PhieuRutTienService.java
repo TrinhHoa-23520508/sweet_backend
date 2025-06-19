@@ -124,7 +124,7 @@ public class PhieuRutTienService {
 
         KhachHang khachHang = this.khachHangRepository.findById(dto.getMaKhachHang()).get();
 
-        giaoDich.setTaiKhoanDich(taiKhoanThanhToanRepository.findByKhachHang_KhachHangID(khachHang.getKhachHangID())
+        giaoDich.setTaiKhoanDich(taiKhoanThanhToanRepository.findByKhachHang(khachHang)
                 .get().getSoTaiKhoan());
         giaoDich.setLoaiTaiKhoanDich(loaiTaiKhoanRepository.findById(1L).get());
         NhanVien giaoDichVien = this.nhanVienRepository.findById(dto.getMaGiaoDichVien())
