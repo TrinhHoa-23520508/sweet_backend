@@ -67,7 +67,7 @@ public class PhieuDaoHanService {
      * Handles the creation of a PhieuDaoHan (Maturity Receipt).
      * This method maps the input DTO to an entity and saves it to the database.
      */
-    public void handleCreatePhieuDaoHan(PhieuDaoHanDTO_inp phieuDaoHanDTO_inp) {
+    public PhieuDaoHanDTO handleCreatePhieuDaoHan(PhieuDaoHanDTO_inp phieuDaoHanDTO_inp) {
         if (phieuDaoHanRepository.existsByPhieuGuiTienKyTruoc_PhieuGuiTienID(phieuDaoHanDTO_inp.getMaPhieuGuiTien())) {
             throw new IllegalArgumentException("PhieuDaoHan with this ID already exists");
         }
@@ -97,7 +97,7 @@ public class PhieuDaoHanService {
         phieuGuiTienRepository.save(phieuGuiTienKyTruoc);
         phieuDaoHanRepository.save(phieuDaoHan);
         phieuGuiTienRepository.save(phieuGuiTienKySau);
-        return;
+        return phieuDaoHanDTO;
     }
 
 }
