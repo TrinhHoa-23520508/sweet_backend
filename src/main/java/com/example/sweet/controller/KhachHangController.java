@@ -63,7 +63,7 @@ public class KhachHangController {
     @ApiMessage("Vo Hieu Hoa Khach Hang (Deactivate Customer)")
     public ResponseEntity<Void> deactivateKhachHang(@PathVariable Long id) {
         khachHangService.deactivateKhachHang(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
     //active tai khoan
@@ -71,7 +71,7 @@ public class KhachHangController {
     @ApiMessage("Hoat Dong Tai Khoan Khach Hang (Activate Customer Account)")
     public ResponseEntity<Void> activateKhachHang(@PathVariable Long id) {
         khachHangService.activateKhachHang(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
 

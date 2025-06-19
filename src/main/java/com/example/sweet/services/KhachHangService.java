@@ -13,12 +13,14 @@ import com.example.sweet.database.schema.ThamSo;
 import com.example.sweet.database.schema.TrangThai;
 import com.example.sweet.domain.request.KhachHangRequestDTO;
 import com.example.sweet.domain.response.KhachHangResponseDTO;
+import com.example.sweet.domain.response.ResLoginDTO;
 import com.example.sweet.util.constant.StatusEnum;
 import com.example.sweet.util.constant.SystemParameterEnum;
 import com.example.sweet.util.constant.TypeStatusEnum;
 import com.example.sweet.util.error.DuplicateResourceException;
 import com.example.sweet.util.error.NotFoundException;
 import com.example.sweet.util.mapper.KhachHangMapper;
+import com.example.sweet.util.mapper.UserLoginMapper;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,7 @@ public class KhachHangService {
     private final TrangThaiRepository trangThaiRepository;
     private final LoaiTrangThaiRepository loaiTrangThaiRepository;
     private final VaiTroRepository vaiTroRepository;
+    private final UserLoginMapper userLoginMapper;
 
     public KhachHangService(KhachHangRepository khachHangRepository,
                             PasswordEncoder passwordEncoder,
@@ -45,7 +48,8 @@ public class KhachHangService {
                             ThamSoRepository thamSoRepository,
                             TrangThaiRepository trangThaiRepository,
                             LoaiTrangThaiRepository loaiTrangThaiRepository,
-                            VaiTroRepository vaiTroRepository) {
+                            VaiTroRepository vaiTroRepository,
+                            UserLoginMapper userLoginMapper) {
         this.khachHangRepository = khachHangRepository;
         this.passwordEncoder = passwordEncoder;
         this.khachHangMapper = khachHangMapper;
@@ -53,6 +57,7 @@ public class KhachHangService {
         this.trangThaiRepository = trangThaiRepository;
         this.loaiTrangThaiRepository = loaiTrangThaiRepository;
         this.vaiTroRepository = vaiTroRepository;
+        this.userLoginMapper = userLoginMapper;
     }
 
     public boolean checkDuplicate(KhachHang khachHang) {
@@ -181,6 +186,15 @@ public class KhachHangService {
                 .orElseThrow(() -> new IllegalArgumentException("Trạng thái không tồn tại cho loại trạng thái tài khoản"));
         existingKhachHang.setTrangThaiTaiKhoan(activeTrangThai);
         this.khachHangRepository.save(existingKhachHang);
+    }
+
+    public ResLoginDTO.UserGetAccount getUserAccountByEmail(String email) {
+        KhachHang khachHang = this.khachHangRepository.findByEmail(email)
+                .orElseThrow(() -> new NotFoundException("Khách hàng không tồn tại với email: " + email));
+        ResLoginDTO.UserGetAccount userGetAccount = this.userLoginMapper.KhachHangResToUserGetAccount(
+                this.khachHangMapper.toKhachHangResponseDTO(khachHang)
+        );
+        return userGetAccount;
     }
 
 }

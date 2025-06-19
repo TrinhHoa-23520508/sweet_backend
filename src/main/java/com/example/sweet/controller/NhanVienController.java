@@ -66,7 +66,7 @@ public class NhanVienController {
     @ApiMessage("Deactivate NhanVien")
     public ResponseEntity<Void> deactivateNhanVien(@PathVariable Long id) {
         nhanVienService.deactivateNhanVien(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
     //activate NhanVien
@@ -74,7 +74,7 @@ public class NhanVienController {
     @ApiMessage("Activate NhanVien")
     public ResponseEntity<Void> activateNhanVien(@PathVariable Long id) {
         nhanVienService.activateNhanVien(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
 

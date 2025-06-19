@@ -5,6 +5,8 @@ import com.example.sweet.database.repository.TaiKhoan.NhanVienRepository;
 import com.example.sweet.database.schema.TaiKhoan.KhachHang;
 import com.example.sweet.database.schema.TaiKhoan.NhanVien;
 import com.example.sweet.domain.request.ReqLoginDTO;
+import com.example.sweet.domain.response.KhachHangResponseDTO;
+import com.example.sweet.domain.response.NhanVienResponseDTO;
 import com.example.sweet.domain.response.ResLoginDTO;
 import com.example.sweet.util.constant.TypeUserEnum;
 import org.springframework.stereotype.Component;
@@ -47,6 +49,41 @@ public class UserLoginMapper {
         resLoginDTO.setType(reqLogin.getType());
 
         return resLoginDTO;
+    }
+
+    public ResLoginDTO.UserGetAccount NhanVienResToUserGetAccount(NhanVienResponseDTO nhanVienResponseDTO) {
+        ResLoginDTO.UserGetAccount userGetAccount = new ResLoginDTO.UserGetAccount();
+        userGetAccount.setId(nhanVienResponseDTO.getNhanVienID());
+        userGetAccount.setHoTen(nhanVienResponseDTO.getHoTen());
+        userGetAccount.setType(TypeUserEnum.NHANVIEN);
+        userGetAccount.setNgaySinh(nhanVienResponseDTO.getNgaySinh());
+        userGetAccount.setEmail(nhanVienResponseDTO.getEmail());
+        userGetAccount.setCccd(nhanVienResponseDTO.getCccd());
+        userGetAccount.setSoDienThoai(nhanVienResponseDTO.getSoDienThoai());
+        userGetAccount.setDiaChiLienLacId(nhanVienResponseDTO.getDiaChiLienLacId());
+        userGetAccount.setDiaChiThuongTruId(nhanVienResponseDTO.getDiaChiThuongTruId());
+        userGetAccount.setVaiTro(nhanVienResponseDTO.getVaiTro());
+        userGetAccount.setTrangThaiTaiKhoan(nhanVienResponseDTO.getTrangThaiTaiKhoan());
+
+        return userGetAccount;
+    }
+
+    public ResLoginDTO.UserGetAccount KhachHangResToUserGetAccount(KhachHangResponseDTO khachHangResponseDTO) {
+        ResLoginDTO.UserGetAccount userGetAccount = new ResLoginDTO.UserGetAccount();
+        userGetAccount.setId(khachHangResponseDTO.getKhachHangID());
+        userGetAccount.setHoTen(khachHangResponseDTO.getHoTen());
+        userGetAccount.setType(TypeUserEnum.KHACHHANG);
+        userGetAccount.setNgaySinh(khachHangResponseDTO.getNgaySinh());
+        userGetAccount.setEmail(khachHangResponseDTO.getEmail());
+        userGetAccount.setCccd(khachHangResponseDTO.getCccd());
+        userGetAccount.setSoDienThoai(khachHangResponseDTO.getSoDienThoai());
+        userGetAccount.setDiaChiLienLacId(khachHangResponseDTO.getDiaChiLienLacId());
+        userGetAccount.setDiaChiThuongTruId(khachHangResponseDTO.getDiaChiThuongTruId());
+        userGetAccount.setVaiTro(khachHangResponseDTO.getVaiTro());
+        userGetAccount.setTrangThaiTaiKhoan(khachHangResponseDTO.getTrangThaiTaiKhoan());
+
+
+        return userGetAccount;
     }
 
 }
