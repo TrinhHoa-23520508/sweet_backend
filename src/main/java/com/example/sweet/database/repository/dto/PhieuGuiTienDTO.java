@@ -14,6 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PhieuGuiTienDTO {
+    private Long khachHangId;
     private Long phieuGuiTienID;
     private KhachHang khachHang;
     private Long giaoDichVienId;
