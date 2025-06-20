@@ -1,8 +1,11 @@
 package com.example.sweet.util.constant;
 
 public enum TypeStatusEnum {
-    TRANGTHAI_KHACHHANG,
-    TRANGTHAI_TAIKHOAN,
-    TRANGTHAI_GIAODICH,
-    
+    customer,
+    employee,
+    payment_account,
+    transaction,
+    deposit_receipt,
+    login_account,
+
 }

@@ -5,7 +5,9 @@ import com.example.sweet.database.schema.TaiKhoan.NhanVien;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -18,4 +20,10 @@ public interface NhanVienRepository extends JpaRepository<NhanVien, Long>, JpaSp
     boolean existsByEmailOrCccdAndNhanVienIDNot(String email, String cccd, Long nhanVienID);
 
     Optional<NhanVien> findByEmail(String email);
+
+    @Query("SELECT nv FROM NhanVien nv " +
+            "JOIN FETCH nv.vaiTro vt " +
+            "JOIN FETCH vt.quyenHans " +
+            "WHERE nv.email = :email")
+    Optional<NhanVien> findByEmailWithPermissions(@Param("email") String email);
 }

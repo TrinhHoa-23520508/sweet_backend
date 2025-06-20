@@ -26,7 +26,6 @@ public class PermissionInterceptor implements HandlerInterceptor {
     @Autowired
     private KhachHangRepository khachHangRepository;
 
-
     @Override
     public boolean preHandle(
             HttpServletRequest request,
@@ -41,51 +40,51 @@ public class PermissionInterceptor implements HandlerInterceptor {
         if (usernameLogin.equals("")) {
             throw new IdInvalidException("Bạn chưa đăng nhập");
         }
+
         if (usernameLogin.startsWith("kh")) {
             String email = usernameLogin.substring(3);
-            KhachHang khachHang = this.khachHangRepository.findByEmail(email).orElseThrow(
-                    () -> new IdInvalidException("Khách hàng không tồn tại")
-            );
-            TrangThai trangThaiTaiKhoan = khachHang.getTrangThaiTaiKhoan();
-            if (trangThaiTaiKhoan.getMaTrangThai().equals(StatusEnum.VO_HIEU_HOA.toString())) {
-                throw new IdInvalidException("Tài khoản của bạn đã bị vô hiệu hóa");
-            }
-            VaiTro vaiTro = khachHang.getVaiTro();
-            if (vaiTro == null) {
-                throw new IdInvalidException("Vai trò của bạn không được xác định");
-            }
-            List<QuyenHan> quyenHans = vaiTro.getQuyenHans();
-            boolean isAllowed = quyenHans.stream()
-                    .anyMatch(quyenHan -> quyenHan.getApiPath().equals(path) &&
-                            quyenHan.getMethod().equalsIgnoreCase(httpMethod));
-            if (!isAllowed) {
-                throw new IdInvalidException("Bạn không có quyền truy cập vào nguồn tài nguyên này");
-            }
 
+            KhachHang khachHang = this.khachHangRepository.findByEmailWithPermissions(email)
+                    .orElseThrow(() -> new IdInvalidException("Khách hàng không tồn tại"));
+
+            checkAccountStatus(khachHang.getTrangThaiTaiKhoan());
+            checkPermission(khachHang.getVaiTro(), path, httpMethod);
 
         } else if (usernameLogin.startsWith("nv")) {
             String email = usernameLogin.substring(3);
-            NhanVien nhanVien = this.nhanVienRepository.findByEmail(email).orElseThrow(
-                    () -> new IdInvalidException("Nhân viên không tồn tại")
-            );
-            TrangThai trangThaiTaiKhoan = nhanVien.getTrangThaiTaiKhoan();
-            if (trangThaiTaiKhoan.getMaTrangThai().equals(StatusEnum.VO_HIEU_HOA.toString())) {
-                throw new IdInvalidException("Tài khoản của bạn đã bị vô hiệu hóa");
-            }
 
-            VaiTro vaiTro = nhanVien.getVaiTro();
-            if (vaiTro == null) {
-                throw new IdInvalidException("Vai trò của bạn không được xác định");
-            }
-            List<QuyenHan> quyenHans = vaiTro.getQuyenHans();
-            boolean isAllowed = quyenHans.stream()
-                    .anyMatch(quyenHan -> quyenHan.getApiPath().equals(path) &&
-                            quyenHan.getMethod().equalsIgnoreCase(httpMethod));
-            if (!isAllowed) {
-                throw new IdInvalidException("Bạn không có quyền truy cập vào nguồn tài nguyên này");
-            }
+            NhanVien nhanVien = this.nhanVienRepository.findByEmailWithPermissions(email)
+                    .orElseThrow(() -> new IdInvalidException("Nhân viên không tồn tại"));
 
+            checkAccountStatus(nhanVien.getTrangThaiTaiKhoan());
+            checkPermission(nhanVien.getVaiTro(), path, httpMethod);
         }
+
         return true;
+    }
+
+    private void checkAccountStatus(TrangThai trangThaiTaiKhoan) throws IdInvalidException {
+        if (trangThaiTaiKhoan.getMaTrangThai().equals(StatusEnum.locked.toString())) {
+            throw new IdInvalidException("Tài khoản của bạn đã bị vô hiệu hóa");
+        }
+    }
+
+    private void checkPermission(VaiTro vaiTro, String path, String httpMethod) throws IdInvalidException {
+        if (vaiTro == null) {
+            throw new IdInvalidException("Vai trò của bạn không được xác định");
+        }
+
+        List<QuyenHan> quyenHans = vaiTro.getQuyenHans();
+        if (quyenHans == null || quyenHans.isEmpty()) {
+            throw new IdInvalidException("Vai trò của bạn không có quyền hạn nào");
+        }
+
+        boolean isAllowed = quyenHans.stream()
+                .anyMatch(quyenHan -> quyenHan.getApiPath().equals(path) &&
+                        quyenHan.getMethod().equalsIgnoreCase(httpMethod));
+
+        if (!isAllowed) {
+            throw new IdInvalidException("Bạn không có quyền truy cập vào nguồn tài nguyên này");
+        }
     }
 }

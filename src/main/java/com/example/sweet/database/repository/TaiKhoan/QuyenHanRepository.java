@@ -17,4 +17,6 @@ public interface QuyenHanRepository extends JpaRepository<QuyenHan, Long>, JpaSp
     boolean existsByApiPathAndMethodAndModuleAndIdNot(String apiPath, String method, String module, Long id);
 
     List<QuyenHan> findAllByIdIn(List<Long> ids);
+
+    List<QuyenHan> findAllByModule(String module);
 }

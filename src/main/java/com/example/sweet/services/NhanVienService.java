@@ -16,6 +16,7 @@ import com.example.sweet.domain.response.ResLoginDTO;
 import com.example.sweet.util.constant.StatusEnum;
 import com.example.sweet.util.constant.SystemParameterEnum;
 import com.example.sweet.util.constant.TypeStatusEnum;
+import com.example.sweet.util.constant.VaiTroEnum;
 import com.example.sweet.util.error.DuplicateResourceException;
 import com.example.sweet.util.error.NotFoundException;
 import com.example.sweet.util.mapper.NhanVienMapper;
@@ -108,15 +109,15 @@ public class NhanVienService {
         newNhanVien.setMatKhau(passwordEncoder.encode(newNhanVien.getMatKhau()));
 
         if (newNhanVien.getTrangThaiTaiKhoan() == null) {
-            LoaiTrangThai loaiTrangThai_TK = this.loaiTrangThaiRepository.findByMaLoaiTrangThai("TRANGTHAI_TAIKHOAN")
+            LoaiTrangThai loaiTrangThai_TK = this.loaiTrangThaiRepository.findByMaLoaiTrangThai(TypeStatusEnum.login_account.toString())
                     .orElseThrow(() -> new IllegalArgumentException("Loại trạng thái tài khoản không tồn tại"));
-            TrangThai active_default_TK = this.trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai("HOAT_DONG", loaiTrangThai_TK)
+            TrangThai active_default_TK = this.trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai(StatusEnum.active.toString(), loaiTrangThai_TK)
                     .orElseThrow(() -> new IllegalArgumentException("Trạng thái HOAT_DONG không tồn tại cho loại trạng thái tài khoản"));
             newNhanVien.setTrangThaiTaiKhoan(active_default_TK);
         }
 
         if (newNhanVien.getVaiTro() == null) {
-            VaiTro vaiTro_default = this.vaiTroRepository.findByName("KHONG_QUYEN_HE_THONG").orElseThrow(() -> new IllegalArgumentException("Vai trò không tồn tại"));
+            VaiTro vaiTro_default = this.vaiTroRepository.findByName(VaiTroEnum.KHONG_QUYEN_NHAN_VIEN.toString()).orElseThrow(() -> new IllegalArgumentException("Vai trò không tồn tại"));
             newNhanVien.setVaiTro(vaiTro_default);
         }
 
@@ -170,9 +171,9 @@ public class NhanVienService {
         NhanVien existingNhanVien = this.nhanVienRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Nhân viên không tồn tại với ID: " + id)
         );
-        LoaiTrangThai loaiTrangThai_TK = this.loaiTrangThaiRepository.findByMaLoaiTrangThai(TypeStatusEnum.TRANGTHAI_TAIKHOAN.toString())
+        LoaiTrangThai loaiTrangThai_TK = this.loaiTrangThaiRepository.findByMaLoaiTrangThai(TypeStatusEnum.login_account.toString())
                 .orElseThrow(() -> new IllegalArgumentException("Loại trạng thái không tồn tại"));
-        TrangThai inactiveTrangThai = this.trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai(StatusEnum.VO_HIEU_HOA.toString(), loaiTrangThai_TK)
+        TrangThai inactiveTrangThai = this.trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai(StatusEnum.locked.toString(), loaiTrangThai_TK)
                 .orElseThrow(() -> new IllegalArgumentException("Trạng thái không tồn tại cho loại trạng thái tài khoản"));
         existingNhanVien.setTrangThaiTaiKhoan(inactiveTrangThai);
         this.nhanVienRepository.save(existingNhanVien);
@@ -182,9 +183,9 @@ public class NhanVienService {
         NhanVien existingNhanVien = this.nhanVienRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Nhân viên không tồn tại với ID: " + id)
         );
-        LoaiTrangThai loaiTrangThai_TK = this.loaiTrangThaiRepository.findByMaLoaiTrangThai(TypeStatusEnum.TRANGTHAI_TAIKHOAN.toString())
+        LoaiTrangThai loaiTrangThai_TK = this.loaiTrangThaiRepository.findByMaLoaiTrangThai(TypeStatusEnum.login_account.toString())
                 .orElseThrow(() -> new IllegalArgumentException("Loại trạng thái không tồn tại"));
-        TrangThai activeTrangThai = this.trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai(StatusEnum.HOAT_DONG.toString(), loaiTrangThai_TK)
+        TrangThai activeTrangThai = this.trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai(StatusEnum.active.toString(), loaiTrangThai_TK)
                 .orElseThrow(() -> new IllegalArgumentException("Trạng thái không tồn tại cho loại trạng thái tài khoản"));
         existingNhanVien.setTrangThaiTaiKhoan(activeTrangThai);
         this.nhanVienRepository.save(existingNhanVien);
