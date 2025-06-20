@@ -1,5 +1,6 @@
 package com.example.sweet.database.repository.TaiKhoan;
 
+import com.example.sweet.database.schema.TaiKhoan.KhachHang;
 import com.example.sweet.database.schema.TaiKhoan.QuyenHan;
 import com.example.sweet.database.schema.TaiKhoan.TaiKhoanThanhToan;
 
@@ -15,4 +16,6 @@ public interface TaiKhoanThanhToanRepository extends JpaRepository<TaiKhoanThanh
     Optional<TaiKhoanThanhToan> findByKhachHangKhachHangID(Long khachHangId);
 
     Optional<TaiKhoanThanhToan> findByKhachHang_KhachHangID(Long khachHangId);
+
+    Optional<TaiKhoanThanhToan> findByKhachHang(KhachHang khachHang);
 }
