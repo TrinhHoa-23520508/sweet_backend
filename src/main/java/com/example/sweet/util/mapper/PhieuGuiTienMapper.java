@@ -108,8 +108,8 @@ public class PhieuGuiTienMapper {
                 }
 
                 // Set các đối tượng tham chiếu
-                if (dto.getKhachHang() != null) {
-                        KhachHang khachHang = khachHangRepository.findById(dto.getKhachHang().getKhachHangID())
+                if (dto.getKhachHangId() != null) {
+                        KhachHang khachHang = khachHangRepository.findById(dto.getKhachHangId())
                                         .orElseThrow(() -> new RuntimeException("Không tìm thấy khách hàng"));
                         entity.setKhachHang(khachHang);
                 }
