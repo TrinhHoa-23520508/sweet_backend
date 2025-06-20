@@ -1,5 +1,6 @@
 package com.example.sweet.domain.request;
 
+import com.example.sweet.database.schema.TaiKhoan.DiaChi;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -28,8 +29,8 @@ public class KhachHangRequestDTO {
     @Pattern(regexp = "^0\\d{9}$", message = "Số điện thoại phải gồm 10 số và bắt đầu bằng 0")
     private String soDienThoai;
 
-    private Long diaChiThuongTruId;
-    private Long diaChiLienLacId;
+    private DiaChi diaChiThuongTru;
+    private DiaChi diaChiLienLac;
     private Long trangThaiKhachHangId;
     private String matKhau;
     private Long vaiTroId;

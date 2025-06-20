@@ -31,10 +31,10 @@ public class TrangThaiService {
     }
 
     public void checkDuplicateTrangThai(TrangThai trangThai) {
-        if(trangThai.getMaTrangThai()==null) {
+        if (trangThai.getMaTrangThai() == null) {
             throw new NotFoundException("MaTrangThai cannot be null");
         }
-        if(trangThai.getLoaiTrangThai()==null) {
+        if (trangThai.getLoaiTrangThai() == null) {
             throw new NotFoundException("LoaiTrangThai cannot be null");
         }
         Optional<TrangThai> existingTrangThai = trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai(
@@ -45,12 +45,13 @@ public class TrangThaiService {
     }
 
     public TrangThaiDTO createTrangThai(TrangThaiDTO trangThaiDTO) {
+
         TrangThai trangThai = this.trangThaiMapper.toTrangThaiEnTiTy(trangThaiDTO);
 
         String maTrangThai = trangThai.getMaTrangThai();
         Optional<TrangThai> existingTrangThai = trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai(
                 trangThai.getMaTrangThai(), trangThai.getLoaiTrangThai());
-        if( existingTrangThai.isPresent() ) {
+        if (existingTrangThai.isPresent()) {
             throw new DuplicateResourceException("TrangThai with maTrangThai " + maTrangThai + " already exists for the specified LoaiTrangThai.");
         }
 
@@ -58,7 +59,7 @@ public class TrangThaiService {
     }
 
     public List<TrangThaiDTO> getAllTrangThaiByLoai(Long loaiTrangThaiID) {
-        if(loaiTrangThaiID == null) {
+        if (loaiTrangThaiID == null) {
             throw new IllegalArgumentException("LoaiTrangThaiID cannot be null");
         }
         LoaiTrangThai loaiTrangThai = this.loaiTrangThaiRepository.findById(loaiTrangThaiID)
@@ -108,9 +109,6 @@ public class TrangThaiService {
         trangThai.setDeleted(true);
         trangThaiRepository.save(trangThai);
     }
-
-
-
 
 
 }

@@ -28,16 +28,17 @@ public class VaiTroService {
     }
 
     public boolean checkDuplicate(VaiTro vaiTro) {
-        if(vaiTro.getId()==null){
+        if (vaiTro.getId() == null) {
             return this.vaiTroRepository.existsByName(vaiTro.getName());
-        }else{
+        } else {
             return this.vaiTroRepository.existsByNameAndIdNot(vaiTro.getName(), vaiTro.getId());
         }
     }
 
     public VaiTro createVaiTro(VaiTroDTO vaiTroDTO) {
+        vaiTroDTO.setId(null);
         VaiTro vaiTro = this.vaiTroMapper.toVaiTroEntity(vaiTroDTO);
-        if(checkDuplicate(vaiTro)){
+        if (checkDuplicate(vaiTro)) {
             throw new DuplicateResourceException("VaiTro with name " + vaiTro.getName() + " already exists.");
         }
 
@@ -55,12 +56,12 @@ public class VaiTroService {
 
     public VaiTro updateVaiTro(VaiTroDTO vaiTroDTO) {
         VaiTro vaiTro = this.vaiTroMapper.toVaiTroEntity(vaiTroDTO);
-        if(vaiTro.getId() == null) {
+        if (vaiTro.getId() == null) {
             throw new IllegalArgumentException("VaiTro ID cannot be null for update.");
         }
         VaiTro existingVaiTro = vaiTroRepository.findById(vaiTro.getId())
                 .orElseThrow(() -> new IllegalArgumentException("VaiTro with id " + vaiTro.getId() + " not found."));
-        if(checkDuplicate(vaiTro)){
+        if (checkDuplicate(vaiTro)) {
             throw new DuplicateResourceException("VaiTro with name " + vaiTro.getName() + " already exists.");
         }
 

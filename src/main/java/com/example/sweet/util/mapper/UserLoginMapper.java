@@ -60,8 +60,8 @@ public class UserLoginMapper {
         userGetAccount.setEmail(nhanVienResponseDTO.getEmail());
         userGetAccount.setCccd(nhanVienResponseDTO.getCccd());
         userGetAccount.setSoDienThoai(nhanVienResponseDTO.getSoDienThoai());
-        userGetAccount.setDiaChiLienLacId(nhanVienResponseDTO.getDiaChiLienLacId());
-        userGetAccount.setDiaChiThuongTruId(nhanVienResponseDTO.getDiaChiThuongTruId());
+        userGetAccount.setDiaChiLienLac(nhanVienResponseDTO.getDiaChiLienLac());
+        userGetAccount.setDiaChiThuongTru(nhanVienResponseDTO.getDiaChiThuongTru());
         userGetAccount.setVaiTro(nhanVienResponseDTO.getVaiTro());
         userGetAccount.setTrangThaiTaiKhoan(nhanVienResponseDTO.getTrangThaiTaiKhoan());
 
@@ -77,8 +77,8 @@ public class UserLoginMapper {
         userGetAccount.setEmail(khachHangResponseDTO.getEmail());
         userGetAccount.setCccd(khachHangResponseDTO.getCccd());
         userGetAccount.setSoDienThoai(khachHangResponseDTO.getSoDienThoai());
-        userGetAccount.setDiaChiLienLacId(khachHangResponseDTO.getDiaChiLienLacId());
-        userGetAccount.setDiaChiThuongTruId(khachHangResponseDTO.getDiaChiThuongTruId());
+        userGetAccount.setDiaChiLienLac(khachHangResponseDTO.getDiaChiLienLac());
+        userGetAccount.setDiaChiThuongTru(khachHangResponseDTO.getDiaChiThuongTru());
         userGetAccount.setVaiTro(khachHangResponseDTO.getVaiTro());
         userGetAccount.setTrangThaiTaiKhoan(khachHangResponseDTO.getTrangThaiTaiKhoan());
 

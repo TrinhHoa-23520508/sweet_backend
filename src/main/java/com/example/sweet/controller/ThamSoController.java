@@ -55,5 +55,13 @@ public class ThamSoController {
         return ResponseEntity.ok(updatedThamSo);
     }
 
+    //delete tham so
+    @DeleteMapping("/tham-so/{id}")
+    @ApiMessage("Delete Tham So by ID")
+    public ResponseEntity<Void> deleteThamSo(@PathVariable("id") Long id) {
+        thamSoService.deleteThamSo(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.example.sweet.domain.response;
 
+import com.example.sweet.database.schema.TaiKhoan.DiaChi;
 import com.example.sweet.domain.request.TrangThaiDTO;
 import com.example.sweet.domain.request.VaiTroDTO;
 import lombok.AllArgsConstructor;
@@ -21,8 +22,8 @@ public class NhanVienResponseDTO {
     private String email;
     private int tuoi;
     private String soDienThoai;
-    private Long diaChiThuongTruId;
-    private Long diaChiLienLacId;
+    private DiaChi diaChiThuongTru;
+    private DiaChi diaChiLienLac;
     private LocalDate ngayTuyenDung;
     private VaiTroDTO vaiTro;
     private TrangThaiDTO trangThaiTaiKhoan;

@@ -6,10 +6,8 @@ import com.example.sweet.database.repository.TaiKhoan.VaiTroRepository;
 import com.example.sweet.database.repository.ThamSoRepository;
 import com.example.sweet.database.repository.TrangThaiRepository;
 import com.example.sweet.database.schema.Loai.LoaiTrangThai;
-import com.example.sweet.database.schema.TaiKhoan.KhachHang;
+import com.example.sweet.database.schema.TaiKhoan.*;
 import com.example.sweet.database.schema.TaiKhoan.NhanVien;
-import com.example.sweet.database.schema.TaiKhoan.NhanVien;
-import com.example.sweet.database.schema.TaiKhoan.VaiTro;
 import com.example.sweet.database.schema.ThamSo;
 import com.example.sweet.database.schema.TrangThai;
 import com.example.sweet.domain.request.NhanVienRequestDTO;
@@ -41,6 +39,7 @@ public class NhanVienService {
     private final TrangThaiRepository trangThaiRepository;
     private final VaiTroRepository vaiTroRepository;
     private final UserLoginMapper userLoginMapper;
+    private final DiaChiService diaChiService;
 
     public NhanVienService(NhanVienRepository nhanVienRepository,
                            NhanVienMapper nhanVienMapper,
@@ -49,7 +48,8 @@ public class NhanVienService {
                            LoaiTrangThaiRepository loaiTrangThaiRepository,
                            TrangThaiRepository trangThaiRepository,
                            VaiTroRepository vaiTroRepository,
-                           UserLoginMapper userLoginMapper) {
+                           UserLoginMapper userLoginMapper,
+                           DiaChiService diaChiService) {
         this.nhanVienRepository = nhanVienRepository;
         this.nhanVienMapper = nhanVienMapper;
         this.thamSoRepository = thamSoRepository;
@@ -58,6 +58,7 @@ public class NhanVienService {
         this.trangThaiRepository = trangThaiRepository;
         this.vaiTroRepository = vaiTroRepository;
         this.userLoginMapper = userLoginMapper;
+        this.diaChiService = diaChiService;
     }
 
     public boolean checkDuplicate(NhanVien nhanVien) {
@@ -83,6 +84,7 @@ public class NhanVienService {
 
     public NhanVienResponseDTO createNhanVien(NhanVienRequestDTO nhanVienRequestDTO) {
         NhanVien newNhanVien = this.nhanVienMapper.toNhanVienEntity(nhanVienRequestDTO);
+        newNhanVien.setNhanVienID(null);
         if (checkDuplicate(newNhanVien)) {
             throw new DuplicateResourceException("Nhân viên với email hoặc CCCD đã tồn tại");
         }
@@ -91,7 +93,18 @@ public class NhanVienService {
             newNhanVien.setTuoi(Period.between(newNhanVien.getNgaySinh(), LocalDate.now()).getYears());
             validateAge(newNhanVien.getTuoi());
         }
-        newNhanVien.setNgayTuyenDung(LocalDate.now());
+        if (newNhanVien.getDiaChiLienLac() != null) {
+            DiaChi diaChiLienLac = this.diaChiService.createDiaChi(newNhanVien.getDiaChiLienLac());
+            newNhanVien.setDiaChiLienLac(diaChiLienLac);
+        }
+        if (newNhanVien.getDiaChiThuongTru() != null) {
+            DiaChi diaChiThuongTru = this.diaChiService.createDiaChi(newNhanVien.getDiaChiThuongTru());
+            newNhanVien.setDiaChiThuongTru(diaChiThuongTru);
+        }
+
+        if (newNhanVien.getNgayTuyenDung() == null) {
+            newNhanVien.setNgayTuyenDung(LocalDate.now());
+        }
         newNhanVien.setMatKhau(passwordEncoder.encode(newNhanVien.getMatKhau()));
 
         if (newNhanVien.getTrangThaiTaiKhoan() == null) {

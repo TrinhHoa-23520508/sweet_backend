@@ -27,6 +27,7 @@ public class ThamSoService {
     }
 
     public ThamSo createThamSo(ThamSo thamSo) {
+        thamSo.setThamSoID(null);
         if (checkDuplicate(thamSo)) {
             throw new DuplicateResourceException("ThamSo with maThamSo " + thamSo.getMaThamSo() + " already exists.");
         }
@@ -43,7 +44,7 @@ public class ThamSoService {
     }
 
     public ThamSo updateThamSo(ThamSo thamSo) {
-        if(checkDuplicate(thamSo)) {
+        if (checkDuplicate(thamSo)) {
             throw new DuplicateResourceException("ThamSo with maThamSo " + thamSo.getMaThamSo() + " already exists.");
         }
         ThamSo existingThamSo = thamSoRepository.findById(thamSo.getThamSoID())
@@ -56,6 +57,12 @@ public class ThamSoService {
         existingThamSo.setTenThamSo(thamSo.getTenThamSo());
 
         return thamSoRepository.save(existingThamSo);
+    }
+
+    public void deleteThamSo(Long id) {
+        ThamSo thamSo = thamSoRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("ThamSo with id " + id + " not found."));
+        thamSoRepository.delete(thamSo);
     }
 
 

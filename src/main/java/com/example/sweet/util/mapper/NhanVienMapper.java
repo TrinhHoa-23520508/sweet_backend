@@ -42,20 +42,8 @@ public class NhanVienMapper {
         nhanVien.setSoDienThoai(requestDTO.getSoDienThoai());
         nhanVien.setEmail(requestDTO.getEmail());
         nhanVien.setMatKhau(requestDTO.getMatKhau());
-        if (requestDTO.getDiaChiLienLacId() != null) {
-            DiaChi diaChiLienLac = diaChiRepository.findById(requestDTO.getDiaChiLienLacId())
-                    .orElseThrow(() -> new IllegalArgumentException("Dia chi lien lac not found with id: " + requestDTO.getDiaChiLienLacId()));
-            nhanVien.setDiaChiLienLac(diaChiLienLac);
-        } else {
-            nhanVien.setDiaChiLienLac(null);
-        }
-        if (requestDTO.getDiaChiThuongTruId() != null) {
-            DiaChi diaChiThuongTru = diaChiRepository.findById(requestDTO.getDiaChiThuongTruId())
-                    .orElseThrow(() -> new IllegalArgumentException("Dia chi thuong tru not found with id: " + requestDTO.getDiaChiThuongTruId()));
-            nhanVien.setDiaChiThuongTru(diaChiThuongTru);
-        } else {
-            nhanVien.setDiaChiThuongTru(null);
-        }
+        nhanVien.setDiaChiLienLac(requestDTO.getDiaChiLienLac());
+        nhanVien.setDiaChiThuongTru(requestDTO.getDiaChiThuongTru());
         if (requestDTO.getVaiTroId() != null) {
             VaiTro vaiTro = vaiTroRepository.findById(requestDTO.getVaiTroId())
                     .orElseThrow(() -> new IllegalArgumentException("Vai tro not found with id: " + requestDTO.getVaiTroId()));
@@ -86,10 +74,8 @@ public class NhanVienMapper {
         responseDTO.setEmail(nhanVien.getEmail());
         responseDTO.setSoDienThoai(nhanVien.getSoDienThoai());
         responseDTO.setTuoi(nhanVien.getTuoi());
-        responseDTO.setDiaChiThuongTruId(nhanVien.getDiaChiThuongTru() != null ?
-                nhanVien.getDiaChiThuongTru().getDiaChiID() : null);
-        responseDTO.setDiaChiLienLacId(nhanVien.getDiaChiLienLac() != null ?
-                nhanVien.getDiaChiLienLac().getDiaChiID() : null);
+        responseDTO.setDiaChiLienLac(nhanVien.getDiaChiLienLac());
+        responseDTO.setDiaChiThuongTru(nhanVien.getDiaChiThuongTru());
         responseDTO.setNgayTuyenDung(nhanVien.getNgayTuyenDung());
         responseDTO.setVaiTro(nhanVien.getVaiTro() != null ?
                 this.vaiTroMapper.toVaiTroDTO(nhanVien.getVaiTro()) : null);

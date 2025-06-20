@@ -7,6 +7,7 @@ import com.example.sweet.database.repository.TaiKhoan.VaiTroRepository;
 import com.example.sweet.database.repository.ThamSoRepository;
 import com.example.sweet.database.repository.TrangThaiRepository;
 import com.example.sweet.database.schema.Loai.LoaiTrangThai;
+import com.example.sweet.database.schema.TaiKhoan.DiaChi;
 import com.example.sweet.database.schema.TaiKhoan.KhachHang;
 import com.example.sweet.database.schema.TaiKhoan.VaiTro;
 import com.example.sweet.database.schema.ThamSo;
@@ -41,6 +42,7 @@ public class KhachHangService {
     private final LoaiTrangThaiRepository loaiTrangThaiRepository;
     private final VaiTroRepository vaiTroRepository;
     private final UserLoginMapper userLoginMapper;
+    private final DiaChiService diaChiService;
 
     public KhachHangService(KhachHangRepository khachHangRepository,
                             PasswordEncoder passwordEncoder,
@@ -49,7 +51,8 @@ public class KhachHangService {
                             TrangThaiRepository trangThaiRepository,
                             LoaiTrangThaiRepository loaiTrangThaiRepository,
                             VaiTroRepository vaiTroRepository,
-                            UserLoginMapper userLoginMapper) {
+                            UserLoginMapper userLoginMapper,
+                            DiaChiService diaChiService) {
         this.khachHangRepository = khachHangRepository;
         this.passwordEncoder = passwordEncoder;
         this.khachHangMapper = khachHangMapper;
@@ -58,6 +61,7 @@ public class KhachHangService {
         this.loaiTrangThaiRepository = loaiTrangThaiRepository;
         this.vaiTroRepository = vaiTroRepository;
         this.userLoginMapper = userLoginMapper;
+        this.diaChiService = diaChiService;
     }
 
     public boolean checkDuplicate(KhachHang khachHang) {
@@ -81,6 +85,7 @@ public class KhachHangService {
 
     public KhachHangResponseDTO createKhachHang(KhachHangRequestDTO requestDTO) {
         KhachHang newKhachHang = this.khachHangMapper.toKhachHangEntity(requestDTO);
+        newKhachHang.setKhachHangID(null);
         if (checkDuplicate(newKhachHang)) {
             throw new DuplicateResourceException("Khách hàng đã tồn tại với email hoặc CCCD: " + newKhachHang.getEmail() + " hoặc " + newKhachHang.getCccd());
         }
@@ -90,7 +95,18 @@ public class KhachHangService {
             validateAge(newKhachHang.getTuoi());
 
         }
-        newKhachHang.setNgayDangKy(LocalDate.now());
+        //create dia chi thuong tru and lien lac
+        if (newKhachHang.getDiaChiThuongTru() != null) {
+            DiaChi diaChiThuongTru = this.diaChiService.createDiaChi(newKhachHang.getDiaChiThuongTru());
+            newKhachHang.setDiaChiThuongTru(diaChiThuongTru);
+        }
+        if (newKhachHang.getDiaChiLienLac() != null) {
+            DiaChi diaChiLienLac = this.diaChiService.createDiaChi(newKhachHang.getDiaChiLienLac());
+            newKhachHang.setDiaChiLienLac(diaChiLienLac);
+        }
+        if (newKhachHang.getNgayDangKy() == null) {
+            newKhachHang.setNgayDangKy(LocalDate.now());
+        }
         newKhachHang.setMatKhau(passwordEncoder.encode(newKhachHang.getMatKhau()));
 
         if (newKhachHang.getTrangThaiTaiKhoan() == null) {

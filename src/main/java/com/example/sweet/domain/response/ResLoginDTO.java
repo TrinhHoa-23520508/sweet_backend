@@ -1,5 +1,6 @@
 package com.example.sweet.domain.response;
 
+import com.example.sweet.database.schema.TaiKhoan.DiaChi;
 import com.example.sweet.database.schema.TaiKhoan.VaiTro;
 import com.example.sweet.domain.request.TrangThaiDTO;
 import com.example.sweet.domain.request.VaiTroDTO;
@@ -59,8 +60,8 @@ public class ResLoginDTO {
         private String email;
         private String cccd;
         private String soDienThoai;
-        private Long diaChiThuongTruId;
-        private Long diaChiLienLacId;
+        private DiaChi diaChiThuongTru;
+        private DiaChi diaChiLienLac;
         private VaiTroDTO vaiTro;
         private TrangThaiDTO trangThaiTaiKhoan;
 

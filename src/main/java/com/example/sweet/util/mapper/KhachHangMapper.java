@@ -42,21 +42,8 @@ public class KhachHangMapper {
         khachHang.setCccd(requestDTO.getCccd());
         khachHang.setEmail(requestDTO.getEmail());
         khachHang.setSoDienThoai(requestDTO.getSoDienThoai());
-        if (requestDTO.getDiaChiThuongTruId() != null) {
-            DiaChi diaChiThuongTru = diaChiRepository.findById(requestDTO.getDiaChiThuongTruId())
-                    .orElseThrow(() -> new IllegalArgumentException("Dia chi thuong tru not found with id: " + requestDTO.getDiaChiThuongTruId()));
-            khachHang.setDiaChiThuongTru(diaChiThuongTru);
-
-        } else {
-            khachHang.setDiaChiThuongTru(null);
-        }
-        if (requestDTO.getDiaChiLienLacId() != null) {
-            DiaChi diaChiLienLac = diaChiRepository.findById(requestDTO.getDiaChiLienLacId())
-                    .orElseThrow(() -> new IllegalArgumentException("Dia chi lien lac not found with id: " + requestDTO.getDiaChiLienLacId()));
-            khachHang.setDiaChiLienLac(diaChiLienLac);
-        } else {
-            khachHang.setDiaChiLienLac(null);
-        }
+        khachHang.setDiaChiThuongTru(requestDTO.getDiaChiThuongTru());
+        khachHang.setDiaChiLienLac(requestDTO.getDiaChiLienLac());
         if (requestDTO.getTrangThaiKhachHangId() != null) {
             TrangThai trangThai = trangThaiRepository.findById(requestDTO.getTrangThaiKhachHangId())
                     .orElseThrow(() -> new IllegalArgumentException("Trang thai khach hang not found with id: " + requestDTO.getTrangThaiKhachHangId()));
@@ -96,10 +83,8 @@ public class KhachHangMapper {
         responseDTO.setEmail(khachHang.getEmail());
         responseDTO.setSoDienThoai(khachHang.getSoDienThoai());
         responseDTO.setTuoi(khachHang.getTuoi());
-        responseDTO.setDiaChiThuongTruId(khachHang.getDiaChiThuongTru() != null ?
-                khachHang.getDiaChiThuongTru().getDiaChiID() : null);
-        responseDTO.setDiaChiLienLacId(khachHang.getDiaChiLienLac() != null ?
-                khachHang.getDiaChiLienLac().getDiaChiID() : null);
+        responseDTO.setDiaChiThuongTru(khachHang.getDiaChiThuongTru());
+        responseDTO.setDiaChiLienLac(khachHang.getDiaChiLienLac());
         responseDTO.setNgayDangKy(khachHang.getNgayDangKy());
         responseDTO.setTrangThaiKhachHang(khachHang.getTrangThaiKhachHang() != null ?
                 this.trangThaiMapper.toTrangThaiDTO(khachHang.getTrangThaiKhachHang()) : null);

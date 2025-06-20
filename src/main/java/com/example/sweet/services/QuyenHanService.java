@@ -13,6 +13,7 @@ import java.util.List;
 public class QuyenHanService {
 
     private final QuyenHanRepository quyenHanRepository;
+
     public QuyenHanService(QuyenHanRepository quyenHanRepository) {
         this.quyenHanRepository = quyenHanRepository;
     }
@@ -37,7 +38,8 @@ public class QuyenHanService {
     }
 
     public QuyenHan createQuyenHan(QuyenHan quyenHan) {
-        if(checkDuplicated(quyenHan)) {
+        quyenHan.setId(null);
+        if (checkDuplicated(quyenHan)) {
             throw new DuplicateResourceException("QuyenHan with the same apiPath, method, and module already exists.");
         }
         return quyenHanRepository.save(quyenHan);
@@ -55,7 +57,7 @@ public class QuyenHanService {
     public QuyenHan updateQuyenHan(QuyenHan quyenHan) {
         QuyenHan existingQuyenHan = quyenHanRepository.findById(quyenHan.getId())
                 .orElseThrow(() -> new NotFoundException("QuyenHan with id " + quyenHan.getId() + " not found."));
-        if(checkDuplicated(quyenHan)) {
+        if (checkDuplicated(quyenHan)) {
             throw new DuplicateResourceException("QuyenHan with the same apiPath, method, and module already exists.");
         }
 
