@@ -53,6 +53,7 @@
 
      @Override
      public void run(String... args) throws Exception {
+         /*
          if (loaiTaiKhoanRepository.count() > 0)
             return;
          thamSoRepository.saveAll(
@@ -242,6 +243,7 @@
              new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(1),
              null, loaiKyHans.get(11), 0.6f)
          ));
+         */
      }
  }
 

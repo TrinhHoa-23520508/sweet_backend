@@ -3,11 +3,13 @@ package com.example.sweet.services.GiaoDich;
 import com.example.sweet.database.repository.GiaoDich.GiaoDichRepository;
 import com.example.sweet.database.repository.GiaoDich.LichSuGiaoDich_TKTTRepository;
 import com.example.sweet.database.repository.GiaoDich.LichSuGiaoDich_PhieuGuiTienRepository;
+import com.example.sweet.database.repository.TaiKhoan.NhanVienRepository;
 import com.example.sweet.database.repository.TaiKhoan.TaiKhoanThanhToanRepository;
 import com.example.sweet.database.repository.GiaoDich.PhieuGuiTienRepository;
 import com.example.sweet.database.repository.Loai.LoaiTaiKhoanRepository;
 import com.example.sweet.database.schema.GiaoDich.GiaoDich;
 import com.example.sweet.database.schema.GiaoDich.LichSuGiaoDich_TKTT;
+import com.example.sweet.database.schema.TaiKhoan.NhanVien;
 import com.example.sweet.database.schema.TaiKhoan.TaiKhoanThanhToan;
 import com.example.sweet.domain.request.GiaoDich.GiaoDichRequestDTO;
 import com.example.sweet.domain.response.GiaoDich.GiaoDichResponseDTO;
@@ -28,6 +30,7 @@ public class GiaoDichService {
     private final TaiKhoanThanhToanRepository taiKhoanThanhToanRepo;
     private final PhieuGuiTienRepository phieuGuiTienRepo;
     private final LoaiTaiKhoanRepository loaiTaiKhoanRepo;
+    private final NhanVienRepository nhanVienRepository;
     private final GiaoDichMapper giaoDichMapper;
 
     public List<GiaoDichResponseDTO> findAll() {
@@ -36,6 +39,16 @@ public class GiaoDichService {
 
     public Optional<GiaoDichResponseDTO> findById(Long id) {
         return giaoDichRepo.findById(id).map(giaoDichMapper::toGiaoDichResponseDTO);
+    }
+
+    public List<GiaoDichResponseDTO> findByTaiKhoan(Long id) {
+        return giaoDichRepo.findByTaiKhoan(id).stream().map(giaoDichMapper::toGiaoDichResponseDTO).toList();
+    }
+
+    public List<GiaoDichResponseDTO> findByNhanVienGiaoDich(Long id) {
+        NhanVien nhanVienGiaoDich = nhanVienRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("Không tìm thấy nhân viên giao dịch với ID: " + id));
+        return giaoDichRepo.findByNhanVienGiaoDich(nhanVienGiaoDich).stream().map(giaoDichMapper::toGiaoDichResponseDTO).toList();
     }
 
     public GiaoDich createGiaoDich(GiaoDichRequestDTO giaoDichRequest) {
