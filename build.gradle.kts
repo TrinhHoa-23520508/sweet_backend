@@ -40,3 +40,12 @@ dependencies {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+// Thêm để giữ tên tham số trong .class file
+tasks.withType<JavaCompile>().configureEach {
+    options.compilerArgs.add("-parameters")
+    doFirst {
+        println(">>> Compiler args: ${options.compilerArgs}") // Kiểm tra có -parameters không
+    }
+}
+
