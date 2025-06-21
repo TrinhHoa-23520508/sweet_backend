@@ -2,34 +2,40 @@
 
  import com.example.sweet.database.repository.Loai.*;
  import com.example.sweet.database.repository.TaiKhoan.NhanVienRepository;
+ import com.example.sweet.database.repository.TaiKhoan.QuyenHanRepository;
  import com.example.sweet.database.repository.ThamSoRepository;
  import com.example.sweet.database.schema.GiaoDich.KenhGiaoDich;
  import com.example.sweet.database.schema.Loai.*;
- import com.example.sweet.database.schema.TaiKhoan.DiaChi;
- import com.example.sweet.database.schema.TaiKhoan.NhanVien;
- import com.example.sweet.database.schema.TaiKhoan.VaiTro;
+ import com.example.sweet.database.schema.TaiKhoan.*;
  import com.example.sweet.database.repository.TrangThaiRepository;
  import com.example.sweet.database.repository.GiaoDich.KenhGiaoDichRepository;
  import com.example.sweet.database.repository.TaiKhoan.DiaChiRepository;
  import com.example.sweet.database.repository.TaiKhoan.VaiTroRepository;
  import com.example.sweet.database.schema.ThamSo;
  import com.example.sweet.database.schema.TrangThai;
+ import com.example.sweet.domain.request.NhanVienRequestDTO;
+ import com.example.sweet.services.NhanVienService;
  import com.example.sweet.util.constant.KenhGiaoDichEnum;
  import com.example.sweet.util.constant.LoaiGiaoDichEnum;
  import com.example.sweet.util.constant.LoaiTKDichEnum;
  import com.example.sweet.util.constant.SystemParameterEnum;
+ import jakarta.transaction.Transactional;
  import lombok.AllArgsConstructor;
  import org.springframework.boot.CommandLineRunner;
+ import org.springframework.security.crypto.password.PasswordEncoder;
  import org.springframework.stereotype.Component;
+ import org.springframework.web.method.HandlerMethod;
+ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 
  import java.time.LocalDate;
  import java.util.ArrayList;
  import java.util.Arrays;
  import java.util.List;
+ import java.util.Map;
  import java.util.stream.Collectors;
  import java.util.stream.IntStream;
 
-// @Component
+ @Component
  @AllArgsConstructor
  public class DataInitializer implements CommandLineRunner {
 
@@ -48,10 +54,15 @@
      private final LoaiTietKiemRepository loaiTietKiemRepository;
      private final QuyDinhLaiSuatRepository quyDinhLaiSuatRepository;
      private final NhanVienRepository nhanVienRepository;
-     private final ChiTietQuyDinhLaiSuatRepository
-     chiTietQuyDinhLaiSuatRepository;
+     private final ChiTietQuyDinhLaiSuatRepository chiTietQuyDinhLaiSuatRepository;
      private final ThamSoRepository thamSoRepository;
+     private final QuyenHanRepository quyenHanRepository;
+     private final NhanVienService nhanVienService;
 
+     private final PasswordEncoder passwordEncoder;
+     private final RequestMapConfig requestMapper;
+
+    @Transactional
      @Override
      public void run(String... args) throws Exception {
          if (loaiTaiKhoanRepository.count() > 0)
@@ -68,11 +79,6 @@
                  .map(value ->
                          new LoaiTaiKhoan(null, value.ordinal(), value.getLabel(), value.getLabel()))
                  .toList());
-//         loaiTaiKhoanRepository.saveAll(List.of(
-//             new LoaiTaiKhoan(null, 1, "Tài khoản thanh toán", "Tài khoản thanh toán"),
-//             new LoaiTaiKhoan(null, 2, "Phiếu gửi tiền", "Phiếu gửi tiền"),
-//             new LoaiTaiKhoan(null, 3, "Tiền mặt tại quầy", "Tiền mặt tại quầy"),
-//             new LoaiTaiKhoan(null, 4, "Ngân hàng", "Ngân hàng")));
 
          kenhGiaoDichRepository.saveAll(
              Arrays
@@ -81,9 +87,6 @@
                          new KenhGiaoDich(null, (int) value.getCode(), value.getLabel(), value.getLabel()))
                  .toList()
          );
-//         kenhGiaoDichRepository.saveAll(List.of(
-//             new KenhGiaoDich(null, 1, "Giao dịch tại quầy", "Giao dịch tại quầy"),
-//             new KenhGiaoDich(null, 2, "Giao dịch trực tuyến", "Giao dịch trực tuyến")));
 
          loaiGiaoDichRepository.saveAll(
             Arrays
@@ -92,16 +95,6 @@
                         new LoaiGiaoDich(null, (int) value.getCode(), value.getLabel(), value.getLabel()))
                 .toList()
          );
-//         loaiGiaoDichRepository.saveAll(List.of(
-//             new LoaiGiaoDich(null, 1, "Gửi tiền vào tài khoản thanh toán",
-//             "Gửi tiền vào tài khoản thanh toán"),
-//             new LoaiGiaoDich(null, 2, "Rút tiền từ tài khoản thanh toán",
-//             "Rút tiền từ tài khoản thanh toán"),
-//             new LoaiGiaoDich(null, 3, "Gửi tiền vào phiếu gửi tiền", "Gửi tiền vào phiếu gửi tiền"),
-//             new LoaiGiaoDich(null, 4, "Rút tiền từ phiếu gửi tiền", "Rút tiền từ phiếu gửi tiền"),
-//             new LoaiGiaoDich(null, 5, "Tất toán phiếu gửi tiền", "Tất toán phiếu gửi tiền"),
-//             new LoaiGiaoDich(null, 6, "Trả tiền lãi", "Trả tiền lãi"),
-//             new LoaiGiaoDich(null, 7, "Đáo hạn phiếu gửi tiền", "Đáo hạn phiếu gửi tiền")));
 
          var insertedLTT = loaiTrangThaiRepo.saveAll(List.of(
              new LoaiTrangThai(null, "customer", "Khách hàng", "Khách hàng", false, List.of()),
@@ -141,16 +134,73 @@
              new TrangThai(null, "active", "Đang hoạt động", false, loaiTrangThais.get(5)),
              new TrangThai(null, "locked", "Đã khóa", false, loaiTrangThais.get(5))));
 
-         var vaiTro = vaiTroRepo.save(new VaiTro(null, "Foo", "fOO", true, List.of(), List.of(), List.of()));
-         var diaChi = diaChiRepo.save(new DiaChi(null, "1", "foo", "foo", "foo","foo"));
+         var quyenHans = quyenHanRepository.saveAll(requestMapper.getRequestMapToQuyenHan());
+         ArrayList<QuyenHan> quyenHanThanhToan = new ArrayList<QuyenHan>();
+         quyenHanThanhToan.addAll(quyenHanRepository.findAllByApiPathLike("/api/v1/giao-dich"));
+         quyenHanThanhToan.addAll(quyenHanRepository.findAllByApiPathLike("/api/v1/quy-dinh-lai-suat"));
+         var vaiTros = vaiTroRepo.saveAll(List.of(
+             new VaiTro(null, "KHONG_QUYEN_KHACH_HANG", "tài khoản không có quyền thực hiện điều gì", true,
+                     // Cai tiep theo la list quyen han
+                     List.of(), List.of(), List.of()),
+             new VaiTro(null, "QUYEN_THANH_TOAN", "Chỉ có quyền thực hiện các giao dịch thanh toán", true,
+                     quyenHanThanhToan, List.of(), List.of()),
+             new VaiTro(null, "QUYEN_TIET_KIEM", "Có quyền thanh toán và thực hiện các chức năng tiết kiệm", true,
+                     List.of(), List.of(), List.of()),
+             new VaiTro(null, "QUAN_TRI_VIEN", "Có toàn quyền trong hệ thống", true,
+                     quyenHans, List.of(), List.of()),
+             new VaiTro(null, "KHONG_QUYEN_NHAN_VIEN", "Không có quyền truy cập vào hệ thống", true,
+                     List.of(), List.of(), List.of()),
+             new VaiTro(null, "NHAN_VIEN_GIAO_DICH", "Xử lý các giao dịch của khách hàng", true,
+                     List.of(), List.of(), List.of()),
+             new VaiTro(null, "NHAN_VIEN_TIEP_THI", "Quản lý các sản phẩm và báo cáo", true,
+                     List.of(), List.of(), List.of())
+         ));
+         var diaChis = diaChiRepo.saveAll(List.of(
+             new DiaChi(null,  "456", "Nguyễn Trãi", "Phường 7", "Quận 5", "TP. Hồ Chí Minh"),
+             new DiaChi(null,  "123", "Lê Lợi", "Phường 5", "Quận 3", "TP. Hồ Chí Minh"),
+             new DiaChi(null,  "456", "Nguyễn Trãi", "Phường 7", "Quận 5", "TP. Hồ Chí Minh"),
+             new DiaChi(null,  "123", "Lê Lợi", "Phường 5", "Quận 3", "TP. Hồ Chí Minh"),
+             new DiaChi(null,  "123", "Lê Lợi", "Phường 5", "Quận 3", "TP. Hồ Chí Minh"),
+             new DiaChi(null,  "456", "Nguyễn Trãi", "Phường 7", "Quận 5", "TP. Hồ Chí Minh"),
+             new DiaChi(null,  "123", "Lê Lợi", "Phường 5", "Quận 3", "TP. Hồ Chí Minh"),
+             new DiaChi(null,  "456", "Nguyễn Trãi", "Phường 7", "Quận 5", "TP. Hồ Chí Minh"),
+             new DiaChi(null,  "123", "Lê Lợi", "Phường 5", "Quận 3", "TP. Hồ Chí Minh"),
+             new DiaChi(null,  "456", "Nguyễn Trãi", "Phường 7", "Quận 5", "TP. Hồ Chí Minh")
+         ));
+//         Cai này có thể hoạt động neu ông muốn
+//         var admin = nhanVienService.createNhanVienForInitializer(new NhanVienRequestDTO(
+//             "Nguyễn Văn A",
+//             LocalDate.of(2005, 6, 21),
+//             "12345678245",
+//             "admin@gmail.com",
+//             "0912345678",
+//             diaChis.get(0),
+//             diaChis.get(0),
+//             "123456",
+//             4L,
+//                 11L
+//         ));
+         // Nhưng dùng cái này nó dễ hơn
 
          var admin = nhanVienRepository.save(
-             new NhanVien(null, "123", LocalDate.now(), 16, "12345678", "1234567", "foo@bar.com", diaChi, diaChi, LocalDate.now(), "123456789", vaiTro, trangThais.get(2))
-         );
+              new NhanVien(
+                  null,
+                  "Nguyễn Văn A",
+                  LocalDate.of(2005, 6, 21),
+                  20,
+                  "12345678245",
+                  "0912345678",
+                  "admin@gmail.com",
+                  diaChis.get(0),
+                  diaChis.get(0),
+                  LocalDate.of(2025, 6, 21),
+                  passwordEncoder.encode("123456"),
+                  vaiTros.get(3),
+                  trangThais.get(10)
+              ));
 
-         Long temp = null;
          hinhThucDaoHanRepo.saveAll(List.of(
-             new HinhThucDaoHan(temp, "Tất toán phiếu gửi tiền", 01,
+             new HinhThucDaoHan(null, "Tất toán phiếu gửi tiền", 01,
              "Nhận toàn bộ tiền gốc và lãi khi đáo hạn"),
              new HinhThucDaoHan(null, "Tái tục gốc", 02,
              "Nhận lãi và tự động gửi lại tiền gốc"),
@@ -236,6 +286,7 @@
              new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(1),
              null, loaiKyHans.get(11), 0.6f)
          ));
+
      }
  }
 
@@ -246,21 +297,21 @@
  * `mat_khau`, `ngay_dang_ky`,
  * `ngay_sinh`, `ten_dang_nhap`, `dia_chi_lien_lac`, `dia_chi_thuong_tru`,
  * `trang_thai_tai_khoan`, `vai_tro`)
- * VALUES ('2', '123', 'jojijik', 'fawfawfaw', '123456', '2022-01-01',
- * '2022-01-01', 'blabla', '1', '1', '1', '1');
+ * VALUES ("2", "123", "jojijik", "fawfawfaw", "123456", "2022-01-01",
+ * "2022-01-01", "blabla", "1", "1", "1", "1");
  *
  * INSERT INTO `sweet`.`tai_khoan_thanh_toan` (`so_tai_khoan`, `ngay_tao`,
  * `so_du`, `khach_hang`, `trang_thai`)
- * VALUES ('1', '2022-01-01', '900000', '1', '1');
+ * VALUES ("1", "2022-01-01", "900000", "1", "1");
  *
  * INSERT INTO `sweet`.`tai_khoan_thanh_toan` (`so_tai_khoan`, `ngay_tao`,
  * `so_du`, `khach_hang`, `trang_thai`)
- * VALUES ('2', '2022-06-01', '100000', '1', '1');
+ * VALUES ("2", "2022-06-01", "100000", "1", "1");
  *
  * INSERT INTO `sweet`.`nhan_vien` (`nhan_vienid`, `cccd`, `email`, `ho_ten`,
  * `mat_khau`, `ngay_tuyen_dung`,
  * `ngay_sinh`, `ten_dang_nhap`, `dia_chi_lien_lac`, `dia_chi_thuong_tru`,
  * `trang_thai_tai_khoan`, `vai_tro`)
- * VALUES ('1', '123', 'jojijik', 'fawfawfaw', '123456', '2022-01-01',
- * '2022-01-01', 'blabla', '1', '1', '1', '1');
+ * VALUES ("1", "123", "jojijik", "fawfawfaw", "123456", "2022-01-01",
+ * "2022-01-01", "blabla", "1", "1", "1", "1");
  */

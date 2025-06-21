@@ -4,6 +4,7 @@ import com.example.sweet.database.schema.TaiKhoan.NhanVien;
 import com.example.sweet.database.schema.TaiKhoan.QuyenHan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,4 +20,7 @@ public interface QuyenHanRepository extends JpaRepository<QuyenHan, Long>, JpaSp
     List<QuyenHan> findAllByIdIn(List<Long> ids);
 
     List<QuyenHan> findAllByModule(String module);
+
+    @Query("SELECT q FROM QuyenHan q WHERE q.apiPath LIKE %:apiPath%")
+    List<QuyenHan> findAllByApiPathLike(String apiPath);
 }

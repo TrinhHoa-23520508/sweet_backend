@@ -124,8 +124,49 @@ public class NhanVienService {
         return this.nhanVienMapper.toNhanVienResponseDTO(
                 this.nhanVienRepository.save(newNhanVien)
         );
-
     }
+
+
+//    public NhanVien createNhanVienForInitializer(NhanVienRequestDTO nhanVienRequestDTO) {
+//        NhanVien newNhanVien = this.nhanVienMapper.toNhanVienEntity(nhanVienRequestDTO);
+//        newNhanVien.setNhanVienID(null);
+//        if (checkDuplicate(newNhanVien)) {
+//            throw new DuplicateResourceException("Nhân viên với email hoặc CCCD đã tồn tại");
+//        }
+//
+//        if (newNhanVien.getNgaySinh() != null) {
+//            newNhanVien.setTuoi(Period.between(newNhanVien.getNgaySinh(), LocalDate.now()).getYears());
+//            validateAge(newNhanVien.getTuoi());
+//        }
+//        if (newNhanVien.getDiaChiLienLac() != null) {
+//            DiaChi diaChiLienLac = this.diaChiService.createDiaChi(newNhanVien.getDiaChiLienLac());
+//            newNhanVien.setDiaChiLienLac(diaChiLienLac);
+//        }
+//        if (newNhanVien.getDiaChiThuongTru() != null) {
+//            DiaChi diaChiThuongTru = this.diaChiService.createDiaChi(newNhanVien.getDiaChiThuongTru());
+//            newNhanVien.setDiaChiThuongTru(diaChiThuongTru);
+//        }
+//
+//        if (newNhanVien.getNgayTuyenDung() == null) {
+//            newNhanVien.setNgayTuyenDung(LocalDate.now());
+//        }
+//        newNhanVien.setMatKhau(passwordEncoder.encode(newNhanVien.getMatKhau()));
+//
+//        if (newNhanVien.getTrangThaiTaiKhoan() == null) {
+//            LoaiTrangThai loaiTrangThai_TK = this.loaiTrangThaiRepository.findByMaLoaiTrangThai(TypeStatusEnum.login_account.toString())
+//                    .orElseThrow(() -> new IllegalArgumentException("Loại trạng thái tài khoản không tồn tại"));
+//            TrangThai active_default_TK = this.trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai(StatusEnum.active.toString(), loaiTrangThai_TK)
+//                    .orElseThrow(() -> new IllegalArgumentException("Trạng thái HOAT_DONG không tồn tại cho loại trạng thái tài khoản"));
+//            newNhanVien.setTrangThaiTaiKhoan(active_default_TK);
+//        }
+//
+//        if (newNhanVien.getVaiTro() == null) {
+//            VaiTro vaiTro_default = this.vaiTroRepository.findByName(VaiTroEnum.KHONG_QUYEN_NHAN_VIEN.toString()).orElseThrow(() -> new IllegalArgumentException("Vai trò không tồn tại"));
+//            newNhanVien.setVaiTro(vaiTro_default);
+//        }
+//
+//        return this.nhanVienRepository.save(newNhanVien);
+//    }
 
     public NhanVienResponseDTO getNhanVienById(Long id) {
         NhanVien nhanVien = this.nhanVienRepository.findById(id)
