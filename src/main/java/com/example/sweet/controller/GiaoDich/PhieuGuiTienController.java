@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.sweet.database.repository.dto.PhieuGuiTienDTO;
 import com.example.sweet.database.repository.dto.PhieuTraLaiDTO;
+import com.example.sweet.domain.response.GiaoDich.PhieuGuiTienDTO;
 import com.example.sweet.services.GiaoDich.PhieuGuiTienService;
 import com.example.sweet.services.GiaoDich.PhieuTraLaiService;
 import com.example.sweet.util.annotation.ApiMessage;
@@ -44,20 +44,6 @@ public class PhieuGuiTienController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(this.phieuGuiTienService.createPhieuGuiTien(phieuGuiTienDTO));
-    }
-
-    // @GetMapping("/phieu-gui-tien/{id}")
-    // @ApiMessage("Lấy phiếu gửi tiền theo ID")
-    // public ResponseEntity<PhieuGuiTienDTO> getPhieuGuiTienById(@PathVariable
-    // Integer id) {
-    // return ResponseEntity.ok(this.phieuGuiTienService.getPhieuGuiTienById(id));
-    // }
-
-    @DeleteMapping("/{id}")
-    @ApiMessage("Xóa phiếu gửi tiền")
-    public ResponseEntity<Void> deletePhieuGuiTien(@PathVariable Long id) {
-        phieuGuiTienService.deletePhieuGuiTien(id);
-        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{khachHangId}")

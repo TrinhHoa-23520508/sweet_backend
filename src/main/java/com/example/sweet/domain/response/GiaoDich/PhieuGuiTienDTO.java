@@ -1,4 +1,4 @@
-package com.example.sweet.database.repository.dto;
+package com.example.sweet.domain.response.GiaoDich;
 
 import java.time.Instant;
 
