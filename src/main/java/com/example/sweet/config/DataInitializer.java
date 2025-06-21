@@ -15,6 +15,7 @@
  import com.example.sweet.database.schema.ThamSo;
  import com.example.sweet.database.schema.TrangThai;
  import com.example.sweet.util.constant.KenhGiaoDichEnum;
+ import com.example.sweet.util.constant.LoaiGiaoDichEnum;
  import com.example.sweet.util.constant.LoaiTKDichEnum;
  import com.example.sweet.util.constant.SystemParameterEnum;
  import lombok.AllArgsConstructor;
@@ -28,7 +29,7 @@
  import java.util.stream.Collectors;
  import java.util.stream.IntStream;
 
- @Component
+// @Component
  @AllArgsConstructor
  public class DataInitializer implements CommandLineRunner {
 
@@ -53,7 +54,6 @@
 
      @Override
      public void run(String... args) throws Exception {
-         /*
          if (loaiTaiKhoanRepository.count() > 0)
             return;
          thamSoRepository.saveAll(
@@ -87,7 +87,7 @@
 
          loaiGiaoDichRepository.saveAll(
             Arrays
-                .stream(LoaiTKDichEnum.values())
+                .stream(LoaiGiaoDichEnum.values())
                 .map(value ->
                         new LoaiGiaoDich(null, (int) value.getCode(), value.getLabel(), value.getLabel()))
                 .toList()
@@ -157,7 +157,7 @@
              new HinhThucDaoHan(null, "Tự động tái tục gốc và lãi", 03,
              "Tự động gửi lại cả gốc và lãi khi đáo hạn")));
 
-         loaiTietKiemRepo.saveAll(List.of(
+         var loaiTietKiems = loaiTietKiemRepo.saveAll(List.of(
              new LoaiTietKiem(null, "Tiết kiệm có kỳ hạn", 01,
              "Phải gửi đủ thời gian mới được hưởng lãi suất tối đa",
              false, false, true),
@@ -180,13 +180,6 @@
              .mapToObj(value -> new LoaiKyHan(null, value + " Tháng", value))
              .collect(Collectors.toList())
          );
-
-         var loaiTietKiems = loaiTietKiemRepository.saveAll(List.of(
-             new LoaiTietKiem(null, "Tiết kiệm có kỳ hạn", 1,
-             "Tiết kiệm có kỳ hạn", true, true, true),
-             new LoaiTietKiem(null, "Tiết kiệm có kỳ hạn rút gốc linh hoạt", 1,
-             "Tiết kiệm có kỳ hạn rút gốc linh hoạt", true, true, true)
-         ));
 
          var quyDinh1 = quyDinhLaiSuatRepository.save(
              new QuyDinhLaiSuat(null, LocalDate.now(), LocalDate.now(), "Blabla", admin, 0.1f, Integer.MAX_VALUE, List.of())
@@ -243,7 +236,6 @@
              new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(1),
              null, loaiKyHans.get(11), 0.6f)
          ));
-         */
      }
  }
 
