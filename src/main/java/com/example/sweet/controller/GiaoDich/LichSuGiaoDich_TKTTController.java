@@ -1,6 +1,7 @@
 package com.example.sweet.controller.GiaoDich;
 
 import com.example.sweet.database.repository.GiaoDich.LichSuGiaoDich_TKTTRepository;
+import com.example.sweet.database.repository.TaiKhoan.TaiKhoanThanhToanRepository;
 import com.example.sweet.database.schema.GiaoDich.LichSuGiaoDich_TKTT;
 import com.example.sweet.database.schema.TaiKhoan.TaiKhoanThanhToan;
 import com.example.sweet.domain.response.GiaoDich.LSGD_TKTTResponseDTO;
@@ -11,14 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/giao-dich/tktt/lich-su")
 @AllArgsConstructor
 public class LichSuGiaoDich_TKTTController {
-    private LichSuGiaoDich_TKTTRepository respository;
-    private LSGD_TKTTMapper lsgdTkttMapper;
+    private final LichSuGiaoDich_TKTTRepository respository;
+    private final TaiKhoanThanhToanRepository taiKhoanThanhToanRepository;
+    private final LSGD_TKTTMapper lsgdTkttMapper;
 
     @GetMapping("")
     public ResponseEntity<Iterable<LSGD_TKTTResponseDTO>> getAllLichSuGiaoDich_TKTT() {
@@ -28,6 +31,13 @@ public class LichSuGiaoDich_TKTTController {
     @GetMapping("/{id}")
     public ResponseEntity<Optional<LSGD_TKTTResponseDTO>> getLichSuGiaoDich_TKTTID(@PathVariable Long id) {
         return ResponseEntity.ok(respository.findById(id).map(lsgdTkttMapper::toLSGD_TKTTResponseDTO));
+    }
+
+    @GetMapping("by/{id}")
+    public ResponseEntity<List<LSGD_TKTTResponseDTO>> getLichSuGiaoDichByTKTT(@PathVariable Long id) {
+        TaiKhoanThanhToan taiKhoan = taiKhoanThanhToanRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("Không tìm thấy tài khoản thanh toán với ID: " + id));
+        return ResponseEntity.ok(respository.findByTaiKhoan(taiKhoan).stream().map(lsgdTkttMapper::toLSGD_TKTTResponseDTO).toList());
     }
 
     @DeleteMapping("/{id}")

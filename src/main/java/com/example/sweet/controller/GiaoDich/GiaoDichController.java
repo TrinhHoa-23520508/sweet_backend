@@ -40,4 +40,14 @@ public class GiaoDichController {
     public ResponseEntity<Optional<GiaoDichResponseDTO>> getGiaoDich(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
+
+    @GetMapping("by/tktt/{id}")
+    public ResponseEntity<Iterable<GiaoDichResponseDTO>> getGiaoDichByTaiKhoan(@PathVariable Long id) {
+        return ResponseEntity.ok(service.findByTaiKhoan(id));
+    }
+
+    @GetMapping("by/nhan-vien/{id}")
+    public ResponseEntity<Iterable<GiaoDichResponseDTO>> getGiaoDichByNhanVien(@PathVariable Long id) {
+        return ResponseEntity.ok(service.findByNhanVienGiaoDich(id));
+    }
 }

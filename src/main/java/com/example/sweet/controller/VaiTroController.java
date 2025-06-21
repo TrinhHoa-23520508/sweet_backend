@@ -1,6 +1,7 @@
 package com.example.sweet.controller;
 
 import com.example.sweet.database.schema.TaiKhoan.VaiTro;
+import com.example.sweet.domain.request.ModuleDTO;
 import com.example.sweet.domain.request.VaiTroDTO;
 import com.example.sweet.services.VaiTroService;
 import com.example.sweet.util.annotation.ApiMessage;
@@ -62,6 +63,26 @@ public class VaiTroController {
     public ResponseEntity<Void> deleteVaiTro(@PathVariable("id") Long id) {
         vaiTroService.deleteVaiTro(id);
         return ResponseEntity.status(HttpStatus.OK).body(null);
+    }
+
+    //add full api of module to Vai Tro
+    @PutMapping("/vai-tro/{id}/cap-quyen-module")
+    @ApiMessage("Cap Quyen Module to Vai Tro")
+    public ResponseEntity<VaiTro> capQuyenModuleToVaiTro(
+            @PathVariable("id") Long id,
+            @RequestBody ModuleDTO moduleDTO) {
+        VaiTro updatedVaiTro = vaiTroService.capQuyenModuleToVaiTro(id, moduleDTO);
+        return ResponseEntity.ok(updatedVaiTro);
+    }
+
+    //remove full api of module from Vai Tro
+    @PutMapping("/vai-tro/{id}/xoa-quyen-module")
+    @ApiMessage("Xoa Quyen Module from Vai Tro")
+    public ResponseEntity<VaiTro> xoaQuyenModuleFromVaiTro(
+            @PathVariable("id") Long id,
+            @RequestBody ModuleDTO moduleDTO) {
+        VaiTro updatedVaiTro = vaiTroService.xoaQuyenModuleFromVaiTro(id, moduleDTO);
+        return ResponseEntity.ok(updatedVaiTro);
     }
 
 }

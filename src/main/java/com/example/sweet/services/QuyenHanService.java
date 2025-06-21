@@ -7,6 +7,7 @@ import com.example.sweet.util.error.NotFoundException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -79,5 +80,14 @@ public class QuyenHanService {
         this.quyenHanRepository.delete(quyenHan);
     }
 
-
+    public List<QuyenHan> createListQuyenHan(List<QuyenHan> quyenHanList) {
+        List<QuyenHan> savedQuyenHanList = new ArrayList<>();
+        for (QuyenHan quyenHan : quyenHanList) {
+            if (checkDuplicated(quyenHan)) {
+                continue;
+            }
+            savedQuyenHanList.add(quyenHanRepository.save(quyenHan));
+        }
+        return savedQuyenHanList;
+    }
 }

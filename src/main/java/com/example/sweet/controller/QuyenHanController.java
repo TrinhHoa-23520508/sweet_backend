@@ -61,4 +61,13 @@ public class QuyenHanController {
         quyenHanService.deleteQuyenHan(id);
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
+
+    //create list of quyen han
+    @PostMapping("/quyen-han/danh-sach")
+    @ApiMessage("Create a list of Quyen Han")
+    public ResponseEntity<List<QuyenHan>> createListQuyenHan(@Valid @RequestBody List<QuyenHan> quyenHanList) {
+        List<QuyenHan> createdQuyenHanList = quyenHanService.createListQuyenHan(quyenHanList);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdQuyenHanList);
+    }
+
 }

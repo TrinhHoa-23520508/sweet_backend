@@ -15,5 +15,6 @@ public interface VaiTroRepository extends JpaRepository<VaiTro, Long>, JpaSpecif
 
     boolean existsByNameAndIdNot(String name, Long id);
 
+
     Optional<VaiTro> findByName(String name);
 }

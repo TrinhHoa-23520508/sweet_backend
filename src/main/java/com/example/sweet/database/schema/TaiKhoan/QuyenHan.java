@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 public class QuyenHan {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank(message = "Tên permission không được để trống")
@@ -33,7 +33,6 @@ public class QuyenHan {
 
     @NotBlank(message = "Tên module không được để trống")
     private String module;
-
 
 
     @ManyToMany(mappedBy = "quyenHans", fetch = FetchType.LAZY)

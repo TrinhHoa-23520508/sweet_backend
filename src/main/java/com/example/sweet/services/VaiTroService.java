@@ -2,14 +2,19 @@ package com.example.sweet.services;
 
 import com.example.sweet.database.repository.TaiKhoan.QuyenHanRepository;
 import com.example.sweet.database.repository.TaiKhoan.VaiTroRepository;
+import com.example.sweet.database.schema.TaiKhoan.QuyenHan;
 import com.example.sweet.database.schema.TaiKhoan.VaiTro;
+import com.example.sweet.domain.request.ModuleDTO;
 import com.example.sweet.domain.request.VaiTroDTO;
 import com.example.sweet.util.error.DuplicateResourceException;
 import com.example.sweet.util.mapper.VaiTroMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class VaiTroService {
@@ -78,6 +83,51 @@ public class VaiTroService {
                 .orElseThrow(() -> new IllegalArgumentException("VaiTro with id " + id + " not found."));
         vaiTro.setActive(false); // Soft delete
         vaiTroRepository.save(vaiTro);
+    }
+
+    public VaiTro capQuyenModuleToVaiTro(Long id, ModuleDTO moduleDTO) {
+        VaiTro vaiTro = vaiTroRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("VaiTro with id " + id + " not found."));
+
+        if (moduleDTO.getModule() == null) {
+            throw new IllegalArgumentException("Module không được null");
+        }
+
+        List<QuyenHan> quyenHans = this.quyenHanRepository.findAllByModule(moduleDTO.getModule());
+
+        // Tránh thêm quyền trùng
+        Set<Long> existingQuyenIds = vaiTro.getQuyenHans().stream()
+                .map(QuyenHan::getId)
+                .collect(Collectors.toSet());
+
+        List<QuyenHan> newQuyens = quyenHans.stream()
+                .filter(q -> !existingQuyenIds.contains(q.getId()))
+                .collect(Collectors.toList());
+
+        vaiTro.getQuyenHans().addAll(newQuyens);
+
+        return vaiTroRepository.save(vaiTro);
+    }
+
+    public VaiTro xoaQuyenModuleFromVaiTro(Long id, ModuleDTO moduleDTO) {
+        VaiTro vaiTro = vaiTroRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("VaiTro with id " + id + " not found."));
+
+        if (moduleDTO.getModule() == null) {
+            throw new IllegalArgumentException("Module không được null");
+        }
+
+        List<QuyenHan> quyenHans = this.quyenHanRepository.findAllByModule(moduleDTO.getModule());
+
+        // Lấy danh sách ID của các quyền thuộc module cần xóa
+        Set<Long> quyenIdsToRemove = quyenHans.stream()
+                .map(QuyenHan::getId)
+                .collect(Collectors.toSet());
+
+        // Xóa các quyền thuộc module ra khỏi vaiTro
+        vaiTro.getQuyenHans().removeIf(quyenHan -> quyenIdsToRemove.contains(quyenHan.getId()));
+
+        return vaiTroRepository.save(vaiTro);
     }
 
 

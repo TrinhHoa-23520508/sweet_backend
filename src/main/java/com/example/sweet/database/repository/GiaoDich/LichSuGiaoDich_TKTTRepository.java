@@ -7,8 +7,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface LichSuGiaoDich_TKTTRepository extends JpaRepository<LichSuGiaoDich_TKTT, Long> {
     void deleteByTaiKhoanAndGiaoDich(TaiKhoanThanhToan taiKhoan, GiaoDich giaoDich);
 
+    List<LichSuGiaoDich_TKTT> findByTaiKhoan(TaiKhoanThanhToan taiKhoan);
 }
