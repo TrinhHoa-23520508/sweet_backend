@@ -6,12 +6,14 @@ import com.example.sweet.database.schema.TaiKhoan.QuyenHan;
 import com.example.sweet.database.schema.TaiKhoan.VaiTro;
 import com.example.sweet.domain.request.ModuleDTO;
 import com.example.sweet.domain.request.VaiTroDTO;
+import com.example.sweet.util.constant.VaiTroEnum;
 import com.example.sweet.util.error.DuplicateResourceException;
 import com.example.sweet.util.mapper.VaiTroMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -72,6 +74,7 @@ public class VaiTroService {
 
         // Update the existing entity with new values
         existingVaiTro.setName(vaiTro.getName());
+        existingVaiTro.setCustomerRole(vaiTro.isCustomerRole());
         existingVaiTro.setDescription(vaiTro.getDescription());
         existingVaiTro.setActive(vaiTro.isActive());
         existingVaiTro.setQuyenHans(vaiTro.getQuyenHans());
@@ -81,9 +84,19 @@ public class VaiTroService {
     public void deleteVaiTro(Long id) {
         VaiTro vaiTro = vaiTroRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("VaiTro with id " + id + " not found."));
+
+        List<String> vaiTroHeThongs = Arrays.stream(VaiTroEnum.values())
+                .map(Enum::name)
+                .collect(Collectors.toList());
+
+        if (vaiTroHeThongs.contains(vaiTro.getName())) {
+            return; // Không xóa vai trò hệ thống
+        }
+
         vaiTro.setActive(false); // Soft delete
         vaiTroRepository.save(vaiTro);
     }
+
 
     public VaiTro capQuyenModuleToVaiTro(Long id, ModuleDTO moduleDTO) {
         VaiTro vaiTro = vaiTroRepository.findById(id)
