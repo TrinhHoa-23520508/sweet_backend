@@ -11,7 +11,6 @@ import com.example.sweet.database.repository.Loai.*;
 import com.example.sweet.database.repository.TaiKhoan.KhachHangRepository;
 import com.example.sweet.database.repository.TaiKhoan.NhanVienRepository;
 import com.example.sweet.database.repository.TaiKhoan.TaiKhoanThanhToanRepository;
-import com.example.sweet.database.repository.dto.PhieuGuiTienDTO;
 import com.example.sweet.database.repository.dto.PhieuTraLaiDTO;
 import com.example.sweet.database.schema.GiaoDich.GiaoDich;
 import com.example.sweet.database.schema.GiaoDich.LichSuGiaoDich_PhieuGuiTien;
@@ -20,6 +19,7 @@ import com.example.sweet.database.schema.Loai.ChiTietQuyDinhLaiSuat;
 import com.example.sweet.database.schema.TaiKhoan.KhachHang;
 import com.example.sweet.database.schema.TaiKhoan.NhanVien;
 import com.example.sweet.database.schema.TaiKhoan.TaiKhoanThanhToan;
+import com.example.sweet.domain.response.GiaoDich.PhieuGuiTienDTO;
 import com.example.sweet.util.mapper.PhieuGuiTienMapper;
 
 import jakarta.transaction.Transactional;

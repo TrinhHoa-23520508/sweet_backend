@@ -2,13 +2,13 @@ package com.example.sweet.util.mapper;
 
 import org.springframework.stereotype.Component;
 
-import com.example.sweet.database.repository.dto.PhieuGuiTienDTO;
 import com.example.sweet.database.schema.TrangThai;
 import com.example.sweet.database.schema.GiaoDich.PhieuGuiTien;
 import com.example.sweet.database.schema.Loai.ChiTietQuyDinhLaiSuat;
 import com.example.sweet.database.schema.Loai.HinhThucDaoHan;
 import com.example.sweet.database.schema.TaiKhoan.KhachHang;
 import com.example.sweet.database.schema.TaiKhoan.NhanVien;
+import com.example.sweet.domain.response.GiaoDich.PhieuGuiTienDTO;
 import com.example.sweet.database.repository.TaiKhoan.KhachHangRepository;
 import com.example.sweet.database.repository.TaiKhoan.NhanVienRepository;
 import com.example.sweet.database.repository.Loai.ChiTietQuyDinhLaiSuatRepository;

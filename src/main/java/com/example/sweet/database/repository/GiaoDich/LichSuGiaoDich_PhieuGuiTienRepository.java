@@ -1,9 +1,13 @@
 package com.example.sweet.database.repository.GiaoDich;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.sweet.database.schema.GiaoDich.LichSuGiaoDich_PhieuGuiTien;
+import com.example.sweet.database.schema.GiaoDich.PhieuGuiTien;
 
-public interface LichSuGiaoDich_PhieuGuiTienRepository extends JpaRepository<LichSuGiaoDich_PhieuGuiTien, Integer> {
+public interface LichSuGiaoDich_PhieuGuiTienRepository extends JpaRepository<LichSuGiaoDich_PhieuGuiTien, Long> {
+    List<LichSuGiaoDich_PhieuGuiTien> findByPhieuGuiTien(PhieuGuiTien phieuGuiTien);
 
 }

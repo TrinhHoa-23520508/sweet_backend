@@ -15,7 +15,7 @@ import lombok.Setter;
 public class LichSuGiaoDich_PhieuGuiTien {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int lichSuPhieuGuiTienID;
+    private Long lichSuPhieuGuiTienID;
 
     @ManyToOne
     @JoinColumn(name = "phieu_gui_tien_id", nullable = false)
