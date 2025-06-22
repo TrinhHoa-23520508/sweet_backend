@@ -7,6 +7,9 @@ import com.example.sweet.util.mapper.QuyDinhLaiSuatMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,7 +19,10 @@ public class QuyDinhLaiSuatService {
     private final QuyDinhLaiSuatMapper quyDinhLaiSuatMapper;
 
     public Iterable<QuyDinhLaiSuatResponseDTO> findAll() {
-        return repository.findAll().stream().map(quyDinhLaiSuatMapper::toQuyDinhLaiSuatResponseDTO).toList();
+        return repository.findAll().stream()
+                .sorted(Comparator.comparing(QuyDinhLaiSuat::getNgayBatDau))
+                .map(quyDinhLaiSuatMapper::toQuyDinhLaiSuatResponseDTO)
+                .toList();
     }
 
     public QuyDinhLaiSuatResponseDTO save(QuyDinhLaiSuat quyDinhLaiSuat) {
@@ -29,5 +35,25 @@ public class QuyDinhLaiSuatService {
 
     public void deleteById(Long id) {
         repository.deleteById(id);
+    }
+
+    public Optional<QuyDinhLaiSuatResponseDTO> findCurrentQuyDinhLaiSuat() {
+        List<QuyDinhLaiSuat> list = repository.findAll().stream()
+                .sorted(Comparator.comparing(QuyDinhLaiSuat::getNgayBatDau))
+                .toList();
+
+        LocalDate today = LocalDate.now();
+        QuyDinhLaiSuat result = null;
+
+        for (QuyDinhLaiSuat qdls : list) {
+            if (!qdls.getNgayBatDau().isAfter(today)) {
+                result = qdls;
+            } else {
+                break; // Đã gặp bản ghi có ngayBatDau > hiện tại
+            }
+        }
+
+        return Optional.ofNullable(result)
+                .map(quyDinhLaiSuatMapper::toQuyDinhLaiSuatResponseDTO);
     }
 }

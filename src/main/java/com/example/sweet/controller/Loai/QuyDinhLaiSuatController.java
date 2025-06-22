@@ -34,4 +34,11 @@ public class QuyDinhLaiSuatController {
     public void deleteQuyDinhLaiSuat(@PathVariable Long id) {
         service.deleteById(id);
     }
+
+    @GetMapping("/current")
+    public ResponseEntity<QuyDinhLaiSuatResponseDTO> getCurrentQuyDinhLaiSuat() {
+        return service.findCurrentQuyDinhLaiSuat()
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 }
