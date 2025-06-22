@@ -69,14 +69,16 @@ public class PhieuGuiTienController {
         }
     }
 
-    @GetMapping("/{id}/phieu-rut-tien")
-    public ResponseEntity<?> getPhieuRutTienByPhieuGuiTienId(@PathVariable Long id) {
-        try {
-            List<PhieuRutTienDTO_out> phieuRutTiens = phieuRutTienService.getPhieuRutTienByPhieuGuiTienId(id);
-            return ResponseEntity.ok(
-                    phieuRutTiens);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
-        }
-    }
+    // @GetMapping("/{id}/phieu-rut-tien")
+    // public ResponseEntity<?> getPhieuRutTienByPhieuGuiTienId(@PathVariable Long
+    // id) {
+    // try {
+    // List<PhieuRutTienDTO_out> phieuRutTiens =
+    // phieuRutTienService.getPhieuRutTienByPhieuGuiTienId(id);
+    // return ResponseEntity.ok(
+    // phieuRutTiens);
+    // } catch (Exception e) {
+    // return ResponseEntity.badRequest().body(null);
+    // }
+    // }
 }
