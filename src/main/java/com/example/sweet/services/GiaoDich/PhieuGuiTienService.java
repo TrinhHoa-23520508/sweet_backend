@@ -104,6 +104,14 @@ public class PhieuGuiTienService {
             // PhieuGuiTien chưa được tạo nên chưa có ID, sẽ set sau khi lưu
             PhieuGuiTien phieuGuiTien = phieuGuiTienMapper.toEntity(dto);
             phieuGuiTien.setSoDuHienTai(dto.getSoTienGuiBanDau()); // Set số dư = số tiền gửi ban đầu
+            // Tiếp tục code tạo PhieuGuiTien như cũ
+            phieuGuiTien.setNgayDaoHan(ngayDaoHan);
+            phieuGuiTien.setTongTienLaiDuKien(0L);
+            phieuGuiTien.setTienLaiNhanDinhKy(0L);
+            phieuGuiTien.setTienLaiDaNhanNhungChuaQuyetToan(0L);
+            phieuGuiTien.setTongLaiQuyetToan(0L);
+
+
             phieuGuiTien = phieuGuiTienRepository.save(phieuGuiTien); // Lưu trước để có ID
 
             // Set tài khoản nguồn và đích
@@ -132,28 +140,13 @@ public class PhieuGuiTienService {
             // Gọi service để tạo giao dịch
             GiaoDich savedGiaoDich = giaoDichService.createGiaoDich(giaoDich);
 
-            // Sau khi có savedGiaoDich, lưu lịch sử giao dịch
-            LichSuGiaoDich_PhieuGuiTien lichSuPGT = new LichSuGiaoDich_PhieuGuiTien();
-            lichSuPGT.setPhieuGuiTien(phieuGuiTien);
-            lichSuPGT.setGiaoDich(savedGiaoDich);
-            lichSuPGT.setSoTienGocGiaoDich(phieuGuiTien.getSoDuHienTai());
-            lichSuPGT.setSoDuHienTai_SauGD(phieuGuiTien.getSoDuHienTai());
-            lichSuPGT.setTienLai_TrongGD(0.0);
-            lichSuPGT.setLaiQuyetToan_TrongGD(0.0);
-            lichSuPGT.setTienLaiDaNhanNhungChuaQuyetToan_SauGD(0.0);
-            lichSuPGT.setTongLaiQuyetToan_SauGD(0.0);
-
-            lichSuPGTRepo.save(lichSuPGT);
-
-            // Tiếp tục code tạo PhieuGuiTien như cũ
             phieuGuiTien.setNgayDaoHan(ngayDaoHan);
             phieuGuiTien.setTongTienLaiDuKien(tongTienLaiDuKien);
             phieuGuiTien.setTienLaiNhanDinhKy(tienLaiNhanDinhKy);
             phieuGuiTien.setTienLaiDaNhanNhungChuaQuyetToan(0L);
-            phieuGuiTien.setTongLaiQuyetToan(0L);
-
-            // Lưu phiếu gửi tiền
+            phieuGuiTien.setTongLaiQuyetToan(0L);// Lưu phiếu gửi tiền
             PhieuGuiTien savedPhieuGuiTien = phieuGuiTienRepository.save(phieuGuiTien);
+
 
             // Nếu là đầu kỳ hạn -> tạo phiếu trả lãi ngay
             String tanSuat = chiTietQuyDinh.getTanSuatNhanLai().getTenTanSoNhanLai();

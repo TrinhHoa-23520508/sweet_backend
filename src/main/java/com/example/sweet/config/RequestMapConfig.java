@@ -37,25 +37,30 @@ public class RequestMapConfig {
             ApiMessage desc = method.getMethodAnnotation(ApiMessage.class);
             String description = (desc != null) ? desc.value() : method.getMethod().getName();
             String methodName = info.getMethodsCondition().toString().replace("[", "").replace("]", "");
+            String moduleName = method.getBeanType().getSimpleName().replace("Controller", "");
             if (info.getPatternValues().isEmpty() || methodName.isEmpty()) {
                 System.err.println("No patterns defined for method: " + method.getMethod().getName());
                 continue; // Skip if no patterns are defined
             }
+
+
             quyenHans.add(new QuyenHan(
                 null,
                 description,
                 info.getPatternValues().toArray()[0].toString(),
                 methodName,
-                method.getBeanType().getSimpleName().replace("Controller", ""),
+                moduleName,
                 List.of()
             ));
-//
-//            System.out.println("Route: " + info.getPatternValues().toArray()[0]);
-//            System.out.println("Methods: " + info.getMethodsCondition());
-//            System.out.println("Controller: " + method.getBeanType().getSimpleName());
-//            System.out.println("Method: " + method.getMethod().getName());
-//            System.out.println("----");
         }
+        quyenHans.add(new QuyenHan(
+            null,
+            "Error",
+            "/error",
+            "GET",
+            "Main",
+            List.of()
+        ));
         return quyenHans;
     }
 }

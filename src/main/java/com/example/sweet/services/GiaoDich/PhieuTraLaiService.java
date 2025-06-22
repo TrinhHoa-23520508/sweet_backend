@@ -137,17 +137,17 @@ public class PhieuTraLaiService {
             PhieuTraLai savedPhieuTraLai = phieuTraLaiRepository.save(phieuTraLai);
             phieuGuiTienRepository.save(phieuGuiTien);
             // Sau khi có savedGiaoDich, lưu lịch sử giao dịch
-            LichSuGiaoDich_PhieuGuiTien lichSuPGT = new LichSuGiaoDich_PhieuGuiTien();
-            lichSuPGT.setPhieuGuiTien(phieuGuiTien);
-            lichSuPGT.setGiaoDich(savedGiaoDich);
-            lichSuPGT.setSoTienGocGiaoDich(0.0);
-            lichSuPGT.setSoDuHienTai_SauGD(phieuGuiTien.getSoDuHienTai());
-            lichSuPGT.setTienLai_TrongGD(phieuGuiTien.getTienLaiNhanDinhKy());
-            lichSuPGT.setLaiQuyetToan_TrongGD(0.0);
-            lichSuPGT.setTienLaiDaNhanNhungChuaQuyetToan_SauGD(phieuGuiTien.getTienLaiDaNhanNhungChuaQuyetToan());
-            lichSuPGT.setTongLaiQuyetToan_SauGD(phieuGuiTien.getTongLaiQuyetToan());
+//            LichSuGiaoDich_PhieuGuiTien lichSuPGT = new LichSuGiaoDich_PhieuGuiTien();
+//            lichSuPGT.setPhieuGuiTien(phieuGuiTien);
+//            lichSuPGT.setGiaoDich(savedGiaoDich);
+//            lichSuPGT.setSoTienGocGiaoDich(0.0);
+//            lichSuPGT.setSoDuHienTai_SauGD(phieuGuiTien.getSoDuHienTai());
+//            lichSuPGT.setTienLai_TrongGD(phieuGuiTien.getTienLaiNhanDinhKy());
+//            lichSuPGT.setLaiQuyetToan_TrongGD(0.0);
+//            lichSuPGT.setTienLaiDaNhanNhungChuaQuyetToan_SauGD(phieuGuiTien.getTienLaiDaNhanNhungChuaQuyetToan());
+//            lichSuPGT.setTongLaiQuyetToan_SauGD(phieuGuiTien.getTongLaiQuyetToan());
 
-            lichSuPGTRepo.save(lichSuPGT);
+//            lichSuPGTRepo.save(lichSuPGT);
 
             return phieuTraLaiMapper.toDTO(savedPhieuTraLai);
 
