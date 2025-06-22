@@ -6,6 +6,7 @@ import com.example.sweet.database.repository.dto.PhieuTraLaiDTO;
 import com.example.sweet.database.schema.GiaoDich.GiaoDich;
 import com.example.sweet.database.schema.GiaoDich.PhieuGuiTien;
 import com.example.sweet.database.schema.GiaoDich.PhieuTraLai;
+import com.example.sweet.util.mapper.GiaoDich.GiaoDichMapper;
 import com.example.sweet.database.repository.GiaoDich.GiaoDichRepository;
 import com.example.sweet.database.repository.GiaoDich.PhieuGuiTienRepository;
 
@@ -13,12 +14,15 @@ import com.example.sweet.database.repository.GiaoDich.PhieuGuiTienRepository;
 public class PhieuTraLaiMapper {
     private final PhieuGuiTienRepository phieuGuiTienRepository;
     private final GiaoDichRepository giaoDichRepository;
+    private final GiaoDichMapper giaoDichMapper;
 
     public PhieuTraLaiMapper(
             PhieuGuiTienRepository phieuGuiTienRepository,
-            GiaoDichRepository giaoDichRepository) {
+            GiaoDichRepository giaoDichRepository,
+            GiaoDichMapper giaoDichMapper) {
         this.phieuGuiTienRepository = phieuGuiTienRepository;
         this.giaoDichRepository = giaoDichRepository;
+        this.giaoDichMapper = giaoDichMapper;
     }
 
     public PhieuTraLaiDTO toDTO(PhieuTraLai phieuTraLai) {
@@ -31,7 +35,9 @@ public class PhieuTraLaiMapper {
         dto.setPhieuTraLaiID(phieuTraLai.getPhieuTraLaiID());
         dto.setPhieuGuiTienID(
                 phieuTraLai.getPhieuGuiTien() != null ? phieuTraLai.getPhieuGuiTien().getPhieuGuiTienID() : null);
-        dto.setGiaoDichID(phieuTraLai.getGiaoDich() != null ? phieuTraLai.getGiaoDich().getGiaoDichID() : null);
+        dto.setGiaoDich(
+                phieuTraLai.getGiaoDich() != null ? giaoDichMapper.toGiaoDichResponseDTO(phieuTraLai.getGiaoDich())
+                        : null);
         dto.setNgayTraLai(phieuTraLai.getNgayTraLai());
 
         // Map thêm thông tin từ PhieuGuiTien
