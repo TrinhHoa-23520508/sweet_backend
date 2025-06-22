@@ -14,9 +14,11 @@ import lombok.Setter;
 public class PhieuRutTienDTO_inp {
     private Long maPhieuGuiTien; // Mã phiếu gửi tiền
     private Long maKhachHang; // Mã khách hàng
-    private LocalDateTime ngayRut; // Ngày rút (dạng chuỗi, có thể chuyển đổi sang LocalDateTime)
+    // private LocalDateTime ngayRut; // Ngày rút (dạng chuỗi, có thể chuyển đổi
+    // sang LocalDateTime)
     private int soTienRut; // Số tiền gốc muốn rút
     private Long maGiaoDichVien; // Mã giao dịch viên
+    private Long kenhGiaoDichID; // Mã kênh giao dịch: 1 là trực tiếp, 2 là online
 }
 
 ///

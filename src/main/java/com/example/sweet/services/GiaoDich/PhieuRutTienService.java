@@ -3,12 +3,15 @@ package com.example.sweet.services.GiaoDich;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.example.sweet.database.repository.TrangThaiRepository;
 import com.example.sweet.database.repository.GiaoDich.GiaoDichRepository;
+import com.example.sweet.database.repository.GiaoDich.KenhGiaoDichRepository;
 import com.example.sweet.database.repository.GiaoDich.PhieuDaoHanRepository;
 import com.example.sweet.database.repository.GiaoDich.PhieuGuiTienRepository;
 import com.example.sweet.database.repository.GiaoDich.PhieuRutTienRepository;
@@ -19,6 +22,8 @@ import com.example.sweet.database.repository.TaiKhoan.TaiKhoanThanhToanRepositor
 import com.example.sweet.database.repository.dto.PhieuRutTien.PhieuRutTienDTO_inp;
 import com.example.sweet.database.repository.dto.PhieuRutTien.PhieuRutTienDTO_out;
 import com.example.sweet.database.schema.GiaoDich.GiaoDich;
+import com.example.sweet.database.schema.GiaoDich.KenhGiaoDich;
+import com.example.sweet.database.schema.GiaoDich.LichSuGiaoDich_PhieuGuiTien;
 import com.example.sweet.database.schema.GiaoDich.PhieuGuiTien;
 import com.example.sweet.database.schema.GiaoDich.PhieuRutTien;
 import com.example.sweet.database.schema.Loai.LoaiTaiKhoan;
@@ -27,11 +32,13 @@ import com.example.sweet.database.schema.TaiKhoan.NhanVien;
 import com.example.sweet.database.schema.TaiKhoan.TaiKhoanThanhToan;
 import com.example.sweet.util.mapper.PhieuDaoHanMapper;
 import com.example.sweet.util.mapper.PhieuGuiTienMapper;
+import com.example.sweet.database.repository.GiaoDich.LichSuGiaoDich_PhieuGuiTienRepository;
 
 import jakarta.transaction.Transactional;
 
 @Service
 public class PhieuRutTienService {
+    private static final Logger logger = LoggerFactory.getLogger(PhieuRutTienService.class);
 
     private final LoaiGiaoDichRepository loaiGiaoDichRepository;
     private final HinhThucDaoHanRepository hinhThucDaoHanRepository;
@@ -52,6 +59,8 @@ public class PhieuRutTienService {
     private final TaiKhoanThanhToanRepository taiKhoanThanhToanRepository;
     private final LoaiTaiKhoanRepository loaiTaiKhoanRepository;
     private final GiaoDichRepository giaoDichRepository;
+    private final KenhGiaoDichRepository kenhGiaoDichRepository;
+    private final LichSuGiaoDich_PhieuGuiTienRepository lichSuPGTRepo;
 
     public PhieuRutTienService(
             PhieuRutTienRepository phieuRutTienRepository,
@@ -69,7 +78,9 @@ public class PhieuRutTienService {
             TaiKhoanThanhToanRepository taiKhoanThanhToanRepository,
             LoaiTaiKhoanRepository loaiTaiKhoanRepository,
             GiaoDichRepository giaoDichRepository,
-            LoaiGiaoDichRepository loaiGiaoDichRepository) {
+            LoaiGiaoDichRepository loaiGiaoDichRepository,
+            KenhGiaoDichRepository kenhGiaoDichRepository,
+            LichSuGiaoDich_PhieuGuiTienRepository lichSuPGTRepo) {
         this.phieuDaoHanRepository = phieuDaoHanRepository;
         this.phieuRutTienRepository = phieuRutTienRepository;
         this.khachHangRepository = khachHangRepository;
@@ -86,6 +97,8 @@ public class PhieuRutTienService {
         this.loaiTaiKhoanRepository = loaiTaiKhoanRepository;
         this.giaoDichRepository = giaoDichRepository;
         this.loaiGiaoDichRepository = loaiGiaoDichRepository;
+        this.kenhGiaoDichRepository = kenhGiaoDichRepository;
+        this.lichSuPGTRepo = lichSuPGTRepo;
     }
 
     @Transactional
@@ -110,17 +123,24 @@ public class PhieuRutTienService {
 
         PhieuGuiTien phieuGuiTien = this.phieuGuiTienRepository.findById(dto.getMaPhieuGuiTien())
                 .orElseThrow(() -> new IllegalArgumentException("Mã phiếu gửi tiền không tồn tại"));
+
+        GiaoDich giaoDich = new GiaoDich();
+        logger.debug(">>>Tạo giao dịch mới");
+
+        // giaoDich = this.giaoDichRepository.saveAndFlush(giaoDich);
+        logger.debug(">>>Giao dịch đã được lưu với ID: {}", giaoDich.getGiaoDichID());
+
         PhieuRutTien phieuRutTien = new PhieuRutTien(null,
                 phieuGuiTien,
-                null, // dc gán sau khi lưu giao dịch
+                giaoDich, // dc gán sau khi lưu giao dịch
                 dto.getSoTienRut(),
                 Instant.now(),
                 phieuGuiTien.getChiTietQuyDinhLaiSuat().getLaiSuat());
 
-        phieuRutTien = phieuRutTienRepository.saveAndFlush(phieuRutTien);
+        // phieuRutTien = phieuRutTienRepository.saveAndFlush(phieuRutTien);
         PhieuRutTienDTO_out phieuRutTienDTO_out = new PhieuRutTienDTO_out();
 
-        GiaoDich giaoDich = new GiaoDich();
+        // GiaoDich giaoDich = new GiaoDich();
 
         KhachHang khachHang = this.khachHangRepository.findById(dto.getMaKhachHang()).get();
 
@@ -135,12 +155,14 @@ public class PhieuRutTienService {
                 + khachHang.getKhachHangID() + " - " + khachHang.getHoTen());
         giaoDich.setThoiGianGiaoDich(Instant.now());
         giaoDich.setTaiKhoanNguon(null);
+        giaoDich.setKenhGiaoDich(kenhGiaoDichRepository.findById(1L).get());
 
-        giaoDich = this.giaoDichRepository.saveAndFlush(giaoDich);
+        // giaoDich = this.giaoDichRepository.saveAndFlush(giaoDich);
         phieuRutTien.setGiaoDich(giaoDich);
         initDTO(dto, phieuRutTienDTO_out, phieuGuiTien);
 
         xuLiRutTien(dto, phieuRutTienDTO_out, phieuGuiTien, giaoDich);
+        luuLichSuPhieuRutTien(phieuRutTien, phieuRutTienDTO_out);
         return phieuRutTienDTO_out;
     }
 
@@ -171,6 +193,9 @@ public class PhieuRutTienService {
         dto_out.setNgayRut(Instant.now());
         dto_out.setSoTienRut(dto_inp.getSoTienRut());
 
+        dto_out.setKenhGiaoDich(kenhGiaoDichRepository.findById(dto_inp.getKenhGiaoDichID()).get());
+        dto_out.setMaNhanVien(dto_inp.getMaGiaoDichVien());
+        dto_out.setTenNhanVien(this.nhanVienRepository.findById(dto_inp.getMaGiaoDichVien()).get().getHoTen());
     }
 
     public void xuLiRutTien(PhieuRutTienDTO_inp dto_inp, PhieuRutTienDTO_out dto_out, PhieuGuiTien phieuGuiTien,
@@ -206,7 +231,8 @@ public class PhieuRutTienService {
             if (phieuGuiTien.getSoDuHienTai() == dto_inp.getSoTienRut()) {
                 return true;
             }
-            return false;
+            throw new IllegalArgumentException("Số dư không khớp số tiền rút ở phiếu tiết kiệm Có kì hạn");
+            // return false;
         }
         // - Nếu Loại tiết kiệm = “Tiết kiệm có kỳ hạn rút gốc linh hoạt” thì Kiểm tra
         // Số tiền gốc muốn rút > Số dư hiện tại (D3
@@ -223,10 +249,12 @@ public class PhieuRutTienService {
     // Hiện thực B6
     public void xuLyLaiQuyetToan(PhieuGuiTien phieuGuiTien, PhieuRutTienDTO_inp dto_inp, PhieuRutTienDTO_out dto_out) {
         if (dto_out.getNgayRut().isBefore(phieuGuiTien.getNgayDaoHan())) {
+            // Sử dụng múi giờ hệ thống để chuyển đổi Instant sang LocalDate
             // Lãi quyết toán khi rút tiền = Số tiền gốc muốn rút * Số ngày gửi tiền (đến
             // thời điểm Ngày rút) * (Lãi suất tiết kiệm không kỳ hạn / 365)
-            long soNgayGuiTien = LocalDate.from(dto_out.getNgayRut()).toEpochDay()
-                    - LocalDate.from(phieuGuiTien.getNgayGuiTien()).toEpochDay();
+            LocalDate ngayRut = LocalDate.now(ZoneId.systemDefault());
+            LocalDate ngayGui = phieuGuiTien.getNgayGuiTien().atZone(ZoneId.systemDefault()).toLocalDate();
+            long soNgayGuiTien = ngayRut.toEpochDay() - ngayGui.toEpochDay() + 5;
             dto_out.setLaiQuyetToanKhiRut((long) (dto_inp.getSoTienRut() * soNgayGuiTien
                     * (phieuGuiTien.getChiTietQuyDinhLaiSuat().getLaiSuat() / 365)));
         } else {
@@ -238,8 +266,7 @@ public class PhieuRutTienService {
     // Hiện thực B7
     public void capNhatThongTinLaiSuat(PhieuGuiTien phieuGuiTien, PhieuRutTienDTO_inp dto_inp,
             PhieuRutTienDTO_out dto_out) {
-        dto_out.setTienLaiNhanDuocKhiRut((dto_out.getLaiQuyetToanKhiRut()
-                - phieuGuiTien.getTienLaiDaNhanNhungChuaQuyetToan()));
+        dto_out.setTienLaiNhanDuocKhiRut(dto_out.getLaiQuyetToanKhiRut());
         dto_out.setSoTienNhanDuocKhiRut(dto_inp.getSoTienRut() + dto_out.getTienLaiNhanDuocKhiRut());
         dto_out.setSoDuSauKhiRut((phieuGuiTien.getSoDuHienTai() - dto_inp.getSoTienRut()));
         phieuGuiTien.setSoDuHienTai(dto_out.getSoDuSauKhiRut());
@@ -252,8 +279,13 @@ public class PhieuRutTienService {
     public void capNhatThongTinSauRutTien(PhieuGuiTien phieuGuiTien, PhieuRutTienDTO_out dto_out) {
         // Tổng tiền lãi dự kiến (mới) = Tổng tiền lãi dự kiến - Tổng tiền lãi dự kiến
         // * (Số tiền gốc muốn rút / Số dư hiện tại)
-        dto_out.setTongLaiDuKien((long) (phieuGuiTien.getTongTienLaiDuKien()
-                - phieuGuiTien.getTongTienLaiDuKien() * (dto_out.getSoTienRut() / phieuGuiTien.getSoDuHienTai())));
+        if (phieuGuiTien.getSoDuHienTai() == 0) {
+            dto_out.setTongLaiDuKien(0L);
+            dto_out.setSoDuHienTai(0L);
+        } else {
+            dto_out.setTongLaiDuKien((long) (phieuGuiTien.getTongTienLaiDuKien()
+                    - phieuGuiTien.getTongTienLaiDuKien() * (dto_out.getSoTienRut() / phieuGuiTien.getSoDuHienTai())));
+        }
         // Tiền lãi đã nhận nhưng chưa quyết toán (mới) = Tiền lãi đã nhận nhưng chưa
         // quyết toán sau khi rút
         dto_out.setTienLaiDaNhanNhungChuaQuyetToan(dto_out.getTienLaiDaNhanNhungChuaQuyetToanSauRut());
@@ -274,6 +306,24 @@ public class PhieuRutTienService {
             giaoDich.setLoaiGiaoDich(loaiGiaoDichRepository.findById(4L).get());
             dto_out.setLoaiGiaoDich(giaoDich.getLoaiGiaoDich());
         }
+    }
+
+    // Hiện thực B11b
+    public void luuLichSuPhieuRutTien(PhieuRutTien phieuRutTien, PhieuRutTienDTO_out dto_out) {
+        // Lưu lịch sử phiếu rút tiền
+        LichSuGiaoDich_PhieuGuiTien lichSuPGT = new LichSuGiaoDich_PhieuGuiTien();
+        lichSuPGT.setPhieuGuiTien(phieuRutTien.getPhieuGuiTien());
+        lichSuPGT.setGiaoDich(phieuRutTien.getGiaoDich());
+
+        lichSuPGT.setSoTienGocGiaoDich(dto_out.getSoTienRut());
+        lichSuPGT.setSoDuHienTai_SauGD(dto_out.getSoDuSauKhiRut());
+        lichSuPGT.setTienLai_TrongGD(dto_out.getTienLaiNhanDuocKhiRut());
+        lichSuPGT.setLaiQuyetToan_TrongGD(dto_out.getLaiQuyetToanKhiRut());
+        lichSuPGT.setTienLaiDaNhanNhungChuaQuyetToan_SauGD(dto_out.getTienLaiDaNhanNhungChuaQuyetToanSauRut());
+        lichSuPGT.setTongLaiQuyetToan_SauGD(dto_out.getTongLaiQuyetToanSauRut());
+
+        lichSuPGT = this.lichSuPGTRepo.saveAndFlush(lichSuPGT);
+        dto_out.setLichSuGiaoDichPhieuGuiTien(lichSuPGT);
     }
 }
 
@@ -328,5 +378,6 @@ public class PhieuRutTienService {
 // - Nếu Số dư hiện tại ≠ 0 thì: Loại giao dịch = “Rút tiền từ phiếu gửi tiền”
 // B10: Lưu D4 xuống bộ nhớ phụ
 // B11: Xuất D5 ra máy in
+// B11b: lưu lịch sử phiếu gửi tiền
 // B12: Đóng kết nối cơ sở dữ liệu
 // B13: Kết thúc

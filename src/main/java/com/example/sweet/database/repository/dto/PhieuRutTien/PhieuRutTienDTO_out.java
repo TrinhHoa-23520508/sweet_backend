@@ -2,11 +2,14 @@ package com.example.sweet.database.repository.dto.PhieuRutTien;
 
 import java.time.Instant;
 
+import com.example.sweet.database.schema.GiaoDich.KenhGiaoDich;
+import com.example.sweet.database.schema.GiaoDich.LichSuGiaoDich_PhieuGuiTien;
 import com.example.sweet.database.schema.Loai.HinhThucDaoHan;
 import com.example.sweet.database.schema.Loai.LoaiGiaoDich;
 import com.example.sweet.database.schema.Loai.LoaiKyHan;
 import com.example.sweet.database.schema.Loai.LoaiTietKiem;
 import com.example.sweet.database.schema.Loai.TanSuatNhanLai;
+import com.example.sweet.database.schema.TaiKhoan.NhanVien;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -55,6 +58,10 @@ public class PhieuRutTienDTO_out {
     Long tienLaiDaNhanNhungChuaQuyetToanSauRut; // Tiền lãi đã nhận nhưng chưa quyết toán sau khi rút
     Long tongLaiQuyetToanSauRut; // Tổng lãi quyết toán sau khi rút tiền
 
-    Long maGiaoDichVien; // Mã giao dịch viên
-    String tenGiaoDichVien; // Tên giao dịch viên
+    KenhGiaoDich kenhGiaoDich; // Kênh giao dịch (Trực tiếp, Online, v.v.)
+
+    Long maNhanVien; // Mã nhân viên giao dịch //
+    String tenNhanVien;
+
+    LichSuGiaoDich_PhieuGuiTien lichSuGiaoDichPhieuGuiTien; // Lịch sử giao dịch phiếu gửi tiền
 }
