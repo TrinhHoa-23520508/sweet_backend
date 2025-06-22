@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
 public class ChiTietQuyDinhLaiSuatMapper {
     private final NhanVienMapper nhanVienMapper;
 
-    public ChiTietQuyDinhLaiSuatResponseDTO toChiTietQuyDinhLaiSuatResponseDTO(ChiTietQuyDinhLaiSuat chiTietQuyDinhLaiSuat) {
+    public ChiTietQuyDinhLaiSuatResponseDTO toChiTietQuyDinhLaiSuatResponseDTO(
+            ChiTietQuyDinhLaiSuat chiTietQuyDinhLaiSuat) {
         if (chiTietQuyDinhLaiSuat == null) {
             return null;
         }
@@ -21,6 +22,7 @@ public class ChiTietQuyDinhLaiSuatMapper {
         responseDTO.setTanSuatNhanLai(chiTietQuyDinhLaiSuat.getTanSuatNhanLai());
         responseDTO.setLoaiTietKiem(chiTietQuyDinhLaiSuat.getLoaiTietKiem());
         responseDTO.setLaiSuat(chiTietQuyDinhLaiSuat.getLaiSuat());
+        responseDTO.setLoaiKyHan(chiTietQuyDinhLaiSuat.getLoaiKyHan());
 
         return responseDTO;
     }

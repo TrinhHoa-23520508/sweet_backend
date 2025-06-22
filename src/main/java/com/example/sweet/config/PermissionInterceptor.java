@@ -84,7 +84,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
                         quyenHan.getMethod().equalsIgnoreCase(httpMethod));
 
         if (!isAllowed) {
-            throw new IdInvalidException("Bạn không có quyền truy cập vào nguồn tài nguyên này");
+            throw new IdInvalidException("Bạn không có quyền truy cập vào nguồn tài nguyên này" + path);
         }
     }
 }
