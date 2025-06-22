@@ -13,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.sweet.database.repository.dto.PhieuTraLaiDTO;
+import com.example.sweet.database.repository.dto.PhieuRutTien.PhieuRutTienDTO_inp;
+import com.example.sweet.database.repository.dto.PhieuRutTien.PhieuRutTienDTO_out;
 import com.example.sweet.domain.response.GiaoDich.PhieuGuiTienDTO;
 import com.example.sweet.services.GiaoDich.PhieuGuiTienService;
+import com.example.sweet.services.GiaoDich.PhieuRutTienService;
 import com.example.sweet.services.GiaoDich.PhieuTraLaiService;
 import com.example.sweet.util.annotation.ApiMessage;
 
@@ -25,10 +28,13 @@ import jakarta.validation.Valid;
 public class PhieuGuiTienController {
     private final PhieuGuiTienService phieuGuiTienService;
     private final PhieuTraLaiService phieuTraLaiService;
+    private final PhieuRutTienService phieuRutTienService;
 
-    public PhieuGuiTienController(PhieuGuiTienService phieuGuiTienService, PhieuTraLaiService phieuTraLaiService) {
+    public PhieuGuiTienController(PhieuGuiTienService phieuGuiTienService, PhieuTraLaiService phieuTraLaiService,
+            PhieuRutTienService phieuRutTienService) {
         this.phieuGuiTienService = phieuGuiTienService;
         this.phieuTraLaiService = phieuTraLaiService;
+        this.phieuRutTienService = phieuRutTienService;
     }
 
     @GetMapping
@@ -58,6 +64,17 @@ public class PhieuGuiTienController {
             List<PhieuTraLaiDTO> phieuTraLais = phieuTraLaiService.getPhieuTraLaiByPhieuGuiTienId(id);
             return ResponseEntity.ok(
                     phieuTraLais);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    @GetMapping("/{id}/phieu-rut-tien")
+    public ResponseEntity<?> getPhieuRutTienByPhieuGuiTienId(@PathVariable Long id) {
+        try {
+            List<PhieuRutTienDTO_out> phieuRutTiens = phieuRutTienService.getPhieuRutTienByPhieuGuiTienId(id);
+            return ResponseEntity.ok(
+                    phieuRutTiens);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(null);
         }
