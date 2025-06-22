@@ -193,7 +193,7 @@ public class PhieuRutTienService {
         dto_out.setNgayRut(Instant.now());
         dto_out.setSoTienRut(dto_inp.getSoTienRut());
 
-        dto_out.setKenhGiaoDich(kenhGiaoDichRepository.findById(dto_inp.getKenhGiaoDichID()).get());
+        dto_out.setMaKenhGiaoDich(dto_inp.getKenhGiaoDichID());
         dto_out.setMaNhanVien(dto_inp.getMaGiaoDichVien());
         dto_out.setTenNhanVien(this.nhanVienRepository.findById(dto_inp.getMaGiaoDichVien()).get().getHoTen());
     }
