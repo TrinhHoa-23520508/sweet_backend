@@ -2,6 +2,8 @@ package com.example.sweet.database.repository.dto;
 
 import java.time.Instant;
 
+import com.example.sweet.domain.response.GiaoDich.GiaoDichResponseDTO;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +18,7 @@ public class PhieuTraLaiDTO {
     private Long phieuGuiTienID;
     private Long giaoDichID;
     private Instant ngayTraLai;
+    private GiaoDichResponseDTO giaoDich;
 
     // Thêm các trường mới
     private String maKhachHang;
