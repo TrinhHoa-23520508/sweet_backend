@@ -25,13 +25,16 @@ public class VaiTro {
     @NotBlank(message = "Tên role không được để trống")
     private String name;
 
+    private boolean isCustomerRole;
+
     @Column(columnDefinition = "MEDIUMTEXT")
     private String description;
 
     private boolean active;
 
+
     @ManyToMany(fetch = FetchType.LAZY)
-    @JsonIgnoreProperties(value = { "vaiTros" })
+    @JsonIgnoreProperties(value = {"vaiTros"})
     @JoinTable(name = "vaitro_quyenhan", joinColumns = @JoinColumn(name = "vaitro_id"), inverseJoinColumns = @JoinColumn(name = "quyenhan_id"))
     private List<QuyenHan> quyenHans;
 

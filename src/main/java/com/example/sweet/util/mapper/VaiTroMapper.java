@@ -24,6 +24,7 @@ public class VaiTroMapper {
         VaiTro vaiTro = new VaiTro();
         vaiTro.setId(vaiTroDTO.getId());
         vaiTro.setName(vaiTroDTO.getName());
+        vaiTro.setCustomerRole(vaiTroDTO.isCustomerRole());
         vaiTro.setDescription(vaiTroDTO.getDescription());
         vaiTro.setActive(vaiTroDTO.getActive());
 
@@ -42,6 +43,7 @@ public class VaiTroMapper {
         VaiTroDTO vaiTroDTO = new VaiTroDTO();
         vaiTroDTO.setId(vaiTro.getId());
         vaiTroDTO.setName(vaiTro.getName());
+        vaiTroDTO.setCustomerRole(vaiTro.isCustomerRole());
         vaiTroDTO.setDescription(vaiTro.getDescription());
         vaiTroDTO.setActive(vaiTro.isActive());
 

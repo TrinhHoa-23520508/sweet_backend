@@ -5,6 +5,7 @@ import com.example.sweet.database.repository.TaiKhoan.VaiTroRepository;
 import com.example.sweet.database.repository.TrangThaiRepository;
 import com.example.sweet.database.schema.TaiKhoan.DiaChi;
 import com.example.sweet.database.schema.TaiKhoan.KhachHang;
+import com.example.sweet.database.schema.TaiKhoan.VaiTro;
 import com.example.sweet.database.schema.TrangThai;
 import com.example.sweet.domain.request.KhachHangRequestDTO;
 import com.example.sweet.domain.response.KhachHangResponseDTO;
@@ -52,8 +53,12 @@ public class KhachHangMapper {
             khachHang.setTrangThaiKhachHang(null);
         }
         if (requestDTO.getVaiTroId() != null) {
-            khachHang.setVaiTro(vaiTroRepository.findById(requestDTO.getVaiTroId())
-                    .orElseThrow(() -> new IllegalArgumentException("Vai tro not found with id: " + requestDTO.getVaiTroId())));
+            VaiTro vaiTro = vaiTroRepository.findById(requestDTO.getVaiTroId())
+                    .orElseThrow(() -> new IllegalArgumentException("Vai tro not found with id: " + requestDTO.getVaiTroId()));
+            if (!vaiTro.isCustomerRole())
+                throw new IllegalArgumentException("Vai tro must be a customer role with id: " + requestDTO.getVaiTroId());
+            khachHang.setVaiTro(vaiTro);
+
         } else {
             khachHang.setVaiTro(null);
         }

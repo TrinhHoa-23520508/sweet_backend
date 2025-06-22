@@ -47,6 +47,9 @@ public class NhanVienMapper {
         if (requestDTO.getVaiTroId() != null) {
             VaiTro vaiTro = vaiTroRepository.findById(requestDTO.getVaiTroId())
                     .orElseThrow(() -> new IllegalArgumentException("Vai tro not found with id: " + requestDTO.getVaiTroId()));
+            if (vaiTro.isCustomerRole()) {
+                throw new IllegalArgumentException("Cannot assign customer role to NhanVien");
+            }
             nhanVien.setVaiTro(vaiTro);
         } else {
             nhanVien.setVaiTro(null);
