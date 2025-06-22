@@ -163,6 +163,7 @@ public class PhieuRutTienService {
 
         xuLiRutTien(dto, phieuRutTienDTO_out, phieuGuiTien, giaoDich);
         luuLichSuPhieuRutTien(phieuRutTien, phieuRutTienDTO_out);
+        phieuRutTienDTO_out.setMaPhieuRutTien(phieuRutTien.getPhieuRutTienID());
         return phieuRutTienDTO_out;
     }
 
