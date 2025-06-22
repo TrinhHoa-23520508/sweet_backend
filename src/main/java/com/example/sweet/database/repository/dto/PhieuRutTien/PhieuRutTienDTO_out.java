@@ -58,7 +58,7 @@ public class PhieuRutTienDTO_out {
     Long tienLaiDaNhanNhungChuaQuyetToanSauRut; // Tiền lãi đã nhận nhưng chưa quyết toán sau khi rút
     Long tongLaiQuyetToanSauRut; // Tổng lãi quyết toán sau khi rút tiền
 
-    KenhGiaoDich kenhGiaoDich; // Kênh giao dịch (Trực tiếp, Online, v.v.)
+    Long maKenhGiaoDich; // Kênh giao dịch (Trực tiếp, Online, v.v.)
 
     Long maNhanVien; // Mã nhân viên giao dịch //
     String tenNhanVien;
