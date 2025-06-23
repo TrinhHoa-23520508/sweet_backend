@@ -14,18 +14,20 @@ import org.springframework.web.bind.annotation.*;
 public class LoaiGiaoDichController {
     private LoaiGiaoDichRepository respository;
 
-    @GetMapping("/")
-    @ApiMessage("Mah balls")
+    @GetMapping("")
+    @ApiMessage("Lấy danh sách loại giao dịch")
     public ResponseEntity<Iterable<LoaiGiaoDich>> getAllLoaiGiaoDich() {
         return ResponseEntity.ok(respository.findAll());
     }
 
-    @PostMapping("/")
+    @PostMapping("")
+    @ApiMessage("Thêm mới loại giao dịch")
     public ResponseEntity<LoaiGiaoDich> insertLoaiGiaoDich(@RequestBody LoaiGiaoDich loaiGiaoDich) {
         return ResponseEntity.ok(respository.save(loaiGiaoDich));
     }
 
     @DeleteMapping("/{id}")
+    @ApiMessage("Xoá loại giao dịch theo ID")
     public void deleteLoaiGiaoDich(@PathVariable Long id) {
         respository.deleteById(id);
     }

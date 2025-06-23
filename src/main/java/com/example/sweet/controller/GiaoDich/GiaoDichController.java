@@ -25,11 +25,13 @@ public class GiaoDichController {
     private final GiaoDichMapper mapper;
 
     @GetMapping("")
+    @ApiMessage("Lấy danh sách giao dịch")
     public ResponseEntity<Iterable<GiaoDichResponseDTO>> getAllGiaoDich() {
         return ResponseEntity.ok(service.findAll());
     }
 
     @PostMapping("")
+    @ApiMessage("Thêm mới giao dịch")
     public ResponseEntity<GiaoDichResponseDTO> insertGiaoDich(@Valid @RequestBody GiaoDichRequestDTO giaoDich) {
         if (giaoDich.getGiaoDichID() != null)
             throw new IllegalStateException("Không thể update được giao dịch");
@@ -37,16 +39,19 @@ public class GiaoDichController {
     }
 
     @GetMapping("/{id}")
+    @ApiMessage("Lấy giao dịch theo ID")
     public ResponseEntity<Optional<GiaoDichResponseDTO>> getGiaoDich(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
     @GetMapping("by/tktt/{id}")
+    @ApiMessage("Lấy giao dịch theo tài khoản thanh toán")
     public ResponseEntity<Iterable<GiaoDichResponseDTO>> getGiaoDichByTaiKhoan(@PathVariable Long id) {
         return ResponseEntity.ok(service.findByTaiKhoan(id));
     }
 
     @GetMapping("by/nhan-vien/{id}")
+    @ApiMessage("Lấy giao dịch theo nhân viên giao dịch")
     public ResponseEntity<Iterable<GiaoDichResponseDTO>> getGiaoDichByNhanVien(@PathVariable Long id) {
         return ResponseEntity.ok(service.findByNhanVienGiaoDich(id));
     }

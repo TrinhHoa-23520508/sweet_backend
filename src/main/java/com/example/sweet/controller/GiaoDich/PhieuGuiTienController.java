@@ -53,12 +53,14 @@ public class PhieuGuiTienController {
     }
 
     @GetMapping("/{khachHangId}")
+    @ApiMessage("Lấy danh sách phiếu gửi tiền theo ID khách hàng")
     public ResponseEntity<List<PhieuGuiTienDTO>> getPhieuGuiTienByKhachHangId(@PathVariable Long khachHangId) {
         List<PhieuGuiTienDTO> phieuGuiTiens = phieuGuiTienService.getPhieuGuiTienByKhachHangId(khachHangId);
         return ResponseEntity.ok(phieuGuiTiens);
     }
 
     @GetMapping("/{id}/phieu-tra-lai")
+    @ApiMessage("Lấy danh sách phiếu trả lại theo ID phiếu gửi tiền")
     public ResponseEntity<?> getPhieuTraLaiByPhieuGuiTienId(@PathVariable Long id) {
         try {
             List<PhieuTraLaiDTO> phieuTraLais = phieuTraLaiService.getPhieuTraLaiByPhieuGuiTienId(id);

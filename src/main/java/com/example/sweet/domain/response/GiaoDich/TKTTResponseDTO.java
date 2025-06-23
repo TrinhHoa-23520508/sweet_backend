@@ -2,6 +2,7 @@ package com.example.sweet.domain.response.GiaoDich;
 
 import com.example.sweet.database.schema.TaiKhoan.KhachHang;
 import com.example.sweet.database.schema.TrangThai;
+import com.example.sweet.domain.response.KhachHangNoVaiTroResponseDTO;
 import com.example.sweet.domain.response.KhachHangResponseDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ import java.time.Instant;
 public class TKTTResponseDTO {
     private Long soTaiKhoan;
 
-    private KhachHangResponseDTO khachHang;
+    private KhachHangNoVaiTroResponseDTO khachHang;
 
     private TrangThai trangThai;
 

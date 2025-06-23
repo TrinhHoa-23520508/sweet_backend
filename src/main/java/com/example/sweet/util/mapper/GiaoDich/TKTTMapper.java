@@ -51,7 +51,7 @@ public class TKTTMapper {
         responseDTO.setNgayTao(taiKhoanThanhToan.getNgayTao());
         responseDTO.setSoDu(taiKhoanThanhToan.getSoDu());
         responseDTO.setTrangThai(taiKhoanThanhToan.getTrangThai());
-        responseDTO.setKhachHang(khachHangMapper.toKhachHangResponseDTO(taiKhoanThanhToan.getKhachHang()));
+        responseDTO.setKhachHang(khachHangMapper.toKhachHangNoVaiTroResponseDTO(taiKhoanThanhToan.getKhachHang()));
         return responseDTO;
     }
 }

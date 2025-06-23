@@ -4,6 +4,7 @@ import com.example.sweet.database.schema.GiaoDich.KenhGiaoDich;
 import com.example.sweet.database.schema.Loai.LoaiGiaoDich;
 import com.example.sweet.database.schema.Loai.LoaiTaiKhoan;
 import com.example.sweet.database.schema.TaiKhoan.NhanVien;
+import com.example.sweet.domain.response.NhanVienNoVaiTroResponseDTO;
 import com.example.sweet.domain.response.NhanVienResponseDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,7 +31,7 @@ public class GiaoDichResponseDTO {
 
     private KenhGiaoDich kenhGiaoDich;
 
-    private NhanVienResponseDTO nhanVienGiaoDich;
+    private NhanVienNoVaiTroResponseDTO nhanVienGiaoDich;
 
     private Long soTienGiaoDich;
     private String noiDung;

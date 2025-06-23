@@ -8,6 +8,7 @@ import com.example.sweet.database.schema.TaiKhoan.NhanVien;
 import com.example.sweet.database.schema.TaiKhoan.VaiTro;
 import com.example.sweet.database.schema.TrangThai;
 import com.example.sweet.domain.request.NhanVienRequestDTO;
+import com.example.sweet.domain.response.NhanVienNoVaiTroResponseDTO;
 import com.example.sweet.domain.response.NhanVienResponseDTO;
 import org.springframework.stereotype.Component;
 
@@ -85,6 +86,26 @@ public class NhanVienMapper {
         responseDTO.setTrangThaiTaiKhoan(nhanVien.getTrangThaiTaiKhoan() != null ?
                 this.trangThaiMapper.toTrangThaiDTO(nhanVien.getTrangThaiTaiKhoan()) : null);
         return responseDTO;
+    }
+
+    public NhanVienNoVaiTroResponseDTO toNhanVienNoVaiTroResponseDTO(NhanVien nhanVien) {
+        if (nhanVien == null) return null;
+
+        NhanVienResponseDTO responseDTO = toNhanVienResponseDTO(nhanVien);
+
+        NhanVienNoVaiTroResponseDTO responseNoVaiTroDTO = new NhanVienNoVaiTroResponseDTO();
+        responseNoVaiTroDTO.setNhanVienID(responseDTO.getNhanVienID());
+        responseNoVaiTroDTO.setHoTen(responseDTO.getHoTen());
+        responseNoVaiTroDTO.setNgaySinh(responseDTO.getNgaySinh());
+        responseNoVaiTroDTO.setCccd(responseDTO.getCccd());
+        responseNoVaiTroDTO.setEmail(responseDTO.getEmail());
+        responseNoVaiTroDTO.setSoDienThoai(responseDTO.getSoDienThoai());
+        responseNoVaiTroDTO.setTuoi(responseDTO.getTuoi());
+        responseNoVaiTroDTO.setDiaChiLienLac(responseDTO.getDiaChiLienLac());
+        responseNoVaiTroDTO.setDiaChiThuongTru(responseDTO.getDiaChiThuongTru());
+        responseNoVaiTroDTO.setNgayTuyenDung(responseDTO.getNgayTuyenDung());
+        responseNoVaiTroDTO.setTrangThaiTaiKhoan(responseDTO.getTrangThaiTaiKhoan());
+        return responseNoVaiTroDTO;
     }
 
 

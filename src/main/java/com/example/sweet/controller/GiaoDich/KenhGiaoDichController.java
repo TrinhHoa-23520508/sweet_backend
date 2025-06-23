@@ -15,18 +15,20 @@ public class KenhGiaoDichController {
     private KenhGiaoDichRepository respository;
 
     @GetMapping("")
-    @ApiMessage("Mah balls")
+    @ApiMessage("Lấy danh sách kênh giao dịch")
     public ResponseEntity<Iterable<KenhGiaoDich>> getAllKenhGiaoDich() {
         return ResponseEntity.ok(respository.findAll());
     }
 
-    @PostMapping("")
-    public ResponseEntity<KenhGiaoDich> insertKenhGiaoDich(@RequestBody KenhGiaoDich kenhGiaoDich) {
-        return ResponseEntity.ok(respository.save(kenhGiaoDich));
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteKenhGiaoDich(@PathVariable Long id) {
-        respository.deleteById(id);
-    }
+//    @PostMapping("")
+//    @ApiMessage("Thêm mới kênh giao dịch")
+//    public ResponseEntity<KenhGiaoDich> insertKenhGiaoDich(@RequestBody KenhGiaoDich kenhGiaoDich) {
+//        return ResponseEntity.ok(respository.save(kenhGiaoDich));
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    @ApiMessage("Xoá kênh giao dịch theo ID")
+//    public void deleteKenhGiaoDich(@PathVariable Long id) {
+//        respository.deleteById(id);
+//    }
 }

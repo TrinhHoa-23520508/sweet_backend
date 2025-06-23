@@ -69,7 +69,7 @@ public class GiaoDichMapper {
         responseDTO.setLoaiTaiKhoanDich(giaoDich.getLoaiTaiKhoanDich());
         responseDTO.setLoaiGiaoDich(giaoDich.getLoaiGiaoDich());
         responseDTO.setKenhGiaoDich(giaoDich.getKenhGiaoDich());
-        responseDTO.setNhanVienGiaoDich(nhanVienMapper.toNhanVienResponseDTO(giaoDich.getNhanVienGiaoDich()));
+        responseDTO.setNhanVienGiaoDich(nhanVienMapper.toNhanVienNoVaiTroResponseDTO(giaoDich.getNhanVienGiaoDich()));
         responseDTO.setSoTienGiaoDich(giaoDich.getSoTienGiaoDich());
         responseDTO.setNoiDung(giaoDich.getNoiDung());
         responseDTO.setThoiGianGiaoDich(giaoDich.getThoiGianGiaoDich());

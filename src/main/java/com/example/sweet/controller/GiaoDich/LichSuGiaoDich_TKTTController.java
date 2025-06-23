@@ -24,16 +24,19 @@ public class LichSuGiaoDich_TKTTController {
     private final LSGD_TKTTMapper lsgdTkttMapper;
 
     @GetMapping("")
+    @ApiMessage("Lấy danh sách lịch sử giao dịch tài khoản thanh toán")
     public ResponseEntity<Iterable<LSGD_TKTTResponseDTO>> getAllLichSuGiaoDich_TKTT() {
         return ResponseEntity.ok(respository.findAll().stream().map(lsgdTkttMapper::toLSGD_TKTTResponseDTO).toList());
     }
 
     @GetMapping("/{id}")
+    @ApiMessage("Lấy lịch sử giao dịch tài khoản thanh toán theo ID")
     public ResponseEntity<Optional<LSGD_TKTTResponseDTO>> getLichSuGiaoDich_TKTTID(@PathVariable Long id) {
         return ResponseEntity.ok(respository.findById(id).map(lsgdTkttMapper::toLSGD_TKTTResponseDTO));
     }
 
     @GetMapping("by/{id}")
+    @ApiMessage("Lấy lịch sử giao dịch tài khoản thanh toán theo ID tài khoản thanh toán")
     public ResponseEntity<List<LSGD_TKTTResponseDTO>> getLichSuGiaoDichByTKTT(@PathVariable Long id) {
         TaiKhoanThanhToan taiKhoan = taiKhoanThanhToanRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Không tìm thấy tài khoản thanh toán với ID: " + id));
@@ -41,6 +44,7 @@ public class LichSuGiaoDich_TKTTController {
     }
 
     @DeleteMapping("/{id}")
+    @ApiMessage("Xoá lịch sử giao dịch tài khoản thanh toán theo ID")
     public void deleteLichSuGiaoDich_TKTT(@PathVariable Long id) {
         respository.deleteById(id);
     }

@@ -23,21 +23,25 @@ public class TaiKhoanThanhToanController {
     private TaiKhoanThanhToanService service;
 
     @GetMapping("")
+    @ApiMessage("Lấy danh sách tài khoản thanh toán")
     public ResponseEntity<Iterable<TKTTResponseDTO>> getAllTaiKhoanThanhToan() {
         return ResponseEntity.ok(service.findAll());
     }
 
     @PostMapping("")
+    @ApiMessage("Thêm mới tài khoản thanh toán")
     public ResponseEntity<TaiKhoanThanhToan> insertTaiKhoanThanhToan(@Valid @RequestBody TKTTRequestDTO taiKhoan) {
         return ResponseEntity.ok(service.save(taiKhoan));
     }
 
     @GetMapping("/{id}")
+    @ApiMessage("Lấy tài khoản thanh toán theo ID")
     public ResponseEntity<Optional<TKTTResponseDTO>> getTaiKhoanThanhToanById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
     @DeleteMapping("/{id}")
+    @ApiMessage("Xoá tài khoản thanh toán theo ID")
     public void deleteTaiKhoanThanhToan(@PathVariable Long id) {
         service.deleteById(id);
     }
