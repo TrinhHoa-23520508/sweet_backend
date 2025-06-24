@@ -3,6 +3,8 @@ package com.example.sweet.util.mapper;
 import org.springframework.stereotype.Component;
 
 import com.example.sweet.database.schema.TrangThai;
+import com.example.sweet.database.schema.GiaoDich.GiaoDich;
+import com.example.sweet.database.schema.GiaoDich.LichSuGiaoDich_PhieuGuiTien;
 import com.example.sweet.database.schema.GiaoDich.PhieuGuiTien;
 import com.example.sweet.database.schema.Loai.ChiTietQuyDinhLaiSuat;
 import com.example.sweet.database.schema.Loai.HinhThucDaoHan;
@@ -18,6 +20,7 @@ import com.example.sweet.database.repository.Loai.LoaiTietKiemRepository;
 import com.example.sweet.database.repository.Loai.TanSuatNhanLaiRepository;
 import com.example.sweet.database.repository.TrangThaiRepository;
 import com.example.sweet.database.repository.GiaoDich.GiaoDichRepository;
+import com.example.sweet.database.repository.GiaoDich.LichSuGiaoDich_PhieuGuiTienRepository;
 
 @Component
 public class PhieuGuiTienMapper {
@@ -26,6 +29,7 @@ public class PhieuGuiTienMapper {
         private final HinhThucDaoHanRepository hinhThucDaoHanRepository;
         private final TrangThaiRepository trangThaiRepository;
         private final ChiTietQuyDinhLaiSuatRepository chiTietQuyDinhLaiSuatRepository;
+        private final LichSuGiaoDich_PhieuGuiTienRepository lichSuGiaoDichPhieuGuiTienRepository;
 
         public PhieuGuiTienMapper(
                         KhachHangRepository khachHangRepository,
@@ -36,12 +40,14 @@ public class PhieuGuiTienMapper {
                         HinhThucDaoHanRepository hinhThucDaoHanRepository,
                         TrangThaiRepository trangThaiRepository,
                         GiaoDichRepository giaoDichRepository,
-                        ChiTietQuyDinhLaiSuatRepository chiTietQuyDinhLaiSuatRepository) {
+                        ChiTietQuyDinhLaiSuatRepository chiTietQuyDinhLaiSuatRepository,
+                        LichSuGiaoDich_PhieuGuiTienRepository lichSuGiaoDichPhieuGuiTienRepository) {
                 this.chiTietQuyDinhLaiSuatRepository = chiTietQuyDinhLaiSuatRepository;
                 this.khachHangRepository = khachHangRepository;
                 this.nhanVienRepository = nhanVienRepository;
                 this.hinhThucDaoHanRepository = hinhThucDaoHanRepository;
                 this.trangThaiRepository = trangThaiRepository;
+                this.lichSuGiaoDichPhieuGuiTienRepository = lichSuGiaoDichPhieuGuiTienRepository;
         }
 
         public PhieuGuiTienDTO toDTO(PhieuGuiTien phieuGuiTien) {
@@ -90,6 +96,14 @@ public class PhieuGuiTienMapper {
                 // Add laiSuat from ChiTietQuyDinhLaiSuat
                 if (phieuGuiTien.getChiTietQuyDinhLaiSuat() != null) {
                         dto.setLaiSuat(phieuGuiTien.getChiTietQuyDinhLaiSuat().getLaiSuat());
+                }
+                LichSuGiaoDich_PhieuGuiTien lichSu = lichSuGiaoDichPhieuGuiTienRepository
+                                .findFirstByPhieuGuiTien(phieuGuiTien)
+                                .orElse(null);
+
+                if (lichSu != null && lichSu.getGiaoDich() != null && lichSu.getGiaoDich().getKenhGiaoDich() != null) {
+                        dto.setKenhGiaoDich(lichSu.getGiaoDich().getKenhGiaoDich());
+                        // Nếu dùng DTO cho KenhGiaoDich thì chuyển đổi sang DTO ở đây
                 }
 
                 return dto;

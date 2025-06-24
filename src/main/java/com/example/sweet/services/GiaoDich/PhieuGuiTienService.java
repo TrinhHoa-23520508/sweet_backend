@@ -111,7 +111,6 @@ public class PhieuGuiTienService {
             phieuGuiTien.setTienLaiDaNhanNhungChuaQuyetToan(0L);
             phieuGuiTien.setTongLaiQuyetToan(0L);
 
-
             phieuGuiTien = phieuGuiTienRepository.save(phieuGuiTien); // Lưu trước để có ID
 
             // Set tài khoản nguồn và đích
@@ -135,7 +134,10 @@ public class PhieuGuiTienService {
 
             // Set loại và kênh giao dịch
             giaoDich.setLoaiGiaoDich(loaiGiaoDichRepository.findById(3L).get());
-            giaoDich.setKenhGiaoDich(kenhGiaoDichRepository.findById(1L).get());
+            Long kenhGiaoDichId = dto.getKenhGiaoDichId(); // Lấy từ DTO
+            giaoDich.setKenhGiaoDich(
+                    kenhGiaoDichRepository.findById(kenhGiaoDichId)
+                            .orElseThrow(() -> new RuntimeException("Không tìm thấy kênh giao dịch")));
 
             // Gọi service để tạo giao dịch
             GiaoDich savedGiaoDich = giaoDichService.createGiaoDich(giaoDich);
@@ -146,7 +148,6 @@ public class PhieuGuiTienService {
             phieuGuiTien.setTienLaiDaNhanNhungChuaQuyetToan(0L);
             phieuGuiTien.setTongLaiQuyetToan(0L);// Lưu phiếu gửi tiền
             PhieuGuiTien savedPhieuGuiTien = phieuGuiTienRepository.save(phieuGuiTien);
-
 
             // Nếu là đầu kỳ hạn -> tạo phiếu trả lãi ngay
             String tanSuat = chiTietQuyDinh.getTanSuatNhanLai().getTenTanSoNhanLai();

@@ -2,6 +2,7 @@ package com.example.sweet.domain.response.GiaoDich;
 
 import java.time.Instant;
 
+import com.example.sweet.database.schema.GiaoDich.KenhGiaoDich;
 import com.example.sweet.database.schema.TaiKhoan.KhachHang;
 
 import lombok.AllArgsConstructor;
@@ -34,4 +35,6 @@ public class PhieuGuiTienDTO {
     private Long loaiTietKiemId;
     private Long tanSuatNhanLaiId;
     private Float laiSuat;
+    private Long kenhGiaoDichId;
+    private KenhGiaoDich kenhGiaoDich;
 }
