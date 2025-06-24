@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Xác thực tài khoản thành công</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background-color: #f9f9f9;
+            padding: 24px;
+        }
+
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 24px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .title {
+            color: #2e86de;
+        }
+
+        .info {
+            margin-top: 16px;
+        }
+
+        .footer {
+            font-size: 12px;
+            color: #888;
+            margin-top: 24px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 class="title">🎉 Xác thực tài khoản thành công!</h2>
+    <p>Xin chào <strong th:text="${user.hoTen}">Người dùng</strong>,</p>
+
+    <div class="info">
+        <p>Tài khoản của bạn đã được xác thực thành công.</p>
+        <ul>
+            <li><strong>Email:</strong> <span th:text="${user.email}">email@example.com</span></li>
+            <li><strong>Loại tài khoản:</strong> <span th:text="${user.type}">KHACHHANG</span></li>
+        </ul>
+    </div>
+
+    <p>Bây giờ bạn có thể đăng nhập và sử dụng dịch vụ.</p>
+
+    <div class="footer">
+        <p>📬 Đây là email tự động, vui lòng không trả lời lại.</p>
+        <p>Nếu bạn không thực hiện hành động này, vui lòng liên hệ với bộ phận hỗ trợ.</p>
+
+    </div>
+    <div style="font-size: 12px;
+            color: #888;
+            margin-top: 30px;
+            text-align: center;">
+        © 2025 Sweet. All rights reserved.
+    </div>
+
+</div>
+</body>
+</html>

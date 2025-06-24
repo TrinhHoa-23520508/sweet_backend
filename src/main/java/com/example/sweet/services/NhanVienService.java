@@ -111,7 +111,7 @@ public class NhanVienService {
         if (newNhanVien.getTrangThaiTaiKhoan() == null) {
             LoaiTrangThai loaiTrangThai_TK = this.loaiTrangThaiRepository.findByMaLoaiTrangThai(TypeStatusEnum.login_account.toString())
                     .orElseThrow(() -> new IllegalArgumentException("Loại trạng thái tài khoản không tồn tại"));
-            TrangThai active_default_TK = this.trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai(StatusEnum.active.toString(), loaiTrangThai_TK)
+            TrangThai active_default_TK = this.trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai(StatusEnum.locked.toString(), loaiTrangThai_TK)
                     .orElseThrow(() -> new IllegalArgumentException("Trạng thái HOAT_DONG không tồn tại cho loại trạng thái tài khoản"));
             newNhanVien.setTrangThaiTaiKhoan(active_default_TK);
         }

@@ -6,6 +6,8 @@ import com.example.sweet.database.schema.TaiKhoan.KhachHang;
 import com.example.sweet.database.schema.TaiKhoan.NhanVien;
 import com.example.sweet.services.KhachHangService;
 import com.example.sweet.services.NhanVienService;
+import com.example.sweet.util.constant.StatusEnum;
+import com.example.sweet.util.error.IdInvalidException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,18 +21,18 @@ import java.util.Collections;
 public class UserDetailCustom implements UserDetailsService {
 
     private final KhachHangRepository khachHangRepository;
-    private final NhanVienRepository NhanVienRepository;
+    private final NhanVienRepository nhanVienRepository;
 
-    public UserDetailCustom(KhachHangRepository khachHangRepository, NhanVienRepository NhanVienRepository) {
+    public UserDetailCustom(KhachHangRepository khachHangRepository, NhanVienRepository nhanVienRepository) {
         this.khachHangRepository = khachHangRepository;
-        this.NhanVienRepository = NhanVienRepository;
+        this.nhanVienRepository = nhanVienRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (username.startsWith("nv.")) {
             String email = username.substring(3);
-            NhanVien nhanVien = NhanVienRepository.findByEmail(email)
+            NhanVien nhanVien = this.nhanVienRepository.findByEmail(email)
                     .orElseThrow(() -> new UsernameNotFoundException("NhanVien not found"));
             return new User(
                     username,
@@ -39,7 +41,7 @@ public class UserDetailCustom implements UserDetailsService {
             );
         } else if (username.startsWith("kh.")) {
             String email = username.substring(3);
-            KhachHang khachHang = khachHangRepository.findByEmail(email)
+            KhachHang khachHang = this.khachHangRepository.findByEmail(email)
                     .orElseThrow(() -> new UsernameNotFoundException("KhachHang not found"));
             return new User(
                     username,
@@ -47,7 +49,7 @@ public class UserDetailCustom implements UserDetailsService {
                     Collections.singletonList(new SimpleGrantedAuthority("ROLE_KHACH_HANG"))
             );
         } else {
-            throw new UsernameNotFoundException("Tên đăng nhập không hợp lệ: " + username);
+            throw new UsernameNotFoundException("Tên đăng nhập không hợp lệ");
         }
     }
 }

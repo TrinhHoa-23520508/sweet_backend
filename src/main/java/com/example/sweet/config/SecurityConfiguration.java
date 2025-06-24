@@ -37,11 +37,11 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
-            CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
+                                           CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
         http.csrf(c -> c.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/", "/api/v1/auth/login", "/api/v1/auth/refresh", "/api/v1/auth/register",
+                        .requestMatchers("/", "/api/v1/auth/**",
                                 "/storage/**", "/api/v1/**")
                         .permitAll()
                         .anyRequest().authenticated())
