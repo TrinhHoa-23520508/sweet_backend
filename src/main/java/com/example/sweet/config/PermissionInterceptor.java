@@ -65,7 +65,7 @@ public class PermissionInterceptor implements HandlerInterceptor {
 
     private void checkAccountStatus(TrangThai trangThaiTaiKhoan) throws IdInvalidException {
         if (trangThaiTaiKhoan.getMaTrangThai().equals(StatusEnum.locked.toString())) {
-            throw new IdInvalidException("Tài khoản của bạn đã bị vô hiệu hóa");
+            throw new IdInvalidException("Tài khoản của bạn không hoạt động");
         }
     }
 

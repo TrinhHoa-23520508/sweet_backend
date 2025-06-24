@@ -113,7 +113,7 @@ public class KhachHangService {
         if (newKhachHang.getTrangThaiTaiKhoan() == null) {
             LoaiTrangThai loaiTrangThai_TK = this.loaiTrangThaiRepository.findByMaLoaiTrangThai(TypeStatusEnum.login_account.toString())
                     .orElseThrow(() -> new IllegalArgumentException("Loại trạng thái tài khoản không tồn tại"));
-            TrangThai active_default_TK = this.trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai(StatusEnum.active.toString(), loaiTrangThai_TK)
+            TrangThai active_default_TK = this.trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai(StatusEnum.locked.toString(), loaiTrangThai_TK)
                     .orElseThrow(() -> new IllegalArgumentException("Trạng thái HOAT_DONG không tồn tại cho loại trạng thái tài khoản"));
             newKhachHang.setTrangThaiTaiKhoan(active_default_TK);
         }
@@ -122,14 +122,14 @@ public class KhachHangService {
             LoaiTrangThai loaiTrangThai_KH = this.loaiTrangThaiRepository.findByMaLoaiTrangThai(TypeStatusEnum.customer.toString())
                     .orElseThrow(() -> new IllegalArgumentException("Loại trạng thái khách hàng không tồn tại"));
 
-            TrangThai active_default_KH = this.trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai(StatusEnum.active.toString(), loaiTrangThai_KH)
+            TrangThai active_default_KH = this.trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai(StatusEnum.locked.toString(), loaiTrangThai_KH)
                     .orElseThrow(() -> new IllegalArgumentException("Trạng thái HOAT_DONG không tồn tại cho loại trạng thái khách hàng"));
 
             newKhachHang.setTrangThaiKhachHang(active_default_KH);
         }
 
         if (newKhachHang.getVaiTro() == null) {
-            VaiTro vaiTro_default = this.vaiTroRepository.findByName(VaiTroEnum.KHONG_QUYEN_KHACH_HANG.toString()).orElseThrow(() -> new IllegalArgumentException("Vai trò KHONG_QUYEN không tồn tại"));
+            VaiTro vaiTro_default = this.vaiTroRepository.findByName(VaiTroEnum.QUYEN_TIET_KIEM.toString()).orElseThrow(() -> new IllegalArgumentException("Vai trò KHONG_QUYEN không tồn tại"));
             newKhachHang.setVaiTro(vaiTro_default);
         }
         return this.khachHangMapper.toKhachHangResponseDTO(this.khachHangRepository.save(newKhachHang));
@@ -199,7 +199,7 @@ public class KhachHangService {
         );
         LoaiTrangThai loaiTrangThai_TK = this.loaiTrangThaiRepository.findByMaLoaiTrangThai(TypeStatusEnum.login_account.toString())
                 .orElseThrow(() -> new IllegalArgumentException("Loại trạng thái không tồn tại"));
-        TrangThai activeTrangThai = this.trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai(StatusEnum.locked.toString(), loaiTrangThai_TK)
+        TrangThai activeTrangThai = this.trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai(StatusEnum.active.toString(), loaiTrangThai_TK)
                 .orElseThrow(() -> new IllegalArgumentException("Trạng thái không tồn tại cho loại trạng thái tài khoản"));
         existingKhachHang.setTrangThaiTaiKhoan(activeTrangThai);
         this.khachHangRepository.save(existingKhachHang);

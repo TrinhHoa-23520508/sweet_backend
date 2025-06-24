@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Kích hoạt tài khoản</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 600px;
+            margin: 0 auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .otp {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 20px 0;
+        }
+
+        .footer {
+            font-size: 12px;
+            color: #888;
+            margin-top: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Kích hoạt tài khoản</h2>
+    <p>Xin chào <strong th:text="${user.hoTen}">[Họ tên]</strong>,</p>
+
+    <p>Email của bạn: <strong th:text="${user.email}">[Email]</strong></p>
+    <p>Loại tài khoản: <strong th:text="${user.type}">[Loại]</strong></p>
+
+    <p>Để kích hoạt tài khoản, vui lòng sử dụng mã OTP dưới đây:</p>
+
+    <div class="otp" th:text="${otp}">[OTP]</div>
+
+    <p>Mã OTP có hiệu lực trong vòng <strong>5 phút</strong>. Vui lòng không chia sẻ mã này với bất kỳ ai.</p>
+
+    <p>Trân trọng,<br/>Đội ngũ hỗ trợ</p>
+
+    <div class="footer">
+        © 2025 Sweet. All rights reserved.
+    </div>
+</div>
+</body>
+</html>
