@@ -139,6 +139,18 @@ public class PhieuGuiTienService {
                     kenhGiaoDichRepository.findById(kenhGiaoDichId)
                             .orElseThrow(() -> new RuntimeException("Không tìm thấy kênh giao dịch")));
 
+            // Kiểm tra nếu kênh giao dịch là tại quầy (ID = 1) thì đặt tài khoản nguồn =
+            // null
+            if (kenhGiaoDichId != null && kenhGiaoDichId == 1L) {
+                giaoDich.setTaiKhoanNguon(null);
+                giaoDich.setLoaiTaiKhoanNguon(
+                        loaiTaiKhoanRepository.findById(3L)
+                                .orElseThrow(() -> new RuntimeException("Không tìm thấy loại tài khoản"))); // 3L cho
+                                                                                                            // tài khoản
+                                                                                                            // không có
+                                                                                                            // nguồn
+            }
+
             // Gọi service để tạo giao dịch
             GiaoDich savedGiaoDich = giaoDichService.createGiaoDich(giaoDich);
 

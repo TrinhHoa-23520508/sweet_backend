@@ -25,7 +25,7 @@ public class GiaoDich {
 
     private Long taiKhoanNguon;
     @ManyToOne
-    @JoinColumn(name = "loai_tai_khoan_nguon", nullable = true)
+    @JoinColumn(name = "loai_tai_khoan_nguon")
     private LoaiTaiKhoan loaiTaiKhoanNguon;
 
     private Long taiKhoanDich;

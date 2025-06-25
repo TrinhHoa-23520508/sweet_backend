@@ -50,7 +50,8 @@ public class GiaoDichService {
     public List<GiaoDichResponseDTO> findByNhanVienGiaoDich(Long id) {
         NhanVien nhanVienGiaoDich = nhanVienRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Không tìm thấy nhân viên giao dịch với ID: " + id));
-        return giaoDichRepo.findByNhanVienGiaoDich(nhanVienGiaoDich).stream().map(giaoDichMapper::toGiaoDichResponseDTO).toList();
+        return giaoDichRepo.findByNhanVienGiaoDich(nhanVienGiaoDich).stream().map(giaoDichMapper::toGiaoDichResponseDTO)
+                .toList();
     }
 
     public GiaoDich createGiaoDich(GiaoDichRequestDTO giaoDichRequest) {
@@ -81,6 +82,9 @@ public class GiaoDichService {
                 taiKhoanNguon = phieuGuiTienRepo.findById(giaoDich.getTaiKhoanNguon())
                         .orElseThrow(() -> new RuntimeException("Không tìm thấy phiếu gửi tiền nguồn"));
                 break;
+
+            case "Tiền mặt tại quầy":
+                break; // Không cần xử lý gì thêm cho loại này
             default:
                 throw new RuntimeException("Loại tài khoản nguồn không hợp lệ");
         }
@@ -112,15 +116,14 @@ public class GiaoDichService {
         // TKTT -> null
         // PGT -> null
         // PGT -> PGT
-        if (taiKhoanNguon == null || taiKhoanDich == null) {
-            throw new RuntimeException("Tài khoản nguồn hoặc tài khoản đích không hợp lệ");
-        }
         if (taiKhoanNguon instanceof TaiKhoanThanhToan && taiKhoanDich instanceof TaiKhoanThanhToan) {
             throw new RuntimeException("Không thể giao dịch giữa hai tài khoản thanh toán");
         }
-//        if (taiKhoanNguon instanceof PhieuGuiTien && taiKhoanDich instanceof TaiKhoanThanhToan) {
-//            throw new RuntimeException("Không thể giao dịch giữa Phiếu gửi tiền và Tài khoản thanh toán");
-//        }
+        // if (taiKhoanNguon instanceof PhieuGuiTien && taiKhoanDich instanceof
+        // TaiKhoanThanhToan) {
+        // throw new RuntimeException("Không thể giao dịch giữa Phiếu gửi tiền và Tài
+        // khoản thanh toán");
+        // }
 
         // Giao dịch
         if (taiKhoanNguon instanceof TaiKhoanThanhToan tkttNguon) {
@@ -130,8 +133,7 @@ public class GiaoDichService {
             // Trừ tiền tài khoản nguồn
             tkttNguon.setSoDu(tkttNguon.getSoDu() - giaoDich.getSoTienGiaoDich());
             taiKhoanThanhToanRepo.save(tkttNguon);
-        }
-        else if (taiKhoanNguon instanceof PhieuGuiTien pgtNguon) {
+        } else if (taiKhoanNguon instanceof PhieuGuiTien pgtNguon) {
             if (pgtNguon.getSoDuHienTai() < giaoDich.getSoTienGiaoDich()) {
                 throw new RuntimeException("Số dư không đủ");
             }
@@ -143,8 +145,7 @@ public class GiaoDichService {
         if (taiKhoanDich instanceof TaiKhoanThanhToan tkttDich) {
             tkttDich.setSoDu(tkttDich.getSoDu() + giaoDich.getSoTienGiaoDich());
             taiKhoanThanhToanRepo.save(tkttDich);
-        }
-        else if (taiKhoanDich instanceof PhieuGuiTien pgtDich) {
+        } else if (taiKhoanDich instanceof PhieuGuiTien pgtDich) {
             pgtDich.setSoDuHienTai(pgtDich.getSoDuHienTai() + giaoDich.getSoTienGiaoDich());
             phieuGuiTienRepo.save(pgtDich);
         }
@@ -158,8 +159,7 @@ public class GiaoDichService {
                     tkttNguon,
                     savedGiaoDich,
                     tkttNguon.getSoDu()));
-        }
-        else if (taiKhoanNguon instanceof PhieuGuiTien pgtNguon) {
+        } else if (taiKhoanNguon instanceof PhieuGuiTien pgtNguon) {
             lichSuPGTRepo.save(new LichSuGiaoDich_PhieuGuiTien(
                     null,
                     pgtNguon,
@@ -178,8 +178,7 @@ public class GiaoDichService {
                     tkttDich,
                     savedGiaoDich,
                     tkttDich.getSoDu()));
-        }
-        else if (taiKhoanDich instanceof PhieuGuiTien pgtDich) {
+        } else if (taiKhoanDich instanceof PhieuGuiTien pgtDich) {
             lichSuPGTRepo.save(new LichSuGiaoDich_PhieuGuiTien(
                     null,
                     pgtDich,
@@ -195,28 +194,31 @@ public class GiaoDichService {
         return savedGiaoDich;
     }
 
-//    // this should either delete or create, no update i think?
-//    public void cancelGiaoDich(Long id) {
-//        var giaoDich = giaoDichRepo.findById(id).orElseThrow();
-//
-//        cancelGiaoDich(giaoDich);
-//    }
-//
-//    // Please fill out all field before using this
-//    public void cancelGiaoDich(GiaoDich giaoDich) {
-//        var taiKhoanNguon = taiKhoanThanhToanRepo.findById(giaoDich.getTaiKhoanNguon()).orElseThrow();
-//        var taiKhoanDich = taiKhoanThanhToanRepo.findById(giaoDich.getTaiKhoanDich()).orElseThrow();
-//
-//        taiKhoanNguon.setSoDu(taiKhoanNguon.getSoDu() + giaoDich.getSoTienGiaoDich());
-//        // Negate that bitch
-//        taiKhoanDich.setSoDu(taiKhoanDich.getSoDu() - giaoDich.getSoTienGiaoDich());
-//
-//        lichSuTKTTRepo.deleteByTaiKhoanAndGiaoDich(taiKhoanNguon, giaoDich);
-//        lichSuTKTTRepo.deleteByTaiKhoanAndGiaoDich(taiKhoanDich, giaoDich);
-//        giaoDichRepo.delete(giaoDich);
-//
-//        taiKhoanThanhToanRepo.save(taiKhoanNguon);
-//        taiKhoanThanhToanRepo.save(taiKhoanDich);
-//
-//    }
+    // // this should either delete or create, no update i think?
+    // public void cancelGiaoDich(Long id) {
+    // var giaoDich = giaoDichRepo.findById(id).orElseThrow();
+    //
+    // cancelGiaoDich(giaoDich);
+    // }
+    //
+    // // Please fill out all field before using this
+    // public void cancelGiaoDich(GiaoDich giaoDich) {
+    // var taiKhoanNguon =
+    // taiKhoanThanhToanRepo.findById(giaoDich.getTaiKhoanNguon()).orElseThrow();
+    // var taiKhoanDich =
+    // taiKhoanThanhToanRepo.findById(giaoDich.getTaiKhoanDich()).orElseThrow();
+    //
+    // taiKhoanNguon.setSoDu(taiKhoanNguon.getSoDu() +
+    // giaoDich.getSoTienGiaoDich());
+    // // Negate that bitch
+    // taiKhoanDich.setSoDu(taiKhoanDich.getSoDu() - giaoDich.getSoTienGiaoDich());
+    //
+    // lichSuTKTTRepo.deleteByTaiKhoanAndGiaoDich(taiKhoanNguon, giaoDich);
+    // lichSuTKTTRepo.deleteByTaiKhoanAndGiaoDich(taiKhoanDich, giaoDich);
+    // giaoDichRepo.delete(giaoDich);
+    //
+    // taiKhoanThanhToanRepo.save(taiKhoanNguon);
+    // taiKhoanThanhToanRepo.save(taiKhoanDich);
+    //
+    // }
 }
