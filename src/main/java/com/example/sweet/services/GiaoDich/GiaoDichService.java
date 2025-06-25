@@ -146,7 +146,6 @@ public class GiaoDichService {
             tkttDich.setSoDu(tkttDich.getSoDu() + giaoDich.getSoTienGiaoDich());
             taiKhoanThanhToanRepo.save(tkttDich);
         } else if (taiKhoanDich instanceof PhieuGuiTien pgtDich) {
-            pgtDich.setSoDuHienTai(pgtDich.getSoDuHienTai() + giaoDich.getSoTienGiaoDich());
             phieuGuiTienRepo.save(pgtDich);
         }
 
