@@ -185,11 +185,11 @@ public class EmailService {
         NhanVien nv = null;
         if (verificationDTO.getUserType().equals(TypeUserEnum.KHACHHANG)) {
             kh = this.khachHangRepository.findByEmail(verificationDTO.getEmail()).orElseThrow(
-                    () -> new IdInvalidException("Id không hợp lệ!")
+                    () -> new IdInvalidException("email không hợp lệ!")
             );
         } else if (verificationDTO.getUserType().equals(TypeUserEnum.NHANVIEN)) {
             nv = this.nhanVienRepository.findByEmail(verificationDTO.getEmail()).orElseThrow(
-                    () -> new IdInvalidException("Id không hợp lệ!")
+                    () -> new IdInvalidException("email không hợp lệ!")
             );
         } else {
             throw new IdInvalidException("type không hợp lệ");

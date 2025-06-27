@@ -9,12 +9,14 @@ import com.example.sweet.database.repository.TrangThaiRepository;
 import com.example.sweet.database.schema.Loai.LoaiTrangThai;
 import com.example.sweet.database.schema.TaiKhoan.DiaChi;
 import com.example.sweet.database.schema.TaiKhoan.KhachHang;
+import com.example.sweet.database.schema.TaiKhoan.TaiKhoanThanhToan;
 import com.example.sweet.database.schema.TaiKhoan.VaiTro;
 import com.example.sweet.database.schema.ThamSo;
 import com.example.sweet.database.schema.TrangThai;
 import com.example.sweet.domain.request.KhachHangRequestDTO;
 import com.example.sweet.domain.response.KhachHangResponseDTO;
 import com.example.sweet.domain.response.ResLoginDTO;
+import com.example.sweet.services.GiaoDich.TaiKhoanThanhToanService;
 import com.example.sweet.util.constant.StatusEnum;
 import com.example.sweet.util.constant.SystemParameterEnum;
 import com.example.sweet.util.constant.TypeStatusEnum;
@@ -28,6 +30,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
@@ -44,6 +47,7 @@ public class KhachHangService {
     private final VaiTroRepository vaiTroRepository;
     private final UserLoginMapper userLoginMapper;
     private final DiaChiService diaChiService;
+    private final TaiKhoanThanhToanService taiKhoanThanhToanService;
 
     public KhachHangService(KhachHangRepository khachHangRepository,
                             PasswordEncoder passwordEncoder,
@@ -53,7 +57,8 @@ public class KhachHangService {
                             LoaiTrangThaiRepository loaiTrangThaiRepository,
                             VaiTroRepository vaiTroRepository,
                             UserLoginMapper userLoginMapper,
-                            DiaChiService diaChiService) {
+                            DiaChiService diaChiService,
+                            TaiKhoanThanhToanService taiKhoanThanhToanService) {
         this.khachHangRepository = khachHangRepository;
         this.passwordEncoder = passwordEncoder;
         this.khachHangMapper = khachHangMapper;
@@ -63,6 +68,7 @@ public class KhachHangService {
         this.vaiTroRepository = vaiTroRepository;
         this.userLoginMapper = userLoginMapper;
         this.diaChiService = diaChiService;
+        this.taiKhoanThanhToanService = taiKhoanThanhToanService;
     }
 
     public boolean checkDuplicate(KhachHang khachHang) {
@@ -132,7 +138,24 @@ public class KhachHangService {
             VaiTro vaiTro_default = this.vaiTroRepository.findByName(VaiTroEnum.QUYEN_TIET_KIEM.toString()).orElseThrow(() -> new IllegalArgumentException("Vai trò KHONG_QUYEN không tồn tại"));
             newKhachHang.setVaiTro(vaiTro_default);
         }
-        return this.khachHangMapper.toKhachHangResponseDTO(this.khachHangRepository.save(newKhachHang));
+        //save khach hang
+        newKhachHang = this.khachHangRepository.save(newKhachHang);
+        //create tai khoan thanh toan
+        TaiKhoanThanhToan tktt = new TaiKhoanThanhToan();
+        tktt.setKhachHang(newKhachHang);
+        LoaiTrangThai loaiTrangThai = this.loaiTrangThaiRepository.findByMaLoaiTrangThai(TypeStatusEnum.payment_account.toString())
+                .orElseThrow(
+                        () -> new NotFoundException("Loai trang thai khong ton tai")
+                );
+        TrangThai activeAccount = this.trangThaiRepository.findByMaTrangThaiAndLoaiTrangThai(StatusEnum.active.toString(), loaiTrangThai)
+                .orElseThrow(
+                        () -> new NotFoundException("Trang thai khong ton tai")
+                );
+        tktt.setTrangThai(activeAccount);
+        tktt.setNgayTao(Instant.now());
+        tktt.setSoDu(0L);
+        this.taiKhoanThanhToanService.save(tktt);
+        return this.khachHangMapper.toKhachHangResponseDTO(newKhachHang);
 
     }
 
