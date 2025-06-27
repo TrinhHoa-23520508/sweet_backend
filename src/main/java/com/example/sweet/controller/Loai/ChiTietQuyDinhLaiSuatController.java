@@ -1,10 +1,8 @@
 package com.example.sweet.controller.Loai;
 
-import com.example.sweet.database.repository.Loai.ChiTietQuyDinhLaiSuatRepository;
-import com.example.sweet.database.repository.Loai.ChiTietQuyDinhLaiSuatRepository;
 import com.example.sweet.database.schema.Loai.ChiTietQuyDinhLaiSuat;
-import com.example.sweet.domain.response.ChiTietQuyDinhLaiSuatResponseDTO;
-import com.example.sweet.domain.response.QuyDinhLaiSuatResponseDTO;
+import com.example.sweet.domain.request.ChiTietQuyDinhLaiSuatReqDTO;
+import com.example.sweet.domain.response.ChiTietQuyDinhLaiSuatResDTO;
 import com.example.sweet.services.ChiTietQuyDinhLaiSuatService;
 import com.example.sweet.util.annotation.ApiMessage;
 import lombok.AllArgsConstructor;
@@ -21,19 +19,19 @@ public class ChiTietQuyDinhLaiSuatController {
 
     @GetMapping("")
     @ApiMessage("Lấy danh sách chi tiết quy định lãi suất")
-    public ResponseEntity<Iterable<ChiTietQuyDinhLaiSuatResponseDTO>> getAllChiTietQuyDinhLaiSuat() {
+    public ResponseEntity<Iterable<ChiTietQuyDinhLaiSuatResDTO>> getAllChiTietQuyDinhLaiSuat() {
         return ResponseEntity.ok(service.findAll());
     }
 
     @PostMapping("")
     @ApiMessage("Thêm mới chi tiết quy định lãi suất")
-    public ResponseEntity<ChiTietQuyDinhLaiSuatResponseDTO> insertChiTietQuyDinhLaiSuat(@RequestBody ChiTietQuyDinhLaiSuat loaiGiaoDich) {
+    public ResponseEntity<ChiTietQuyDinhLaiSuatResDTO> insertChiTietQuyDinhLaiSuat(@RequestBody ChiTietQuyDinhLaiSuatReqDTO loaiGiaoDich) {
         return ResponseEntity.ok(service.save(loaiGiaoDich));
     }
 
     @GetMapping("/{id}")
     @ApiMessage("Lấy chi tiết quy định lãi suất theo ID")
-    public Optional<ChiTietQuyDinhLaiSuatResponseDTO> getChiTietQuyDinhLaiSuatById(@PathVariable Long id) {
+    public Optional<ChiTietQuyDinhLaiSuatResDTO> getChiTietQuyDinhLaiSuatById(@PathVariable Long id) {
         return service.findById(id);
     }
 

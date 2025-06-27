@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -30,8 +31,10 @@ public class QuyDinhLaiSuat {
 
     private float laiSuatKhongKyHan;
     private int soTienGuiToiThieu;
+    @ColumnDefault("true")
+    private boolean active;
 
-    @OneToMany(mappedBy = "quyDinhLaiSuat", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "quyDinhLaiSuat", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<ChiTietQuyDinhLaiSuat> chiTietQuyDinhLaiSuats;
 }

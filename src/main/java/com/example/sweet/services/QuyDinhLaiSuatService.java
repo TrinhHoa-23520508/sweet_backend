@@ -2,7 +2,8 @@ package com.example.sweet.services;
 
 import com.example.sweet.database.repository.Loai.QuyDinhLaiSuatRepository;
 import com.example.sweet.database.schema.Loai.QuyDinhLaiSuat;
-import com.example.sweet.domain.response.QuyDinhLaiSuatResponseDTO;
+import com.example.sweet.domain.request.QuyDinhLaiSuatReqDTO;
+import com.example.sweet.domain.response.QuyDinhLaiSuatResDTO;
 import com.example.sweet.util.mapper.QuyDinhLaiSuatMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,28 +17,40 @@ import java.util.Optional;
 @AllArgsConstructor
 public class QuyDinhLaiSuatService {
     private final QuyDinhLaiSuatRepository repository;
-    private final QuyDinhLaiSuatMapper quyDinhLaiSuatMapper;
+    private final QuyDinhLaiSuatMapper mapper;
 
-    public Iterable<QuyDinhLaiSuatResponseDTO> findAll() {
+    public Iterable<QuyDinhLaiSuatResDTO> findAll() {
         return repository.findAll().stream()
                 .sorted(Comparator.comparing(QuyDinhLaiSuat::getNgayBatDau))
-                .map(quyDinhLaiSuatMapper::toQuyDinhLaiSuatResponseDTO)
+                .map(mapper::toQuyDinhLaiSuatResponseDTO)
                 .toList();
     }
 
-    public QuyDinhLaiSuatResponseDTO save(QuyDinhLaiSuat quyDinhLaiSuat) {
-        return quyDinhLaiSuatMapper.toQuyDinhLaiSuatResponseDTO(repository.save(quyDinhLaiSuat));
+    public QuyDinhLaiSuatResDTO save(QuyDinhLaiSuat quyDinhLaiSuat) {
+        return mapper.toQuyDinhLaiSuatResponseDTO(repository.save(quyDinhLaiSuat));
     }
 
-    public Optional<QuyDinhLaiSuatResponseDTO> findById(Long id) {
-        return repository.findById(id).map(quyDinhLaiSuatMapper::toQuyDinhLaiSuatResponseDTO);
+    public QuyDinhLaiSuatResDTO save(QuyDinhLaiSuatReqDTO quyDinhLaiSuat) {
+        return save(mapper.toQuyDinhLaiSuat(quyDinhLaiSuat));
+    }
+
+    public QuyDinhLaiSuatResDTO saveByID(Long id, QuyDinhLaiSuatReqDTO quyDinhLaiSuat) {
+        return save(mapper.toQuyDinhLaiSuat(quyDinhLaiSuat));
+    }
+
+    public Optional<QuyDinhLaiSuatResDTO> findById(Long id) {
+        return repository.findById(id).map(mapper::toQuyDinhLaiSuatResponseDTO);
     }
 
     public void deleteById(Long id) {
-        repository.deleteById(id);
+        var currentQuyDinh = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Quy định lãi suất không tồn tại"));
+        currentQuyDinh.setActive(false);
+        repository.save(currentQuyDinh);
+//        repository.deleteById(id);
     }
 
-    public Optional<QuyDinhLaiSuatResponseDTO> findCurrentQuyDinhLaiSuat() {
+    public Optional<QuyDinhLaiSuatResDTO> findCurrentQuyDinhLaiSuat() {
         List<QuyDinhLaiSuat> list = repository.findAll().stream()
                 .sorted(Comparator.comparing(QuyDinhLaiSuat::getNgayBatDau))
                 .toList();
@@ -54,6 +67,6 @@ public class QuyDinhLaiSuatService {
         }
 
         return Optional.ofNullable(result)
-                .map(quyDinhLaiSuatMapper::toQuyDinhLaiSuatResponseDTO);
+                .map(mapper::toQuyDinhLaiSuatResponseDTO);
     }
 }

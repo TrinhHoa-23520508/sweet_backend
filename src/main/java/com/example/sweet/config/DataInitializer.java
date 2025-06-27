@@ -232,7 +232,7 @@ public class DataInitializer implements CommandLineRunner {
         );
 
         var quyDinh1 = quyDinhLaiSuatRepository.save(
-                new QuyDinhLaiSuat(null, LocalDate.now(), LocalDate.now(), "Blabla", admin, 0.1f, Integer.MAX_VALUE, List.of())
+                new QuyDinhLaiSuat(null, LocalDate.now(), LocalDate.now(), "Blabla", admin, 0.1f, Integer.MAX_VALUE, true, List.of())
         );
 
         chiTietQuyDinhLaiSuatRepository.saveAll(List.of(

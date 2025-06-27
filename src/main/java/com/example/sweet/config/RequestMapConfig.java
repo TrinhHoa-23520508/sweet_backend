@@ -10,6 +10,7 @@ import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -61,6 +62,7 @@ public class RequestMapConfig {
             "Main",
             List.of()
         ));
+        quyenHans.sort(Comparator.comparing(QuyenHan::getModule));
         return quyenHans;
     }
 }

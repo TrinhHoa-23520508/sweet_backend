@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/v1/giao-dich/kenh")
 @AllArgsConstructor
@@ -18,6 +20,12 @@ public class KenhGiaoDichController {
     @ApiMessage("Lấy danh sách kênh giao dịch")
     public ResponseEntity<Iterable<KenhGiaoDich>> getAllKenhGiaoDich() {
         return ResponseEntity.ok(respository.findAll());
+    }
+
+    @GetMapping("/{id}")
+    @ApiMessage("Lấy danh sách kênh giao dịch")
+    public ResponseEntity<Optional<KenhGiaoDich>> getKenhGiaoDichByID(@PathVariable Long id) {
+        return ResponseEntity.ok(respository.findById(id));
     }
 
 //    @PostMapping("")

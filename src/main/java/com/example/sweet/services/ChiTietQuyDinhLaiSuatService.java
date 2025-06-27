@@ -2,8 +2,8 @@ package com.example.sweet.services;
 
 import com.example.sweet.database.repository.Loai.ChiTietQuyDinhLaiSuatRepository;
 import com.example.sweet.database.schema.Loai.ChiTietQuyDinhLaiSuat;
-import com.example.sweet.domain.response.ChiTietQuyDinhLaiSuatResponseDTO;
-import com.example.sweet.domain.response.QuyDinhLaiSuatResponseDTO;
+import com.example.sweet.domain.request.ChiTietQuyDinhLaiSuatReqDTO;
+import com.example.sweet.domain.response.ChiTietQuyDinhLaiSuatResDTO;
 import com.example.sweet.util.mapper.ChiTietQuyDinhLaiSuatMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,18 +14,24 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ChiTietQuyDinhLaiSuatService {
     private final ChiTietQuyDinhLaiSuatRepository repository;
-    private final ChiTietQuyDinhLaiSuatMapper chiTietQuyDinhLaiSuatMapper;
+    private final ChiTietQuyDinhLaiSuatMapper mapper;
 
-    public Iterable<ChiTietQuyDinhLaiSuatResponseDTO> findAll() {
-        return repository.findAll().stream().map(chiTietQuyDinhLaiSuatMapper::toChiTietQuyDinhLaiSuatResponseDTO).toList();
+    public Iterable<ChiTietQuyDinhLaiSuatResDTO> findAll() {
+        return repository.findAll().stream().map(mapper::toChiTietQuyDinhLaiSuatResponseDTO).toList();
     }
 
-    public ChiTietQuyDinhLaiSuatResponseDTO save(ChiTietQuyDinhLaiSuat quyDinhLaiSuat) {
-        return chiTietQuyDinhLaiSuatMapper.toChiTietQuyDinhLaiSuatResponseDTO(repository.save(quyDinhLaiSuat));
+    public ChiTietQuyDinhLaiSuatResDTO save(ChiTietQuyDinhLaiSuat quyDinhLaiSuat) {
+        return mapper.toChiTietQuyDinhLaiSuatResponseDTO(repository.save(quyDinhLaiSuat));
     }
 
-    public Optional<ChiTietQuyDinhLaiSuatResponseDTO> findById(Long id) {
-        return repository.findById(id).map(chiTietQuyDinhLaiSuatMapper::toChiTietQuyDinhLaiSuatResponseDTO);
+
+    public ChiTietQuyDinhLaiSuatResDTO save(ChiTietQuyDinhLaiSuatReqDTO quyDinhLaiSuat) {
+        return mapper.toChiTietQuyDinhLaiSuatResponseDTO(repository.save(mapper.toChiTietQuyDinhLaiSuat(quyDinhLaiSuat)));
+    }
+
+
+    public Optional<ChiTietQuyDinhLaiSuatResDTO> findById(Long id) {
+        return repository.findById(id).map(mapper::toChiTietQuyDinhLaiSuatResponseDTO);
     }
 
     public void deleteById(Long id) {
