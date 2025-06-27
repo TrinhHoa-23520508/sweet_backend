@@ -138,7 +138,6 @@ public class GiaoDichService {
                 throw new RuntimeException("Số dư không đủ");
             }
             // Trừ tiền tài khoản nguồn
-            pgtNguon.setSoDuHienTai(pgtNguon.getSoDuHienTai() - giaoDich.getSoTienGiaoDich());
             phieuGuiTienRepo.save(pgtNguon);
         }
 
