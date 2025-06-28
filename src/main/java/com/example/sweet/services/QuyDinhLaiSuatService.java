@@ -47,7 +47,7 @@ public class QuyDinhLaiSuatService {
                 .orElseThrow(() -> new IllegalArgumentException("Quy định lãi suất không tồn tại"));
         currentQuyDinh.setActive(false);
         repository.save(currentQuyDinh);
-//        repository.deleteById(id);
+        // repository.deleteById(id);
     }
 
     public Optional<QuyDinhLaiSuatResDTO> findCurrentQuyDinhLaiSuat() {

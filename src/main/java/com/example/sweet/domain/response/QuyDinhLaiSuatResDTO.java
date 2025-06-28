@@ -17,4 +17,5 @@ public class QuyDinhLaiSuatResDTO {
     private float laiSuatKhongKyHan;
     private int soTienGuiToiThieu;
     private List<ChiTietQuyDinhLaiSuatResDTO> chiTietQuyDinhLaiSuats;
+    private boolean isActive;
 }

@@ -18,5 +18,6 @@ public class QuyDinhLaiSuatReqDTO {
     private Long nguoiLapQuyDinhID;
     private float laiSuatKhongKyHan;
     private int soTienGuiToiThieu;
+    private boolean isActive;
     private List<ChiTietQuyDinhLaiSuatReqDTO> chiTietQuyDinhLaiSuats;
 }

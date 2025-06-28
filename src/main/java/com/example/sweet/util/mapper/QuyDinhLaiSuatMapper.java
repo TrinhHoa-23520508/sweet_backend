@@ -26,14 +26,16 @@ public class QuyDinhLaiSuatMapper {
         responseDTO.setNgayBatDau(quyDinhLaiSuat.getNgayBatDau());
         responseDTO.setNgayKetThuc(quyDinhLaiSuat.getNgayKetThuc());
         responseDTO.setMoTa(quyDinhLaiSuat.getMoTa());
-        responseDTO.setNguoiLapQuyDinh(nhanVienMapper.toNhanVienNoVaiTroResponseDTO(quyDinhLaiSuat.getNguoiLapQuyDinh()));
+        responseDTO
+                .setNguoiLapQuyDinh(nhanVienMapper.toNhanVienNoVaiTroResponseDTO(quyDinhLaiSuat.getNguoiLapQuyDinh()));
         responseDTO.setLaiSuatKhongKyHan(quyDinhLaiSuat.getLaiSuatKhongKyHan());
         responseDTO.setSoTienGuiToiThieu(quyDinhLaiSuat.getSoTienGuiToiThieu());
+        responseDTO.setActive(quyDinhLaiSuat.isActive());
         responseDTO.setChiTietQuyDinhLaiSuats(
                 quyDinhLaiSuat
-                .getChiTietQuyDinhLaiSuats()
-                .stream()
-                .map(chiTietQuyDinhLaiSuatMapper::toChiTietQuyDinhLaiSuatResponseDTO).toList());
+                        .getChiTietQuyDinhLaiSuats()
+                        .stream()
+                        .map(chiTietQuyDinhLaiSuatMapper::toChiTietQuyDinhLaiSuatResponseDTO).toList());
 
         return responseDTO;
     }
@@ -54,15 +56,16 @@ public class QuyDinhLaiSuatMapper {
         quyDinhLaiSuat.setMoTa(requestDTO.getMoTa());
         quyDinhLaiSuat.setLaiSuatKhongKyHan(requestDTO.getLaiSuatKhongKyHan());
         quyDinhLaiSuat.setSoTienGuiToiThieu(requestDTO.getSoTienGuiToiThieu());
+        quyDinhLaiSuat.setActive(requestDTO.isActive());
 
         if (requestDTO.getNguoiLapQuyDinhID() != null) {
             quyDinhLaiSuat.setNguoiLapQuyDinh(nhanVien.findById(requestDTO.getNguoiLapQuyDinhID())
                     .orElseThrow(() -> new NullPointerException("Người lập quy định không tồn tại")));
-        }
-        else {
+        } else {
             throw new NullPointerException("Nhân viên lập quy định không tồn tại");
         }
-        var test = requestDTO.getChiTietQuyDinhLaiSuats().stream().map(chiTietQuyDinhLaiSuatMapper::toChiTietQuyDinhLaiSuat).toList();
+        var test = requestDTO.getChiTietQuyDinhLaiSuats().stream()
+                .map(chiTietQuyDinhLaiSuatMapper::toChiTietQuyDinhLaiSuat).toList();
         quyDinhLaiSuat.setChiTietQuyDinhLaiSuats(test);
 
         return quyDinhLaiSuat;

@@ -7,10 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -19,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class QuyDinhLaiSuat {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long quyDinhLaiSuatID;
     private LocalDate ngayBatDau;
     private LocalDate ngayKetThuc;
@@ -31,6 +32,7 @@ public class QuyDinhLaiSuat {
 
     private float laiSuatKhongKyHan;
     private int soTienGuiToiThieu;
+
     @ColumnDefault("true")
     private boolean active;
 
