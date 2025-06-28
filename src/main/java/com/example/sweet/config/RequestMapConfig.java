@@ -62,7 +62,9 @@ public class RequestMapConfig {
             "Main",
             List.of()
         ));
-        quyenHans.sort(Comparator.comparing(QuyenHan::getModule));
+        quyenHans.sort(Comparator.comparing(QuyenHan::getModule)
+                .thenComparing(QuyenHan::getMethod)
+                .thenComparing(QuyenHan::getApiPath));
         return quyenHans;
     }
 }
