@@ -67,15 +67,13 @@ public class GlobalException {
 
     }
 
-    // @ExceptionHandler(value = {
-    // StorageException.class
-    // })
-    // public ResponseEntity<RestResponse<Object>> handleStorageException(Exception
-    // ex) {
-    // RestResponse<Object> res = new RestResponse<Object>();
-    // res.setStatusCode(HttpStatus.BAD_REQUEST.value());
-    // res.setError(ex.getMessage());
-    // res.setMessage("Can not upload file. Something went wrong");
-    // return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
-    // }
+    //handle all exception
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<RestResponse<Object>> handleAllException(Exception ex) {
+        RestResponse<Object> res = new RestResponse<>();
+        res.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        res.setError(ex.getMessage());
+        res.setMessage("Internal Server Error");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(res);
+    }
 }
