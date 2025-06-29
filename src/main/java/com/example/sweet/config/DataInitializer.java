@@ -137,8 +137,8 @@ public class DataInitializer implements CommandLineRunner {
 
                 var quyenHans = quyenHanRepository.saveAll(requestMapper.getRequestMapToQuyenHan());
                 ArrayList<QuyenHan> quyenHanThanhToan = new ArrayList<QuyenHan>();
-                quyenHanThanhToan.addAll(quyenHanRepository.findAllByApiPathLike("/api/v1/giao-dich"));
-                quyenHanThanhToan.addAll(quyenHanRepository.findAllByApiPathLike("/api/v1/quy-dinh-lai-suat"));
+                quyenHanThanhToan.addAll(quyenHanRepository.findAllByModule("/api/v1/giao-dich"));
+                quyenHanThanhToan.addAll(quyenHanRepository.findAllByModule("/api/v1/quy-dinh-lai-suat"));
                 var vaiTros = vaiTroRepo.saveAll(List.of(
                                 new VaiTro(null, "KHONG_QUYEN_KHACH_HANG", true,
                                                 "tài khoản không có quyền thực hiện điều gì", true,

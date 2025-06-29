@@ -2,8 +2,10 @@ package com.example.sweet.database.repository.Loai;
 
 import com.example.sweet.database.schema.Loai.ChiTietQuyDinhLaiSuat;
 
+import java.util.List;
 import java.util.Optional;
 
+import com.example.sweet.database.schema.Loai.QuyDinhLaiSuat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,4 +15,6 @@ public interface ChiTietQuyDinhLaiSuatRepository extends JpaRepository<ChiTietQu
             Integer loaiKyHanId,
             Long loaiTietKiemId,
             Long tanSuatNhanLaiId);
+
+    List<ChiTietQuyDinhLaiSuat> findAllByQuyDinhLaiSuat(QuyDinhLaiSuat quyDinhLaiSuat);
 }

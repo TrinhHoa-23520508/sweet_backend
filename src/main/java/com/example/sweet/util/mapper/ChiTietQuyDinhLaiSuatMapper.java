@@ -29,7 +29,7 @@ public class ChiTietQuyDinhLaiSuatMapper {
 
         ChiTietQuyDinhLaiSuatResDTO responseDTO = new ChiTietQuyDinhLaiSuatResDTO();
         responseDTO.setChiTietQuyDinhID(chiTietQuyDinhLaiSuat.getChiTietQuyDinhID());
-        responseDTO.setQuyDinhLaiSuatID(chiTietQuyDinhLaiSuat.getChiTietQuyDinhID());
+        responseDTO.setQuyDinhLaiSuatID(chiTietQuyDinhLaiSuat.getQuyDinhLaiSuat().getQuyDinhLaiSuatID());
         responseDTO.setTanSuatNhanLai(chiTietQuyDinhLaiSuat.getTanSuatNhanLai());
         responseDTO.setLoaiTietKiem(chiTietQuyDinhLaiSuat.getLoaiTietKiem());
         responseDTO.setLaiSuat(chiTietQuyDinhLaiSuat.getLaiSuat());
@@ -72,11 +72,11 @@ public class ChiTietQuyDinhLaiSuatMapper {
                                     chiTietQuyDinhLaiSuatReqDTO.getLoaiTietKiemID())
                             ));
         }
-        chiTietQuyDinhLaiSuat.setQuyDinhLaiSuat(
-                quyDinhLaiSuatRepository.findById(chiTietQuyDinhLaiSuatReqDTO.getQuyDinhLaiSuatID())
-                    .orElseThrow(() -> new NullPointerException("Không tồn tại quy định lãi suất với ID: " +
-                                chiTietQuyDinhLaiSuatReqDTO.getQuyDinhLaiSuatID())
-                        ));
+//        chiTietQuyDinhLaiSuat.setQuyDinhLaiSuat(
+//                quyDinhLaiSuatRepository.findById(chiTietQuyDinhLaiSuatReqDTO.getQuyDinhLaiSuatID())
+//                    .orElseThrow(() -> new NullPointerException("Không tồn tại quy định lãi suất với ID: " +
+//                                chiTietQuyDinhLaiSuatReqDTO.getQuyDinhLaiSuatID())
+//                        ));
 
         return chiTietQuyDinhLaiSuat;
     }

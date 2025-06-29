@@ -1,9 +1,12 @@
 package com.example.sweet.services;
 
+import com.example.sweet.database.repository.Loai.ChiTietQuyDinhLaiSuatRepository;
 import com.example.sweet.database.repository.Loai.QuyDinhLaiSuatRepository;
+import com.example.sweet.database.schema.Loai.ChiTietQuyDinhLaiSuat;
 import com.example.sweet.database.schema.Loai.QuyDinhLaiSuat;
 import com.example.sweet.domain.request.QuyDinhLaiSuatReqDTO;
 import com.example.sweet.domain.response.QuyDinhLaiSuatResDTO;
+import com.example.sweet.util.mapper.ChiTietQuyDinhLaiSuatMapper;
 import com.example.sweet.util.mapper.QuyDinhLaiSuatMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,8 @@ import java.util.Optional;
 public class QuyDinhLaiSuatService {
     private final QuyDinhLaiSuatRepository repository;
     private final QuyDinhLaiSuatMapper mapper;
+    private final ChiTietQuyDinhLaiSuatRepository chiTietQuyDinhLaiSuatRepository;
+    private final ChiTietQuyDinhLaiSuatMapper chiTietQuyDinhLaiSuatMapper;
 
     public Iterable<QuyDinhLaiSuatResDTO> findAll() {
         return repository.findAll().stream()
@@ -30,12 +35,27 @@ public class QuyDinhLaiSuatService {
         return mapper.toQuyDinhLaiSuatResponseDTO(repository.save(quyDinhLaiSuat));
     }
 
-    public QuyDinhLaiSuatResDTO save(QuyDinhLaiSuatReqDTO quyDinhLaiSuat) {
-        return save(mapper.toQuyDinhLaiSuat(quyDinhLaiSuat));
-    }
+    public QuyDinhLaiSuatResDTO save(QuyDinhLaiSuatReqDTO requestDTO) {
+        if (requestDTO.getQuyDinhLaiSuatID() != null) { // Cập nhật
+            if (!repository.existsById(requestDTO.getQuyDinhLaiSuatID())) {
+                throw new NullPointerException("Không tồn tại quy định lãi suất với ID: " + requestDTO.getQuyDinhLaiSuatID());
+            }
+            return save(mapper.toQuyDinhLaiSuat(requestDTO));
+        }
+        // Thêm mới
+        QuyDinhLaiSuat quyDinhLaiSuat = mapper.toQuyDinhLaiSuatGoc(requestDTO);
+        quyDinhLaiSuat = repository.save(quyDinhLaiSuat);
 
-    public QuyDinhLaiSuatResDTO saveByID(Long id, QuyDinhLaiSuatReqDTO quyDinhLaiSuat) {
-        return save(mapper.toQuyDinhLaiSuat(quyDinhLaiSuat));
+        QuyDinhLaiSuat finalQuyDinhLaiSuat = quyDinhLaiSuat;
+        var chiTiets = requestDTO.getChiTietQuyDinhLaiSuats().stream()
+                .map((value) -> {
+                    ChiTietQuyDinhLaiSuat result = chiTietQuyDinhLaiSuatMapper.toChiTietQuyDinhLaiSuat(value);
+                    result.setQuyDinhLaiSuat(finalQuyDinhLaiSuat);
+                    return result;
+                }).toList();
+        chiTietQuyDinhLaiSuatRepository.saveAll(chiTiets);
+
+        return mapper.toQuyDinhLaiSuatResponseDTO(quyDinhLaiSuat);
     }
 
     public Optional<QuyDinhLaiSuatResDTO> findById(Long id) {
