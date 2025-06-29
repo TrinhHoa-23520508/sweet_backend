@@ -49,34 +49,45 @@ public class ChiTietQuyDinhLaiSuatMapper {
         chiTietQuyDinhLaiSuat.setTanSuatNhanLai(
                 tanSuatNhanLaiRepository.findById(chiTietQuyDinhLaiSuatReqDTO.getTanSuatNhanLaiID())
                         .orElseThrow(() -> new NullPointerException("Không tồn tại tần suất nhận lãi với ID: "
-                                + chiTietQuyDinhLaiSuatReqDTO.getTanSuatNhanLaiID())
-                        ));
+                                + chiTietQuyDinhLaiSuatReqDTO.getTanSuatNhanLaiID())));
         chiTietQuyDinhLaiSuat.setLoaiTietKiem(
                 loaiTietKiemRepository.findById(chiTietQuyDinhLaiSuatReqDTO.getLoaiTietKiemID())
-                    .orElseThrow(() -> new NullPointerException("Không tồn tại loại tiết kiệm với ID: " +
-                            chiTietQuyDinhLaiSuatReqDTO.getLoaiTietKiemID())
-                        ));
+                        .orElseThrow(() -> new NullPointerException("Không tồn tại loại tiết kiệm với ID: " +
+                                chiTietQuyDinhLaiSuatReqDTO.getLoaiTietKiemID())));
         chiTietQuyDinhLaiSuat.setLaiSuat(chiTietQuyDinhLaiSuatReqDTO.getLaiSuat());
         if (chiTietQuyDinhLaiSuatReqDTO.getLoaiKyHan() == null) {
             throw new NullPointerException("Loại kỳ hạn không được để trống");
         }
         if (chiTietQuyDinhLaiSuatReqDTO.getLoaiKyHan().getLoaiKyHanID() == null) {
             var loaiKyHan = chiTietQuyDinhLaiSuatReqDTO.getLoaiKyHan();
-            var newKyHan = loaiKyHanRepository.save(new LoaiKyHan(null, loaiKyHan.getTenLoaiKyHan(), loaiKyHan.getSoThang()));
-            chiTietQuyDinhLaiSuat.setLoaiKyHan(newKyHan);
-        }
-        else {
+
+            // Kiểm tra soThang đã tồn tại chưa
+            var existingKyHan = loaiKyHanRepository.findBySoThang(loaiKyHan.getSoThang())
+                    .orElse(null);
+
+            if (existingKyHan != null) {
+                // Nếu đã tồn tại, dùng LoaiKyHan có sẵn
+                chiTietQuyDinhLaiSuat.setLoaiKyHan(existingKyHan);
+            } else {
+                // Nếu chưa tồn tại, tạo mới với ID tự tăng
+                var newKyHan = loaiKyHanRepository.save(new LoaiKyHan(
+                        null, // ID sẽ tự tăng
+                        loaiKyHan.getTenLoaiKyHan(),
+                        loaiKyHan.getSoThang()));
+                chiTietQuyDinhLaiSuat.setLoaiKyHan(newKyHan);
+            }
+        } else {
             chiTietQuyDinhLaiSuat.setLoaiKyHan(
                     loaiKyHanRepository.findById(chiTietQuyDinhLaiSuatReqDTO.getLoaiKyHan().getLoaiKyHanID())
                             .orElseThrow(() -> new NullPointerException("Không tồn tại loại kỳ hạn với ID: " +
-                                    chiTietQuyDinhLaiSuatReqDTO.getLoaiTietKiemID())
-                            ));
+                                    chiTietQuyDinhLaiSuatReqDTO.getLoaiTietKiemID())));
         }
-//        chiTietQuyDinhLaiSuat.setQuyDinhLaiSuat(
-//                quyDinhLaiSuatRepository.findById(chiTietQuyDinhLaiSuatReqDTO.getQuyDinhLaiSuatID())
-//                    .orElseThrow(() -> new NullPointerException("Không tồn tại quy định lãi suất với ID: " +
-//                                chiTietQuyDinhLaiSuatReqDTO.getQuyDinhLaiSuatID())
-//                        ));
+        // chiTietQuyDinhLaiSuat.setQuyDinhLaiSuat(
+        // quyDinhLaiSuatRepository.findById(chiTietQuyDinhLaiSuatReqDTO.getQuyDinhLaiSuatID())
+        // .orElseThrow(() -> new NullPointerException("Không tồn tại quy định lãi suất
+        // với ID: " +
+        // chiTietQuyDinhLaiSuatReqDTO.getQuyDinhLaiSuatID())
+        // ));
 
         return chiTietQuyDinhLaiSuat;
     }

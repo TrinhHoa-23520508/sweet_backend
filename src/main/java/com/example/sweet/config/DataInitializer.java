@@ -261,23 +261,23 @@ public class DataInitializer implements CommandLineRunner {
 
                                 // Hàng tháng
                                 new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
-                                                tanSuatNhanLais.get(0), loaiKyHans.get(2), 0.448f),
+                                                tanSuatNhanLais.get(0), loaiKyHans.get(0), 0.448f),
+                                new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
+                                                tanSuatNhanLais.get(0), loaiKyHans.get(2), 0.581f),
                                 new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
                                                 tanSuatNhanLais.get(0), loaiKyHans.get(5), 0.581f),
                                 new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
-                                                tanSuatNhanLais.get(0), loaiKyHans.get(11), 0.581f),
-                                new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
-                                                tanSuatNhanLais.get(0), loaiKyHans.get(17), 0.57f),
+                                                tanSuatNhanLais.get(0), loaiKyHans.get(11), 0.57f),
 
                                 // Hàng quý
                                 new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
-                                                tanSuatNhanLais.get(1), loaiKyHans.get(5), 0.585f),
+                                                tanSuatNhanLais.get(1), loaiKyHans.get(0), 0.585f),
                                 new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
-                                                tanSuatNhanLais.get(1), loaiKyHans.get(11), 0.584f),
+                                                tanSuatNhanLais.get(1), loaiKyHans.get(2), 0.584f),
                                 new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
-                                                tanSuatNhanLais.get(1), loaiKyHans.get(17), 0.573f),
+                                                tanSuatNhanLais.get(1), loaiKyHans.get(5), 0.573f),
                                 new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(0),
-                                                tanSuatNhanLais.get(1), loaiKyHans.get(23), 0.592f),
+                                                tanSuatNhanLais.get(1), loaiKyHans.get(11), 0.592f),
 
                                 // Hàng quý
                                 new ChiTietQuyDinhLaiSuat(null, quyDinh1, loaiTietKiems.get(1),

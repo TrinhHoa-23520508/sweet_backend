@@ -1,6 +1,7 @@
 package com.example.sweet.util.mapper;
 
 import com.example.sweet.database.repository.Loai.ChiTietQuyDinhLaiSuatRepository;
+import com.example.sweet.database.repository.Loai.QuyDinhLaiSuatRepository;
 import com.example.sweet.database.repository.TaiKhoan.NhanVienRepository;
 import com.example.sweet.database.schema.Loai.ChiTietQuyDinhLaiSuat;
 import com.example.sweet.database.schema.Loai.QuyDinhLaiSuat;
@@ -16,6 +17,7 @@ public class QuyDinhLaiSuatMapper {
     private final ChiTietQuyDinhLaiSuatMapper chiTietQuyDinhLaiSuatMapper;
     private final ChiTietQuyDinhLaiSuatRepository chiTietQuyDinhLaiSuatRepository;
     private final NhanVienRepository nhanVien;
+    private final QuyDinhLaiSuatRepository quyDinhLaiSuatRepository;
 
     public QuyDinhLaiSuatResDTO toQuyDinhLaiSuatResponseDTO(QuyDinhLaiSuat quyDinhLaiSuat) {
         if (quyDinhLaiSuat == null) {
@@ -58,7 +60,6 @@ public class QuyDinhLaiSuatMapper {
         return quyDinhLaiSuat;
     }
 
-
     public QuyDinhLaiSuat toQuyDinhLaiSuatGoc(QuyDinhLaiSuatReqDTO requestDTO) {
         if (requestDTO == null) {
             return null;
@@ -76,6 +77,17 @@ public class QuyDinhLaiSuatMapper {
         quyDinhLaiSuat.setLaiSuatKhongKyHan(requestDTO.getLaiSuatKhongKyHan());
         quyDinhLaiSuat.setSoTienGuiToiThieu(requestDTO.getSoTienGuiToiThieu());
         quyDinhLaiSuat.setActive(requestDTO.getActive());
+
+        if (requestDTO.getNgayBatDau() != null) {
+            var existingQuyDinh = quyDinhLaiSuatRepository.findByNgayBatDau(requestDTO.getNgayBatDau());
+            if (existingQuyDinh.isPresent()) {
+                throw new IllegalArgumentException(
+                        String.format("Ngày áp dụng %s đã trùng với quy định có ID: %d",
+                                requestDTO.getNgayBatDau(),
+                                existingQuyDinh.get().getQuyDinhLaiSuatID()));
+            }
+            quyDinhLaiSuat.setNgayBatDau(requestDTO.getNgayBatDau());
+        }
 
         if (requestDTO.getNguoiLapQuyDinhID() != null) {
             quyDinhLaiSuat.setNguoiLapQuyDinh(nhanVien.findById(requestDTO.getNguoiLapQuyDinhID())
