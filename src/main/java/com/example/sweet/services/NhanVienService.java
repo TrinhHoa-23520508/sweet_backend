@@ -202,10 +202,16 @@ public class NhanVienService {
             validateAge(existingNhanVien.getTuoi());
         }
         if (updateNhanVien.getDiaChiLienLac() != null) {
-            existingNhanVien.setDiaChiLienLac(updateNhanVien.getDiaChiLienLac());
+            if (updateNhanVien.getDiaChiLienLac().getDiaChiID() == null) {
+                DiaChi newDiaChiLienLac = this.diaChiService.createDiaChi(updateNhanVien.getDiaChiLienLac());
+                existingNhanVien.setDiaChiLienLac(newDiaChiLienLac);
+            }
         }
         if (updateNhanVien.getDiaChiThuongTru() != null) {
-            existingNhanVien.setDiaChiThuongTru(updateNhanVien.getDiaChiThuongTru());
+            if (updateNhanVien.getDiaChiThuongTru().getDiaChiID() == null) {
+                DiaChi newDiaChiThuongTru = this.diaChiService.createDiaChi(updateNhanVien.getDiaChiThuongTru());
+                existingNhanVien.setDiaChiThuongTru(newDiaChiThuongTru);
+            }
         }
         if (updateNhanVien.getTrangThaiTaiKhoan() != null) {
             existingNhanVien.setTrangThaiTaiKhoan(updateNhanVien.getTrangThaiTaiKhoan());
