@@ -157,18 +157,19 @@ public class GiaoDichService {
                     tkttNguon,
                     savedGiaoDich,
                     tkttNguon.getSoDu()));
-        } else if (taiKhoanNguon instanceof PhieuGuiTien pgtNguon) {
-            lichSuPGTRepo.save(new LichSuGiaoDich_PhieuGuiTien(
-                    null,
-                    pgtNguon,
-                    savedGiaoDich,
-                    savedGiaoDich.getSoTienGiaoDich(),
-                    pgtNguon.getSoDuHienTai(),
-                    pgtNguon.getTienLaiNhanDinhKy(),
-                    0.0f,
-                    pgtNguon.getTienLaiDaNhanNhungChuaQuyetToan(),
-                    pgtNguon.getTongLaiQuyetToan()));
         }
+        // else if (taiKhoanNguon instanceof PhieuGuiTien pgtNguon) {
+        // lichSuPGTRepo.save(new LichSuGiaoDich_PhieuGuiTien(
+        // null,
+        // pgtNguon,
+        // savedGiaoDich,
+        // savedGiaoDich.getSoTienGiaoDich(),
+        // pgtNguon.getSoDuHienTai(),
+        // pgtNguon.getTienLaiNhanDinhKy(),
+        // 0.0f,
+        // pgtNguon.getTienLaiDaNhanNhungChuaQuyetToan(),
+        // pgtNguon.getTongLaiQuyetToan()));
+        // }
 
         if (taiKhoanDich instanceof TaiKhoanThanhToan tkttDich) {
             lichSuTKTTRepo.save(new LichSuGiaoDich_TKTT(

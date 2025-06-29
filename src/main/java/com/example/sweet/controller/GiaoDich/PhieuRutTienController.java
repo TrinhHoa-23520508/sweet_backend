@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.sweet.database.repository.dto.PhieuRutTien.PhieuRutTienDTO_inp;
 import com.example.sweet.database.repository.dto.PhieuRutTien.PhieuRutTienDTO_out;
 import com.example.sweet.database.schema.GiaoDich.PhieuRutTien;
+import com.example.sweet.domain.request.PhieuRutTienreqDTO;
 import com.example.sweet.services.GiaoDich.PhieuRutTienService;
 import com.example.sweet.util.annotation.ApiMessage;
 
@@ -36,7 +37,7 @@ public class PhieuRutTienController {
 
     @PostMapping("/phieu-rut-tien")
     @ApiMessage("Tạo mới một phiếu rút tiền")
-    public ResponseEntity<PhieuRutTienDTO_out> createPhieuRutTien(@RequestBody PhieuRutTienDTO_inp dto) {
+    public ResponseEntity<PhieuRutTien> createPhieuRutTien(@RequestBody PhieuRutTienreqDTO dto) {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(phieuRutTienService.handleCreatePhieuRutTien(dto));
