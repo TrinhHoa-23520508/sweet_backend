@@ -154,6 +154,13 @@ public class PhieuRutTienService {
                             .orElseThrow(() -> new RuntimeException("Không tìm thấy loại tài khoản"))); // 2L cho tài
                                                                                                         // khoản tiết
                                                                                                         // kiệm
+            if (dto.getKenhGiaoDichID() != null && dto.getKenhGiaoDichID() == 1L) {
+                giaoDich.setTaiKhoanNguon(null);
+                giaoDich.setLoaiTaiKhoanNguon(
+                        loaiTaiKhoanRepository.findById(3L)
+                                .orElseThrow(() -> new RuntimeException(
+                                        "Không tìm thấy loại tài khoản")));
+            }
 
             GiaoDich savedGiaoDich = giaoDichService.createGiaoDich(giaoDich);
             phieuGuiTien.setSoDuHienTai(soDuSauKhiRut);
