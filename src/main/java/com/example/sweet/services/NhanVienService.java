@@ -201,16 +201,22 @@ public class NhanVienService {
             existingNhanVien.setTuoi(Period.between(existingNhanVien.getNgaySinh(), LocalDate.now()).getYears());
             validateAge(existingNhanVien.getTuoi());
         }
-        if (existingNhanVien.getDiaChiLienLac() != null) {
-            existingNhanVien.setDiaChiLienLac(updateNhanVien.getDiaChiLienLac());
+        if (updateNhanVien.getDiaChiLienLac() != null) {
+            if (updateNhanVien.getDiaChiLienLac().getDiaChiID() == null) {
+                DiaChi newDiaChiLienLac = this.diaChiService.createDiaChi(updateNhanVien.getDiaChiLienLac());
+                existingNhanVien.setDiaChiLienLac(newDiaChiLienLac);
+            }
         }
-        if (existingNhanVien.getDiaChiThuongTru() != null) {
-            existingNhanVien.setDiaChiThuongTru(updateNhanVien.getDiaChiThuongTru());
+        if (updateNhanVien.getDiaChiThuongTru() != null) {
+            if (updateNhanVien.getDiaChiThuongTru().getDiaChiID() == null) {
+                DiaChi newDiaChiThuongTru = this.diaChiService.createDiaChi(updateNhanVien.getDiaChiThuongTru());
+                existingNhanVien.setDiaChiThuongTru(newDiaChiThuongTru);
+            }
         }
-        if (existingNhanVien.getTrangThaiTaiKhoan() != null) {
+        if (updateNhanVien.getTrangThaiTaiKhoan() != null) {
             existingNhanVien.setTrangThaiTaiKhoan(updateNhanVien.getTrangThaiTaiKhoan());
         }
-        if (existingNhanVien.getVaiTro() != null) {
+        if (updateNhanVien.getVaiTro() != null) {
             existingNhanVien.setVaiTro(updateNhanVien.getVaiTro());
         }
 

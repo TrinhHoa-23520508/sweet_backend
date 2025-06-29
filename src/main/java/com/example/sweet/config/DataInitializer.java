@@ -136,9 +136,23 @@ public class DataInitializer implements CommandLineRunner {
                                 new TrangThai(null, "locked", "Đã khóa", false, loaiTrangThais.get(5))));
 
                 var quyenHans = quyenHanRepository.saveAll(requestMapper.getRequestMapToQuyenHan());
+
+                final List<String> thanhToanModules = List.of( "GiaoDich" , "KenhGiaoDich", "LichSuGiaoDich_TKTT", "LoaiGiaoDich",
+                                "TaiKhoanThanhToan", "QuyDinhLaiSuat", "LoaiTaikKhoan" );
+
                 ArrayList<QuyenHan> quyenHanThanhToan = new ArrayList<QuyenHan>();
-                quyenHanThanhToan.addAll(quyenHanRepository.findAllByModule("/api/v1/giao-dich"));
-                quyenHanThanhToan.addAll(quyenHanRepository.findAllByModule("/api/v1/quy-dinh-lai-suat"));
+                for (String module : thanhToanModules) {
+                        quyenHanThanhToan.addAll(quyenHanRepository.findAllByModule(module));
+                }
+
+                final ArrayList<String> tietKiemModules = new ArrayList<>(List.of("HinhThucDaoHan", "LoaiTietKiem", "TanSuatNhanLai", "LoaiKyHan"));
+                tietKiemModules.addAll(thanhToanModules);
+
+                ArrayList<QuyenHan> quyenHanTietKiem = new ArrayList<QuyenHan>();
+                for (String module : tietKiemModules) {
+                        quyenHanTietKiem.addAll(quyenHanRepository.findAllByModule(module));
+                }
+
                 var vaiTros = vaiTroRepo.saveAll(List.of(
                                 new VaiTro(null, "KHONG_QUYEN_KHACH_HANG", true,
                                                 "tài khoản không có quyền thực hiện điều gì", true,
@@ -149,7 +163,7 @@ public class DataInitializer implements CommandLineRunner {
                                                 quyenHanThanhToan, List.of(), List.of()),
                                 new VaiTro(null, "QUYEN_TIET_KIEM", true,
                                                 "Có quyền thanh toán và thực hiện các chức năng tiết kiệm", true,
-                                                List.of(), List.of(), List.of()),
+                                                quyenHanTietKiem, List.of(), List.of()),
                                 new VaiTro(null, "QUAN_TRI_VIEN", false, "Có toàn quyền trong hệ thống", true,
                                                 quyenHans, List.of(), List.of()),
                                 new VaiTro(null, "KHONG_QUYEN_NHAN_VIEN", false, "Không có quyền truy cập vào hệ thống",

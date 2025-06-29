@@ -28,7 +28,7 @@ dependencies {
     implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
     implementation("org.projectlombok:lombok")
     implementation("com.sun.mail:jakarta.mail:2.0.1")
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0")
     implementation("com.turkraft.springfilter:jpa:3.1.9")
     implementation("org.springframework.boot:spring-boot-starter-mail")
     developmentOnly("org.springframework.boot:spring-boot-devtools")

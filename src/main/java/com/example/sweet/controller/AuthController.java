@@ -7,6 +7,7 @@ import com.example.sweet.database.schema.TaiKhoan.NhanVien;
 import com.example.sweet.domain.request.*;
 import com.example.sweet.domain.response.KhachHangResponseDTO;
 import com.example.sweet.domain.response.ResLoginDTO;
+import com.example.sweet.services.CommonService;
 import com.example.sweet.services.EmailService;
 import com.example.sweet.services.KhachHangService;
 import com.example.sweet.services.NhanVienService;
@@ -50,6 +51,7 @@ public class AuthController {
     private final NhanVienRepository nhanVienRepository;
     private final KhachHangMapper khachHangMapper;
     private final NhanVienMapper nhanVienMapper;
+    private final CommonService commonService;
 
     public AuthController(AuthenticationManagerBuilder authenticationManagerBuilder,
                           SecurityUtil securityUtil,
@@ -60,7 +62,8 @@ public class AuthController {
                           KhachHangRepository khachHangRepository,
                           NhanVienRepository nhanVienRepository,
                           KhachHangMapper khachHangMapper,
-                          NhanVienMapper nhanVienMapper) {
+                          NhanVienMapper nhanVienMapper,
+                          CommonService commonService) {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.securityUtil = securityUtil;
         this.khachHangService = khachHangService;
@@ -71,6 +74,7 @@ public class AuthController {
         this.nhanVienRepository = nhanVienRepository;
         this.khachHangMapper = khachHangMapper;
         this.nhanVienMapper = nhanVienMapper;
+        this.commonService = commonService;
     }
 
     @Value("${jwt.refresh-token.expiration}")
@@ -208,7 +212,7 @@ public class AuthController {
     @PostMapping("/auth/verify")
     @ApiMessage("Xác thực email thành công")
     public ResponseEntity<Void> verifyEmail(
-            @RequestBody VerificationDTO verificationDTO
+            @Valid @RequestBody VerificationDTO verificationDTO
     ) throws IdInvalidException {
         this.emailService.verifyActivationOtp(verificationDTO);
         return ResponseEntity.ok(null);
@@ -217,7 +221,7 @@ public class AuthController {
     @PostMapping("/auth/forgot-password")
     @ApiMessage("gửi email xác nhận đặt lại mật khẩu")
     public ResponseEntity<Void> forgotPassword(
-            @RequestBody ForgotPasswordDTO forgotPasswordDTO
+            @Valid @RequestBody ForgotPasswordDTO forgotPasswordDTO
     ) throws IdInvalidException {
         ResLoginDTO.UserGetAccount user = new ResLoginDTO.UserGetAccount();
         if (forgotPasswordDTO.getUserType().equals(TypeUserEnum.KHACHHANG)) {
@@ -245,9 +249,19 @@ public class AuthController {
     @PostMapping("/auth/reset-password")
     @ApiMessage("Đặt lại mật khẩu")
     public ResponseEntity<Void> resetPassword(
-            @RequestBody ResetPasswordDTO resetPasswordDTO
+            @Valid @RequestBody ResetPasswordDTO resetPasswordDTO
     ) throws IdInvalidException {
         this.emailService.resetPassword(resetPasswordDTO);
+        return ResponseEntity.ok(null);
+    }
+
+    @PutMapping("/change-password/{id}")
+    @ApiMessage("Update password")
+    public ResponseEntity<Void> changePassword(
+            @PathVariable Long id,
+            @Valid @RequestBody ChangePasswordDTO changePasswordDTO
+    ) throws IdInvalidException {
+        this.commonService.changePassword(id, changePasswordDTO);
         return ResponseEntity.ok(null);
     }
 

@@ -22,6 +22,8 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -38,13 +40,14 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
                                            CustomAuthenticationEntryPoint customAuthenticationEntryPoint) throws Exception {
+        String[] whiteList = {"/", "/api/v1/auth/**",
+                "/storage/**", "/api/v1/**", "/v3/api-docs/**",
+                "/swagger-ui/**",
+                "/swagger-ui.html"};
         http.csrf(c -> c.disable())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/", "/api/v1/auth/**",
-                                "/storage/**", "/api/v1/**", "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html")
+                        .requestMatchers(whiteList)
                         .permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2

@@ -192,19 +192,25 @@ public class KhachHangService {
             existingKhachHang.setTuoi(Period.between(existingKhachHang.getNgaySinh(), LocalDate.now()).getYears());
             validateAge(existingKhachHang.getTuoi());
         }
-        if (existingKhachHang.getDiaChiLienLac() != null) {
-            existingKhachHang.setDiaChiLienLac(updateKhachHang.getDiaChiLienLac());
+        if (updateKhachHang.getDiaChiLienLac() != null) {
+            if (updateKhachHang.getDiaChiLienLac().getDiaChiID() == null) {
+                DiaChi newDiaChiLienLac = this.diaChiService.createDiaChi(updateKhachHang.getDiaChiLienLac());
+                existingKhachHang.setDiaChiLienLac(newDiaChiLienLac);
+            }
         }
-        if (existingKhachHang.getDiaChiThuongTru() != null) {
-            existingKhachHang.setDiaChiThuongTru(updateKhachHang.getDiaChiThuongTru());
+        if (updateKhachHang.getDiaChiThuongTru() != null) {
+            if (updateKhachHang.getDiaChiThuongTru().getDiaChiID() == null) {
+                DiaChi newDiaChiThuongTru = this.diaChiService.createDiaChi(updateKhachHang.getDiaChiThuongTru());
+                existingKhachHang.setDiaChiThuongTru(newDiaChiThuongTru);
+            }
         }
-        if (existingKhachHang.getTrangThaiTaiKhoan() != null) {
+        if (updateKhachHang.getTrangThaiTaiKhoan() != null) {
             existingKhachHang.setTrangThaiTaiKhoan(updateKhachHang.getTrangThaiTaiKhoan());
         }
-        if (existingKhachHang.getTrangThaiKhachHang() != null) {
+        if (updateKhachHang.getTrangThaiKhachHang() != null) {
             existingKhachHang.setTrangThaiKhachHang(updateKhachHang.getTrangThaiKhachHang());
         }
-        if (existingKhachHang.getVaiTro() != null) {
+        if (updateKhachHang.getVaiTro() != null) {
             existingKhachHang.setVaiTro(updateKhachHang.getVaiTro());
         }
 
