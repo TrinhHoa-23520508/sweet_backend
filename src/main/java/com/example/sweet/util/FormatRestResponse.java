@@ -37,7 +37,12 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
         RestResponse<Object> res = new RestResponse<Object>();
         res.setStatusCode(status);
 
-        if(body instanceof String || body instanceof Resource){
+        if (body instanceof String || body instanceof Resource) {
+            return body;
+        }
+
+        String path = request.getURI().getPath();
+        if (path.startsWith("/v3/api-docs") || path.startsWith("/swagger-ui")) {
             return body;
         }
         if (status >= 400) {
@@ -45,7 +50,7 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
         } else {
             res.setData(body);
             ApiMessage message = returnType.getMethodAnnotation(ApiMessage.class);
-            res.setMessage(message!=null ? message.value() : "CALL API SUCCESS");
+            res.setMessage(message != null ? message.value() : "CALL API SUCCESS");
         }
 
         return res;

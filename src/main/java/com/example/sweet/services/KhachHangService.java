@@ -75,7 +75,8 @@ public class KhachHangService {
         if (khachHang.getKhachHangID() == null) {
             return this.khachHangRepository.existsByEmailOrCccd(khachHang.getEmail(), khachHang.getCccd());
         } else {
-            return this.khachHangRepository.existsByEmailOrCccdAndKhachHangIDNot(khachHang.getEmail(), khachHang.getCccd(), khachHang.getKhachHangID());
+            return this.khachHangRepository.existsByCccdAndKhachHangIDNot(khachHang.getCccd(), khachHang.getKhachHangID())
+                    || this.khachHangRepository.existsByEmailAndKhachHangIDNot(khachHang.getEmail(), khachHang.getKhachHangID());
         }
     }
 

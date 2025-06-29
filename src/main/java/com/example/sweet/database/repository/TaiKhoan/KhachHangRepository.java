@@ -19,6 +19,10 @@ public interface KhachHangRepository extends JpaRepository<KhachHang, Long>, Jpa
 
     boolean existsByEmailOrCccdAndKhachHangIDNot(String email, String cccd, Long id);
 
+    boolean existsByCccdAndKhachHangIDNot(String cccd, Long id);
+
+    boolean existsByEmailAndKhachHangIDNot(String email, Long id);
+
     Optional<KhachHang> findByEmail(String email);
 
     @Query("SELECT kh FROM KhachHang kh " +

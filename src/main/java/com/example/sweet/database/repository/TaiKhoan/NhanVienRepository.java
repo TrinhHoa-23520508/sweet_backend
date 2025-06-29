@@ -26,4 +26,9 @@ public interface NhanVienRepository extends JpaRepository<NhanVien, Long>, JpaSp
             "JOIN FETCH vt.quyenHans " +
             "WHERE nv.email = :email")
     Optional<NhanVien> findByEmailWithPermissions(@Param("email") String email);
+
+    boolean existsByEmailAndNhanVienIDNot(String email, Long nhanVienID);
+
+    boolean existsByCccdAndNhanVienIDNot(String cccd, Long nhanVienID);
+
 }

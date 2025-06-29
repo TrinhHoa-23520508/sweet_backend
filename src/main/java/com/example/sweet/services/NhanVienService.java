@@ -66,7 +66,8 @@ public class NhanVienService {
         if (nhanVien.getNhanVienID() == null) {
             return this.nhanVienRepository.existsByEmailOrCccd(nhanVien.getEmail(), nhanVien.getCccd());
         } else {
-            return this.nhanVienRepository.existsByEmailOrCccdAndNhanVienIDNot(nhanVien.getEmail(), nhanVien.getCccd(), nhanVien.getNhanVienID());
+            return this.nhanVienRepository.existsByCccdAndNhanVienIDNot(nhanVien.getCccd(), nhanVien.getNhanVienID())
+                    || this.nhanVienRepository.existsByEmailAndNhanVienIDNot(nhanVien.getEmail(), nhanVien.getNhanVienID());
         }
     }
 
