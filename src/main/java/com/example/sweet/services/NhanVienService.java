@@ -201,10 +201,18 @@ public class NhanVienService {
             existingNhanVien.setTuoi(Period.between(existingNhanVien.getNgaySinh(), LocalDate.now()).getYears());
             validateAge(existingNhanVien.getTuoi());
         }
-        existingNhanVien.setDiaChiLienLac(updateNhanVien.getDiaChiLienLac());
-        existingNhanVien.setDiaChiThuongTru(updateNhanVien.getDiaChiThuongTru());
-        existingNhanVien.setTrangThaiTaiKhoan(updateNhanVien.getTrangThaiTaiKhoan());
-        existingNhanVien.setVaiTro(updateNhanVien.getVaiTro());
+        if (existingNhanVien.getDiaChiLienLac() != null) {
+            existingNhanVien.setDiaChiLienLac(updateNhanVien.getDiaChiLienLac());
+        }
+        if (existingNhanVien.getDiaChiThuongTru() != null) {
+            existingNhanVien.setDiaChiThuongTru(updateNhanVien.getDiaChiThuongTru());
+        }
+        if (existingNhanVien.getTrangThaiTaiKhoan() != null) {
+            existingNhanVien.setTrangThaiTaiKhoan(updateNhanVien.getTrangThaiTaiKhoan());
+        }
+        if (existingNhanVien.getVaiTro() != null) {
+            existingNhanVien.setVaiTro(updateNhanVien.getVaiTro());
+        }
 
         return this.nhanVienMapper.toNhanVienResponseDTO(this.nhanVienRepository.save(existingNhanVien));
     }
