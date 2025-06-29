@@ -12,6 +12,5 @@ import lombok.Setter;
 public class PhieuRutTienreqDTO {
     private Long phieuGuiTienID; // Mã phiếu gửi tiền
     private Long soTienRut; // Số tiền gốc muốn rút
-    private float laiSuatKhongKyHan;
     private Long kenhGiaoDichID;
 }

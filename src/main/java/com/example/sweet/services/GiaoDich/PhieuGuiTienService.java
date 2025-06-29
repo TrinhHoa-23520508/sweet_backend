@@ -21,6 +21,7 @@ import com.example.sweet.database.schema.TaiKhoan.NhanVien;
 import com.example.sweet.database.schema.TaiKhoan.TaiKhoanThanhToan;
 import com.example.sweet.domain.response.GiaoDich.PhieuGuiTienDTO;
 import com.example.sweet.util.mapper.PhieuGuiTienMapper;
+import com.example.sweet.services.QuyDinhLaiSuatService;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -33,203 +34,229 @@ import java.time.Instant;
 @AllArgsConstructor
 @Service
 public class PhieuGuiTienService {
-    private final LoaiTaiKhoanRepository loaiTaiKhoanRepository;
-    private final LoaiGiaoDichRepository loaiGiaoDichRepository;
-    private final GiaoDichService giaoDichService;
-    private final HinhThucDaoHanRepository hinhThucDaoHanRepository;
-    private final PhieuGuiTienRepository phieuGuiTienRepository;
-    private final KhachHangRepository khachHangRepository;
-    private final NhanVienRepository nhanVienRepository;
-    private final PhieuGuiTienMapper phieuGuiTienMapper;
-    private final TaiKhoanThanhToanRepository taiKhoanThanhToanRepository;
-    private final KenhGiaoDichRepository kenhGiaoDichRepository;
-    private final LichSuGiaoDich_PhieuGuiTienRepository lichSuPGTRepo;
-    private final ChiTietQuyDinhLaiSuatRepository chiTietQuyDinhLaiSuatRepository;
-    private final PhieuTraLaiService phieuTraLaiService;
+        private final LoaiTaiKhoanRepository loaiTaiKhoanRepository;
+        private final LoaiGiaoDichRepository loaiGiaoDichRepository;
+        private final GiaoDichService giaoDichService;
+        private final HinhThucDaoHanRepository hinhThucDaoHanRepository;
+        private final PhieuGuiTienRepository phieuGuiTienRepository;
+        private final KhachHangRepository khachHangRepository;
+        private final NhanVienRepository nhanVienRepository;
+        private final PhieuGuiTienMapper phieuGuiTienMapper;
+        private final TaiKhoanThanhToanRepository taiKhoanThanhToanRepository;
+        private final KenhGiaoDichRepository kenhGiaoDichRepository;
+        private final LichSuGiaoDich_PhieuGuiTienRepository lichSuPGTRepo;
+        private final ChiTietQuyDinhLaiSuatRepository chiTietQuyDinhLaiSuatRepository;
+        private final PhieuTraLaiService phieuTraLaiService;
+        private final QuyDinhLaiSuatService quyDinhLaiSuatService;
 
-    @Transactional
-    public PhieuGuiTienDTO createPhieuGuiTien(PhieuGuiTienDTO dto) {
-        try {
-            // B3-B8: Validate dữ liệu đầu vào
-            validatePhieuGuiTien(dto);
+        @Transactional
+        public PhieuGuiTienDTO createPhieuGuiTien(PhieuGuiTienDTO dto) {
+                try {
+                        // B3-B8: Validate dữ liệu đầu vào
+                        validatePhieuGuiTien(dto);
 
-            // Get ChiTietQuyDinhLaiSuat
-            ChiTietQuyDinhLaiSuat chiTietQuyDinh = chiTietQuyDinhLaiSuatRepository
-                    .findByLoaiKyHan_LoaiKyHanIDAndLoaiTietKiem_LoaiTietKiemIDAndTanSuatNhanLai_TanSoNhanLaiID(
-                            dto.getSoThang(),
-                            dto.getLoaiTietKiemId(),
-                            dto.getTanSuatNhanLaiId())
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy quy định lãi suất phù hợp"));
+                        // Get current QuyDinhLaiSuat
+                        var currentQuyDinhLaiSuat = quyDinhLaiSuatService.findCurrentQuyDinhLaiSuat()
+                                        .orElseThrow(() -> new RuntimeException(
+                                                        "Không tìm thấy quy định lãi suất hiện tại"));
 
-            // Set trạng thái mặc định là "chưa tất toán" (ID = 10L)
-            dto.setTrangThaiId(10L);
+                        // Get ChiTietQuyDinhLaiSuat
+                        ChiTietQuyDinhLaiSuat chiTietQuyDinh = chiTietQuyDinhLaiSuatRepository
+                                        .findByQuyDinhLaiSuat_QuyDinhLaiSuatIDAndLoaiKyHan_LoaiKyHanIDAndLoaiTietKiem_LoaiTietKiemIDAndTanSuatNhanLai_TanSoNhanLaiID(
+                                                        currentQuyDinhLaiSuat.getQuyDinhLaiSuatID(),
+                                                        dto.getSoThang(),
+                                                        dto.getLoaiTietKiemId(),
+                                                        dto.getTanSuatNhanLaiId())
+                                        .orElseThrow(() -> new RuntimeException("Quy định lãi suất không hợp lệ"));
 
-            // Set ngày gửi tiền to now
-            dto.setNgayGuiTien(Instant.now());
+                        // Set trạng thái mặc định là "chưa tất toán" (ID = 10L)
+                        dto.setTrangThaiId(10L);
 
-            // B9: Tính ngày đáo hạn
-            Instant ngayDaoHan = dto.getNgayGuiTien()
-                    .plusMillis(chiTietQuyDinh.getLoaiKyHan().getSoThang() * 30L * 24L * 60L * 60L * 1000L);
+                        // Set ngày gửi tiền to now
+                        dto.setNgayGuiTien(Instant.now());
 
-            // B10: Tính toán các giá trị
-            Long soTienGui = dto.getSoTienGuiBanDau();
-            Float laiSuat = chiTietQuyDinh.getLaiSuat();
-            int kyHan = chiTietQuyDinh.getLoaiKyHan().getSoThang();
+                        // B9: Tính ngày đáo hạn
+                        Instant ngayDaoHan = dto.getNgayGuiTien()
+                                        .plusMillis(chiTietQuyDinh.getLoaiKyHan().getSoThang() * 30L * 24L * 60L * 60L
+                                                        * 1000L);
 
-            // Tính tổng tiền lãi dự kiến
-            Long tongTienLaiDuKien = (long) Math.round(soTienGui * kyHan * (laiSuat / 12));
+                        // B10: Tính toán các giá trị
+                        Long soTienGui = dto.getSoTienGuiBanDau();
+                        Float laiSuat = chiTietQuyDinh.getLaiSuat();
+                        int kyHan = chiTietQuyDinh.getLoaiKyHan().getSoThang();
 
-            // Tính số lần nhận lãi theo tần suất
-            int soLanNhanLai = tinhSoLanNhanLai(
-                    chiTietQuyDinh.getTanSuatNhanLai().getTenTanSoNhanLai(),
-                    kyHan);
+                        // Tính tổng tiền lãi dự kiến
+                        Long tongTienLaiDuKien = (long) Math.round(soTienGui * kyHan * (laiSuat / 12));
 
-            // Tính tiền lãi nhận định kỳ
-            Long tienLaiNhanDinhKy = tongTienLaiDuKien / soLanNhanLai;
+                        // Tính số lần nhận lãi theo tần suất
+                        int soLanNhanLai = tinhSoLanNhanLai(
+                                        chiTietQuyDinh.getTanSuatNhanLai().getTenTanSoNhanLai(),
+                                        kyHan);
 
-            // Tạo object GiaoDich trước
-            GiaoDich giaoDich = new GiaoDich();
-            giaoDich.setSoTienGiaoDich(dto.getSoTienGuiBanDau());
-            giaoDich.setThoiGianGiaoDich(dto.getNgayGuiTien());
-            giaoDich.setNoiDung("Tạo sổ tiết kiệm: " + dto.getTenGoiNho());
+                        // Tính tiền lãi nhận định kỳ
+                        Long tienLaiNhanDinhKy = tongTienLaiDuKien / soLanNhanLai;
 
-            // Set khách hàng và giao dịch viên
-            KhachHang khachHang = khachHangRepository.findById(dto.getKhachHangId())
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy khách hàng"));
+                        // Tạo object GiaoDich trước
+                        GiaoDich giaoDich = new GiaoDich();
+                        giaoDich.setSoTienGiaoDich(dto.getSoTienGuiBanDau());
+                        giaoDich.setThoiGianGiaoDich(dto.getNgayGuiTien());
+                        giaoDich.setNoiDung("Tạo sổ tiết kiệm: " + dto.getTenGoiNho());
 
-            NhanVien giaoDichVien = nhanVienRepository.findById(dto.getGiaoDichVienId())
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy giao dịch viên"));
-            giaoDich.setNhanVienGiaoDich(giaoDichVien);
+                        // Set khách hàng và giao dịch viên
+                        KhachHang khachHang = khachHangRepository.findById(dto.getKhachHangId())
+                                        .orElseThrow(() -> new RuntimeException("Không tìm thấy khách hàng"));
 
-            // PhieuGuiTien chưa được tạo nên chưa có ID, sẽ set sau khi lưu
-            PhieuGuiTien phieuGuiTien = phieuGuiTienMapper.toEntity(dto);
-            phieuGuiTien.setSoDuHienTai(dto.getSoTienGuiBanDau()); // Set số dư = số tiền gửi ban đầu
-            // Tiếp tục code tạo PhieuGuiTien như cũ
-            phieuGuiTien.setNgayDaoHan(ngayDaoHan);
-            phieuGuiTien.setTongTienLaiDuKien(0L);
-            phieuGuiTien.setTienLaiNhanDinhKy(0L);
-            phieuGuiTien.setTienLaiDaNhanNhungChuaQuyetToan(0L);
-            phieuGuiTien.setTongLaiQuyetToan(0L);
+                        NhanVien giaoDichVien = nhanVienRepository.findById(dto.getGiaoDichVienId())
+                                        .orElseThrow(() -> new RuntimeException("Không tìm thấy giao dịch viên"));
+                        giaoDich.setNhanVienGiaoDich(giaoDichVien);
 
-            phieuGuiTien = phieuGuiTienRepository.save(phieuGuiTien); // Lưu trước để có ID
+                        // PhieuGuiTien chưa được tạo nên chưa có ID, sẽ set sau khi lưu
+                        PhieuGuiTien phieuGuiTien = phieuGuiTienMapper.toEntity(dto);
+                        phieuGuiTien.setSoDuHienTai(dto.getSoTienGuiBanDau()); // Set số dư = số tiền gửi ban đầu
+                        // Tiếp tục code tạo PhieuGuiTien như cũ
+                        phieuGuiTien.setNgayDaoHan(ngayDaoHan);
+                        phieuGuiTien.setTongTienLaiDuKien(0L);
+                        phieuGuiTien.setTienLaiNhanDinhKy(0L);
+                        phieuGuiTien.setTienLaiDaNhanNhungChuaQuyetToan(0L);
+                        phieuGuiTien.setTongLaiQuyetToan(0L);
 
-            // Set tài khoản nguồn và đích
-            TaiKhoanThanhToan taiKhoanNguon = taiKhoanThanhToanRepository
-                    .findByKhachHangKhachHangID(khachHang.getKhachHangID())
-                    .orElseThrow(() -> new RuntimeException("Không tìm thấy tài khoản thanh toán"));
-            taiKhoanNguon = taiKhoanThanhToanRepository.save(taiKhoanNguon);
-            giaoDich.setTaiKhoanNguon(taiKhoanNguon.getSoTaiKhoan());
-            giaoDich.setLoaiTaiKhoanNguon(
-                    loaiTaiKhoanRepository.findById(1L)
-                            .orElseThrow(() -> new RuntimeException("Không tìm thấy loại tài khoản"))); // 1L cho tài
-                                                                                                        // khoản thanh
-                                                                                                        // toán
+                        phieuGuiTien = phieuGuiTienRepository.save(phieuGuiTien); // Lưu trước để có ID
 
-            giaoDich.setTaiKhoanDich(phieuGuiTien.getPhieuGuiTienID()); // phieuGuiTien sẽ là tài khoản đích
-            giaoDich.setLoaiTaiKhoanDich(
-                    loaiTaiKhoanRepository.findById(2L)
-                            .orElseThrow(() -> new RuntimeException("Không tìm thấy loại tài khoản"))); // 2L cho tài
-                                                                                                        // khoản tiết
-                                                                                                        // kiệm
+                        // Set tài khoản nguồn và đích
+                        TaiKhoanThanhToan taiKhoanNguon = taiKhoanThanhToanRepository
+                                        .findByKhachHangKhachHangID(khachHang.getKhachHangID())
+                                        .orElseThrow(() -> new RuntimeException("Không tìm thấy tài khoản thanh toán"));
+                        taiKhoanNguon = taiKhoanThanhToanRepository.save(taiKhoanNguon);
+                        giaoDich.setTaiKhoanNguon(taiKhoanNguon.getSoTaiKhoan());
+                        giaoDich.setLoaiTaiKhoanNguon(
+                                        loaiTaiKhoanRepository.findById(1L)
+                                                        .orElseThrow(() -> new RuntimeException(
+                                                                        "Không tìm thấy loại tài khoản"))); // 1L cho
+                                                                                                            // tài
+                                                                                                            // khoản
+                                                                                                            // thanh
+                                                                                                            // toán
 
-            // Set loại và kênh giao dịch
-            giaoDich.setLoaiGiaoDich(loaiGiaoDichRepository.findById(3L).get());
-            Long kenhGiaoDichId = dto.getKenhGiaoDichId(); // Lấy từ DTO
-            giaoDich.setKenhGiaoDich(
-                    kenhGiaoDichRepository.findById(kenhGiaoDichId)
-                            .orElseThrow(() -> new RuntimeException("Không tìm thấy kênh giao dịch")));
+                        giaoDich.setTaiKhoanDich(phieuGuiTien.getPhieuGuiTienID()); // phieuGuiTien sẽ là tài khoản đích
+                        giaoDich.setLoaiTaiKhoanDich(
+                                        loaiTaiKhoanRepository.findById(2L)
+                                                        .orElseThrow(() -> new RuntimeException(
+                                                                        "Không tìm thấy loại tài khoản"))); // 2L cho
+                                                                                                            // tài
+                                                                                                            // khoản
+                                                                                                            // tiết
+                                                                                                            // kiệm
 
-            // Kiểm tra nếu kênh giao dịch là tại quầy (ID = 1) thì đặt tài khoản nguồn =
-            // null
-            if (kenhGiaoDichId != null && kenhGiaoDichId == 1L) {
-                giaoDich.setTaiKhoanNguon(null);
-                giaoDich.setLoaiTaiKhoanNguon(
-                        loaiTaiKhoanRepository.findById(3L)
-                                .orElseThrow(() -> new RuntimeException("Không tìm thấy loại tài khoản"))); // 3L cho
-                                                                                                            // tài khoản
-                                                                                                            // không có
-                                                                                                            // nguồn
-            }
+                        // Set loại và kênh giao dịch
+                        giaoDich.setLoaiGiaoDich(loaiGiaoDichRepository.findById(3L).get());
+                        Long kenhGiaoDichId = dto.getKenhGiaoDichId(); // Lấy từ DTO
+                        giaoDich.setKenhGiaoDich(
+                                        kenhGiaoDichRepository.findById(kenhGiaoDichId)
+                                                        .orElseThrow(() -> new RuntimeException(
+                                                                        "Không tìm thấy kênh giao dịch")));
 
-            // Gọi service để tạo giao dịch
-            GiaoDich savedGiaoDich = giaoDichService.createGiaoDich(giaoDich);
+                        // Kiểm tra nếu kênh giao dịch là tại quầy (ID = 1) thì đặt tài khoản nguồn =
+                        // null
+                        if (kenhGiaoDichId != null && kenhGiaoDichId == 1L) {
+                                giaoDich.setTaiKhoanNguon(null);
+                                giaoDich.setLoaiTaiKhoanNguon(
+                                                loaiTaiKhoanRepository.findById(3L)
+                                                                .orElseThrow(() -> new RuntimeException(
+                                                                                "Không tìm thấy loại tài khoản"))); // 3L
+                                                                                                                    // cho
+                                                                                                                    // tài
+                                                                                                                    // khoản
+                                                                                                                    // không
+                                                                                                                    // có
+                                                                                                                    // nguồn
+                        }
 
-            phieuGuiTien.setNgayDaoHan(ngayDaoHan);
-            phieuGuiTien.setTongTienLaiDuKien(tongTienLaiDuKien);
-            phieuGuiTien.setTienLaiNhanDinhKy(tienLaiNhanDinhKy);
-            phieuGuiTien.setTienLaiDaNhanNhungChuaQuyetToan(0L);
-            phieuGuiTien.setTongLaiQuyetToan(0L);// Lưu phiếu gửi tiền
-            PhieuGuiTien savedPhieuGuiTien = phieuGuiTienRepository.save(phieuGuiTien);
+                        // Gọi service để tạo giao dịch
+                        GiaoDich savedGiaoDich = giaoDichService.createGiaoDich(giaoDich);
 
-            // Nếu là đầu kỳ hạn -> tạo phiếu trả lãi ngay
-            String tanSuat = chiTietQuyDinh.getTanSuatNhanLai().getTenTanSoNhanLai();
-            if ("đầu kỳ hạn".equalsIgnoreCase(tanSuat)) {
-                PhieuTraLaiDTO phieuTraLaiDTO = new PhieuTraLaiDTO();
-                phieuTraLaiDTO.setPhieuGuiTienID(savedPhieuGuiTien.getPhieuGuiTienID());
-                phieuTraLaiDTO.setNgayTraLai(dto.getNgayGuiTien()); // trả lãi ngay tại thời điểm gửi
-                phieuTraLaiService.createPhieuTraLai(phieuTraLaiDTO);
-            }
+                        phieuGuiTien.setNgayDaoHan(ngayDaoHan);
+                        phieuGuiTien.setTongTienLaiDuKien(tongTienLaiDuKien);
+                        phieuGuiTien.setTienLaiNhanDinhKy(tienLaiNhanDinhKy);
+                        phieuGuiTien.setTienLaiDaNhanNhungChuaQuyetToan(0L);
+                        phieuGuiTien.setTongLaiQuyetToan(0L);// Lưu phiếu gửi tiền
+                        PhieuGuiTien savedPhieuGuiTien = phieuGuiTienRepository.save(phieuGuiTien);
 
-            return phieuGuiTienMapper.toDTO(savedPhieuGuiTien);
-        } catch (Exception e) {
-            throw new RuntimeException("Lỗi khi tạo phiếu gửi tiền: " + e.getMessage());
+                        // Nếu là đầu kỳ hạn -> tạo phiếu trả lãi ngay
+                        String tanSuat = chiTietQuyDinh.getTanSuatNhanLai().getTenTanSoNhanLai();
+                        if ("đầu kỳ hạn".equalsIgnoreCase(tanSuat)) {
+                                PhieuTraLaiDTO phieuTraLaiDTO = new PhieuTraLaiDTO();
+                                phieuTraLaiDTO.setPhieuGuiTienID(savedPhieuGuiTien.getPhieuGuiTienID());
+                                phieuTraLaiDTO.setNgayTraLai(dto.getNgayGuiTien()); // trả lãi ngay tại thời điểm gửi
+                                phieuTraLaiService.createPhieuTraLai(phieuTraLaiDTO);
+                        }
+
+                        return phieuGuiTienMapper.toDTO(savedPhieuGuiTien);
+                } catch (Exception e) {
+                        throw new RuntimeException("Lỗi khi tạo phiếu gửi tiền: " + e.getMessage());
+                }
         }
-    }
 
-    private void validatePhieuGuiTien(PhieuGuiTienDTO dto) {
-        // Validate required IDs exist
-        if (dto.getSoThang() == null || dto.getLoaiTietKiemId() == null || dto.getTanSuatNhanLaiId() == null) {
-            throw new RuntimeException("Thiếu thông tin về loại kỳ hạn, loại tiết kiệm hoặc tần suất nhận lãi");
+        private void validatePhieuGuiTien(PhieuGuiTienDTO dto) {
+                // Validate required IDs exist
+                if (dto.getSoThang() == null || dto.getLoaiTietKiemId() == null || dto.getTanSuatNhanLaiId() == null) {
+                        throw new RuntimeException(
+                                        "Thiếu thông tin về loại kỳ hạn, loại tiết kiệm hoặc tần suất nhận lãi");
+                }
+
+                // Get current QuyDinhLaiSuat
+                var currentQuyDinhLaiSuat = quyDinhLaiSuatService.findCurrentQuyDinhLaiSuat()
+                                .orElseThrow(() -> new RuntimeException("Không tìm thấy quy định lãi suất hiện tại"));
+
+                // Validate ChiTietQuyDinhLaiSuat exists with current QuyDinhLaiSuat
+                ChiTietQuyDinhLaiSuat chiTietQuyDinh = chiTietQuyDinhLaiSuatRepository
+                                .findByQuyDinhLaiSuat_QuyDinhLaiSuatIDAndLoaiKyHan_LoaiKyHanIDAndLoaiTietKiem_LoaiTietKiemIDAndTanSuatNhanLai_TanSoNhanLaiID(
+                                                currentQuyDinhLaiSuat.getQuyDinhLaiSuatID(),
+                                                dto.getSoThang(),
+                                                dto.getLoaiTietKiemId(),
+                                                dto.getTanSuatNhanLaiId())
+                                .orElseThrow(() -> new RuntimeException("Quy định lãi suất không hợp lệ"));
+
+                // Validate minimum deposit amount
+                if (dto.getSoTienGuiBanDau() < currentQuyDinhLaiSuat.getSoTienGuiToiThieu()) {
+                        throw new RuntimeException("Số tiền gửi phải lớn hơn số tiền tối thiểu: "
+                                        + currentQuyDinhLaiSuat.getSoTienGuiToiThieu() + " VND");
+                }
+
+                // Validate hình thức đáo hạn
+                if (!hinhThucDaoHanRepository.existsById(dto.getHinhThucDaoHanId())) {
+                        throw new RuntimeException("Hình thức đáo hạn không hợp lệ");
+                }
         }
 
-        // Validate ChiTietQuyDinhLaiSuat exists
-        ChiTietQuyDinhLaiSuat chiTietQuyDinh = chiTietQuyDinhLaiSuatRepository
-                .findByLoaiKyHan_LoaiKyHanIDAndLoaiTietKiem_LoaiTietKiemIDAndTanSuatNhanLai_TanSoNhanLaiID(
-                        dto.getSoThang(),
-                        dto.getLoaiTietKiemId(),
-                        dto.getTanSuatNhanLaiId())
-                .orElseThrow(() -> new RuntimeException("Quy định lãi suất không hợp lệ"));
-
-        // Validate minimum deposit amount
-        if (dto.getSoTienGuiBanDau() < 100000L) {
-            throw new RuntimeException("Số tiền gửi phải lớn hơn số tiền tối thiểu: 100.000 VND");
+        private int tinhSoLanNhanLai(String tanSuat, int kyHan) {
+                return switch (tanSuat.toLowerCase()) {
+                        case "đầu kỳ hạn", "cuối kỳ hạn" -> 1;
+                        case "hàng tháng" -> kyHan;
+                        case "hàng quý" -> kyHan / 3;
+                        default -> throw new RuntimeException("Tần suất nhận lãi không hợp lệ");
+                };
         }
 
-        // Validate hình thức đáo hạn
-        if (!hinhThucDaoHanRepository.existsById(dto.getHinhThucDaoHanId())) {
-            throw new RuntimeException("Hình thức đáo hạn không hợp lệ");
+        public List<PhieuGuiTienDTO> getAllPhieuGuiTien() {
+                Iterable<PhieuGuiTien> phieuGuiTiens = phieuGuiTienRepository.findAll();
+                List<PhieuGuiTien> phieuGuiTienList = new ArrayList<>();
+                phieuGuiTiens.forEach(phieuGuiTienList::add);
+
+                return phieuGuiTienList.stream()
+                                .map(phieuGuiTienMapper::toDTO)
+                                .collect(Collectors.toList());
         }
-    }
 
-    private int tinhSoLanNhanLai(String tanSuat, int kyHan) {
-        return switch (tanSuat.toLowerCase()) {
-            case "đầu kỳ hạn", "cuối kỳ hạn" -> 1;
-            case "hàng tháng" -> kyHan;
-            case "hàng quý" -> kyHan / 3;
-            default -> throw new RuntimeException("Tần suất nhận lãi không hợp lệ");
-        };
-    }
+        @Transactional
+        public void deletePhieuGuiTien(Long id) {
+                phieuGuiTienRepository.deleteById(id);
+        }
 
-    public List<PhieuGuiTienDTO> getAllPhieuGuiTien() {
-        Iterable<PhieuGuiTien> phieuGuiTiens = phieuGuiTienRepository.findAll();
-        List<PhieuGuiTien> phieuGuiTienList = new ArrayList<>();
-        phieuGuiTiens.forEach(phieuGuiTienList::add);
-
-        return phieuGuiTienList.stream()
-                .map(phieuGuiTienMapper::toDTO)
-                .collect(Collectors.toList());
-    }
-
-    @Transactional
-    public void deletePhieuGuiTien(Long id) {
-        phieuGuiTienRepository.deleteById(id);
-    }
-
-    public List<PhieuGuiTienDTO> getPhieuGuiTienByKhachHangId(Long khachHangId) {
-        List<PhieuGuiTien> phieuGuiTiens = phieuGuiTienRepository.findByKhachHang_KhachHangID(khachHangId);
-        return phieuGuiTiens.stream()
-                .map(phieuGuiTienMapper::toDTO)
-                .collect(Collectors.toList());
-    }
+        public List<PhieuGuiTienDTO> getPhieuGuiTienByKhachHangId(Long khachHangId) {
+                List<PhieuGuiTien> phieuGuiTiens = phieuGuiTienRepository.findByKhachHang_KhachHangID(khachHangId);
+                return phieuGuiTiens.stream()
+                                .map(phieuGuiTienMapper::toDTO)
+                                .collect(Collectors.toList());
+        }
 
 }

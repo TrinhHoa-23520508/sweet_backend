@@ -20,6 +20,7 @@ import com.example.sweet.database.schema.TaiKhoan.KhachHang;
 import com.example.sweet.database.schema.TaiKhoan.NhanVien;
 import com.example.sweet.database.schema.TaiKhoan.TaiKhoanThanhToan;
 import com.example.sweet.domain.request.PhieuRutTienreqDTO;
+import com.example.sweet.services.QuyDinhLaiSuatService;
 import com.example.sweet.util.mapper.PhieuRutTienMapper;
 import com.example.sweet.database.repository.GiaoDich.LichSuGiaoDich_PhieuGuiTienRepository;
 
@@ -42,6 +43,7 @@ public class PhieuRutTienService {
     private final LichSuGiaoDich_PhieuGuiTienRepository lichSuPGTRepo;
     private final TaiKhoanThanhToanRepository taiKhoanThanhToanRepository;
     private final LoaiTaiKhoanRepository loaiTaiKhoanRepository;
+    private final QuyDinhLaiSuatService quyDinhLaiSuatService;
 
     @Transactional
     public List<PhieuRutTien> handleGetAllPhieuRutTien() {
@@ -82,12 +84,16 @@ public class PhieuRutTienService {
             Instant ngayRut = Instant.now();
             long laiQuyetToanKhiRut;
 
+            var currentQuyDinhLaiSuat = quyDinhLaiSuatService.findCurrentQuyDinhLaiSuat()
+                    .orElseThrow(() -> new RuntimeException("Không tìm thấy quy định lãi suất hiện tại"));
+
             if (ngayRut.isBefore(phieuGuiTien.getNgayDaoHan())) {
                 // Tính số ngày gửi tiền
                 long soNgayGuiTien = ChronoUnit.DAYS.between(phieuGuiTien.getNgayGuiTien(), ngayRut);
                 // Lãi quyết toán = Số tiền gốc * số ngày * (lãi suất không kỳ hạn / 365)
                 laiQuyetToanKhiRut = Math
-                        .round(dto.getSoTienRut() * soNgayGuiTien * (dto.getLaiSuatKhongKyHan() / 365.0));
+                        .round(dto.getSoTienRut() * soNgayGuiTien
+                                * (currentQuyDinhLaiSuat.getLaiSuatKhongKyHan() / 365.0));
             } else {
                 // Nếu rút đúng hoặc sau ngày đáo hạn, lãi = tổng lãi dự kiến
                 laiQuyetToanKhiRut = phieuGuiTien.getTongTienLaiDuKien();

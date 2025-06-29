@@ -16,5 +16,11 @@ public interface ChiTietQuyDinhLaiSuatRepository extends JpaRepository<ChiTietQu
             Long loaiTietKiemId,
             Long tanSuatNhanLaiId);
 
+    Optional<ChiTietQuyDinhLaiSuat> findByQuyDinhLaiSuat_QuyDinhLaiSuatIDAndLoaiKyHan_LoaiKyHanIDAndLoaiTietKiem_LoaiTietKiemIDAndTanSuatNhanLai_TanSoNhanLaiID(
+            Long quyDinhLaiSuatId,
+            Integer loaiKyHanId,
+            Long loaiTietKiemId,
+            Long tanSuatNhanLaiId);
+
     List<ChiTietQuyDinhLaiSuat> findAllByQuyDinhLaiSuat(QuyDinhLaiSuat quyDinhLaiSuat);
 }

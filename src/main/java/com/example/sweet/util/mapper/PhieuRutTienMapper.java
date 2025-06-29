@@ -26,7 +26,6 @@ public class PhieuRutTienMapper {
                                 "Không tìm thấy phiếu gửi tiền với ID: " + dto.getPhieuGuiTienID())));
 
         phieuRutTien.setSoTienRut(dto.getSoTienRut().intValue());
-        phieuRutTien.setLaiSuatKhongKyHan(dto.getLaiSuatKhongKyHan());
 
         return phieuRutTien;
     }
@@ -39,7 +38,6 @@ public class PhieuRutTienMapper {
         PhieuRutTienreqDTO dto = new PhieuRutTienreqDTO();
         dto.setPhieuGuiTienID(entity.getPhieuGuiTien().getPhieuGuiTienID());
         dto.setSoTienRut((long) entity.getSoTienRut());
-        dto.setLaiSuatKhongKyHan(entity.getLaiSuatKhongKyHan());
         if (entity.getGiaoDich() != null && entity.getGiaoDich().getKenhGiaoDich() != null) {
             dto.setKenhGiaoDichID(entity.getGiaoDich().getKenhGiaoDich().getKenhGiaoDichID());
         }

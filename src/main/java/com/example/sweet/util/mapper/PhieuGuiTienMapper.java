@@ -11,6 +11,10 @@ import com.example.sweet.database.schema.Loai.HinhThucDaoHan;
 import com.example.sweet.database.schema.TaiKhoan.KhachHang;
 import com.example.sweet.database.schema.TaiKhoan.NhanVien;
 import com.example.sweet.domain.response.GiaoDich.PhieuGuiTienDTO;
+import com.example.sweet.services.QuyDinhLaiSuatService;
+
+import lombok.AllArgsConstructor;
+
 import com.example.sweet.database.repository.TaiKhoan.KhachHangRepository;
 import com.example.sweet.database.repository.TaiKhoan.NhanVienRepository;
 import com.example.sweet.database.repository.Loai.ChiTietQuyDinhLaiSuatRepository;
@@ -22,6 +26,7 @@ import com.example.sweet.database.repository.TrangThaiRepository;
 import com.example.sweet.database.repository.GiaoDich.GiaoDichRepository;
 import com.example.sweet.database.repository.GiaoDich.LichSuGiaoDich_PhieuGuiTienRepository;
 
+@AllArgsConstructor
 @Component
 public class PhieuGuiTienMapper {
         private final KhachHangRepository khachHangRepository;
@@ -30,25 +35,7 @@ public class PhieuGuiTienMapper {
         private final TrangThaiRepository trangThaiRepository;
         private final ChiTietQuyDinhLaiSuatRepository chiTietQuyDinhLaiSuatRepository;
         private final LichSuGiaoDich_PhieuGuiTienRepository lichSuGiaoDichPhieuGuiTienRepository;
-
-        public PhieuGuiTienMapper(
-                        KhachHangRepository khachHangRepository,
-                        NhanVienRepository nhanVienRepository,
-                        LoaiTietKiemRepository loaiTietKiemRepository,
-                        TanSuatNhanLaiRepository tanSuatNhanLaiRepository,
-                        LoaiKyHanRepository loaiKyHanRepository,
-                        HinhThucDaoHanRepository hinhThucDaoHanRepository,
-                        TrangThaiRepository trangThaiRepository,
-                        GiaoDichRepository giaoDichRepository,
-                        ChiTietQuyDinhLaiSuatRepository chiTietQuyDinhLaiSuatRepository,
-                        LichSuGiaoDich_PhieuGuiTienRepository lichSuGiaoDichPhieuGuiTienRepository) {
-                this.chiTietQuyDinhLaiSuatRepository = chiTietQuyDinhLaiSuatRepository;
-                this.khachHangRepository = khachHangRepository;
-                this.nhanVienRepository = nhanVienRepository;
-                this.hinhThucDaoHanRepository = hinhThucDaoHanRepository;
-                this.trangThaiRepository = trangThaiRepository;
-                this.lichSuGiaoDichPhieuGuiTienRepository = lichSuGiaoDichPhieuGuiTienRepository;
-        }
+        private final QuyDinhLaiSuatService quyDinhLaiSuatService;
 
         public PhieuGuiTienDTO toDTO(PhieuGuiTien phieuGuiTien) {
                 if (phieuGuiTien == null) {
@@ -136,16 +123,19 @@ public class PhieuGuiTienMapper {
 
                 if (dto.getSoThang() != null && dto.getLoaiTietKiemId() != null
                                 && dto.getTanSuatNhanLaiId() != null) {
-                        ChiTietQuyDinhLaiSuat chiTietQuyDinhLaiSuat = chiTietQuyDinhLaiSuatRepository
-                                        .findByLoaiKyHan_LoaiKyHanIDAndLoaiTietKiem_LoaiTietKiemIDAndTanSuatNhanLai_TanSoNhanLaiID(
+                        var currentQuyDinhLaiSuat = quyDinhLaiSuatService.findCurrentQuyDinhLaiSuat()
+                                        .orElseThrow(() -> new RuntimeException(
+                                                        "Không tìm thấy quy định lãi suất hiện tại"));
+                        ChiTietQuyDinhLaiSuat chiTietQuyDinh = chiTietQuyDinhLaiSuatRepository
+                                        .findByQuyDinhLaiSuat_QuyDinhLaiSuatIDAndLoaiKyHan_LoaiKyHanIDAndLoaiTietKiem_LoaiTietKiemIDAndTanSuatNhanLai_TanSoNhanLaiID(
+                                                        currentQuyDinhLaiSuat.getQuyDinhLaiSuatID(),
                                                         dto.getSoThang(),
                                                         dto.getLoaiTietKiemId(),
                                                         dto.getTanSuatNhanLaiId())
-                                        .orElseThrow(() -> new RuntimeException(
-                                                        "Không tìm thấy chi tiết quy định lãi suất phù hợp"));
-                        entity.setChiTietQuyDinhLaiSuat(chiTietQuyDinhLaiSuat);
+                                        .orElseThrow(() -> new RuntimeException("Quy định lãi suất không hợp lệ"));
+                        entity.setChiTietQuyDinhLaiSuat(chiTietQuyDinh);
                         // Set laiSuat từ ChiTietQuyDinhLaiSuat
-                        dto.setLaiSuat(chiTietQuyDinhLaiSuat.getLaiSuat());
+                        dto.setLaiSuat(chiTietQuyDinh.getLaiSuat());
                 }
 
                 if (dto.getHinhThucDaoHanId() != null) {
