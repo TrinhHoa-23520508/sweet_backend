@@ -188,6 +188,9 @@ public class KhachHangService {
         existingKhachHang.setCccd(updateKhachHang.getCccd());
         existingKhachHang.setSoDienThoai(updateKhachHang.getSoDienThoai());
         existingKhachHang.setNgaySinh(updateKhachHang.getNgaySinh());
+        if (updateKhachHang.getMatKhau() != null) {
+            existingKhachHang.setMatKhau(passwordEncoder.encode(updateKhachHang.getMatKhau()));
+        }
         if (existingKhachHang.getNgaySinh() != null) {
             existingKhachHang.setTuoi(Period.between(existingKhachHang.getNgaySinh(), LocalDate.now()).getYears());
             validateAge(existingKhachHang.getTuoi());

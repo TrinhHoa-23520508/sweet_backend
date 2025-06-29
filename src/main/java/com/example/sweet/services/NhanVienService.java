@@ -197,6 +197,9 @@ public class NhanVienService {
         existingNhanVien.setCccd(updateNhanVien.getCccd());
         existingNhanVien.setSoDienThoai(updateNhanVien.getSoDienThoai());
         existingNhanVien.setNgaySinh(updateNhanVien.getNgaySinh());
+        if (updateNhanVien.getMatKhau() != null) {
+            existingNhanVien.setMatKhau(passwordEncoder.encode(updateNhanVien.getMatKhau()));
+        }
         if (existingNhanVien.getNgaySinh() != null) {
             existingNhanVien.setTuoi(Period.between(existingNhanVien.getNgaySinh(), LocalDate.now()).getYears());
             validateAge(existingNhanVien.getTuoi());
