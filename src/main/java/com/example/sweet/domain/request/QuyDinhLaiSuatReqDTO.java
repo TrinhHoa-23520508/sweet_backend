@@ -1,7 +1,5 @@
 package com.example.sweet.domain.request;
 
-import com.example.sweet.database.schema.Loai.ChiTietQuyDinhLaiSuat;
-import com.example.sweet.domain.response.NhanVienResponseDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +16,6 @@ public class QuyDinhLaiSuatReqDTO {
     private Long nguoiLapQuyDinhID;
     private float laiSuatKhongKyHan;
     private int soTienGuiToiThieu;
-    private boolean isActive;
+    private Boolean active;
     private List<ChiTietQuyDinhLaiSuatReqDTO> chiTietQuyDinhLaiSuats;
 }

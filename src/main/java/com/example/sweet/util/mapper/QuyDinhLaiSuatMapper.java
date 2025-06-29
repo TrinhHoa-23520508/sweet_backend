@@ -1,11 +1,11 @@
 package com.example.sweet.util.mapper;
 
+import com.example.sweet.database.repository.Loai.ChiTietQuyDinhLaiSuatRepository;
 import com.example.sweet.database.repository.TaiKhoan.NhanVienRepository;
+import com.example.sweet.database.schema.Loai.ChiTietQuyDinhLaiSuat;
 import com.example.sweet.database.schema.Loai.QuyDinhLaiSuat;
-import com.example.sweet.database.schema.TaiKhoan.NhanVien;
 import com.example.sweet.domain.request.QuyDinhLaiSuatReqDTO;
 import com.example.sweet.domain.response.QuyDinhLaiSuatResDTO;
-import com.example.sweet.services.NhanVienService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class QuyDinhLaiSuatMapper {
     private final NhanVienMapper nhanVienMapper;
     private final ChiTietQuyDinhLaiSuatMapper chiTietQuyDinhLaiSuatMapper;
+    private final ChiTietQuyDinhLaiSuatRepository chiTietQuyDinhLaiSuatRepository;
     private final NhanVienRepository nhanVien;
 
     public QuyDinhLaiSuatResDTO toQuyDinhLaiSuatResponseDTO(QuyDinhLaiSuat quyDinhLaiSuat) {
@@ -30,10 +31,9 @@ public class QuyDinhLaiSuatMapper {
                 .setNguoiLapQuyDinh(nhanVienMapper.toNhanVienNoVaiTroResponseDTO(quyDinhLaiSuat.getNguoiLapQuyDinh()));
         responseDTO.setLaiSuatKhongKyHan(quyDinhLaiSuat.getLaiSuatKhongKyHan());
         responseDTO.setSoTienGuiToiThieu(quyDinhLaiSuat.getSoTienGuiToiThieu());
-        responseDTO.setActive(quyDinhLaiSuat.isActive());
+        responseDTO.setActive(quyDinhLaiSuat.getActive());
         responseDTO.setChiTietQuyDinhLaiSuats(
-                quyDinhLaiSuat
-                        .getChiTietQuyDinhLaiSuats()
+                chiTietQuyDinhLaiSuatRepository.findAllByQuyDinhLaiSuat(quyDinhLaiSuat)
                         .stream()
                         .map(chiTietQuyDinhLaiSuatMapper::toChiTietQuyDinhLaiSuatResponseDTO).toList());
 
@@ -41,6 +41,25 @@ public class QuyDinhLaiSuatMapper {
     }
 
     public QuyDinhLaiSuat toQuyDinhLaiSuat(QuyDinhLaiSuatReqDTO requestDTO) {
+        if (requestDTO == null) {
+            return null;
+        }
+
+        QuyDinhLaiSuat quyDinhLaiSuat = toQuyDinhLaiSuatGoc(requestDTO);
+
+        var chiTiets = requestDTO.getChiTietQuyDinhLaiSuats().stream()
+                .map((value) -> {
+                    ChiTietQuyDinhLaiSuat result = chiTietQuyDinhLaiSuatMapper.toChiTietQuyDinhLaiSuat(value);
+                    result.setQuyDinhLaiSuat(quyDinhLaiSuat);
+                    return result;
+                }).toList();
+        quyDinhLaiSuat.setChiTietQuyDinhLaiSuats(chiTiets);
+
+        return quyDinhLaiSuat;
+    }
+
+
+    public QuyDinhLaiSuat toQuyDinhLaiSuatGoc(QuyDinhLaiSuatReqDTO requestDTO) {
         if (requestDTO == null) {
             return null;
         }
@@ -56,7 +75,7 @@ public class QuyDinhLaiSuatMapper {
         quyDinhLaiSuat.setMoTa(requestDTO.getMoTa());
         quyDinhLaiSuat.setLaiSuatKhongKyHan(requestDTO.getLaiSuatKhongKyHan());
         quyDinhLaiSuat.setSoTienGuiToiThieu(requestDTO.getSoTienGuiToiThieu());
-        quyDinhLaiSuat.setActive(requestDTO.isActive());
+        quyDinhLaiSuat.setActive(requestDTO.getActive());
 
         if (requestDTO.getNguoiLapQuyDinhID() != null) {
             quyDinhLaiSuat.setNguoiLapQuyDinh(nhanVien.findById(requestDTO.getNguoiLapQuyDinhID())
@@ -64,9 +83,11 @@ public class QuyDinhLaiSuatMapper {
         } else {
             throw new NullPointerException("Nhân viên lập quy định không tồn tại");
         }
-        var test = requestDTO.getChiTietQuyDinhLaiSuats().stream()
-                .map(chiTietQuyDinhLaiSuatMapper::toChiTietQuyDinhLaiSuat).toList();
-        quyDinhLaiSuat.setChiTietQuyDinhLaiSuats(test);
+        if (requestDTO.getActive() == null) {
+            quyDinhLaiSuat.setActive(true);
+        } else {
+            quyDinhLaiSuat.setActive(requestDTO.getActive());
+        }
 
         return quyDinhLaiSuat;
     }

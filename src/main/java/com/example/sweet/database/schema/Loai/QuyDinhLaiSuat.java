@@ -34,7 +34,7 @@ public class QuyDinhLaiSuat {
     private int soTienGuiToiThieu;
 
     @ColumnDefault("true")
-    private boolean active;
+    private Boolean active;
 
     @OneToMany(mappedBy = "quyDinhLaiSuat", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore

@@ -10,31 +10,31 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Service
-@AllArgsConstructor
-public class ChiTietQuyDinhLaiSuatService {
-    private final ChiTietQuyDinhLaiSuatRepository repository;
-    private final ChiTietQuyDinhLaiSuatMapper mapper;
-
-    public Iterable<ChiTietQuyDinhLaiSuatResDTO> findAll() {
-        return repository.findAll().stream().map(mapper::toChiTietQuyDinhLaiSuatResponseDTO).toList();
-    }
-
-    public ChiTietQuyDinhLaiSuatResDTO save(ChiTietQuyDinhLaiSuat quyDinhLaiSuat) {
-        return mapper.toChiTietQuyDinhLaiSuatResponseDTO(repository.save(quyDinhLaiSuat));
-    }
-
-
-    public ChiTietQuyDinhLaiSuatResDTO save(ChiTietQuyDinhLaiSuatReqDTO quyDinhLaiSuat) {
-        return mapper.toChiTietQuyDinhLaiSuatResponseDTO(repository.save(mapper.toChiTietQuyDinhLaiSuat(quyDinhLaiSuat)));
-    }
-
-
-    public Optional<ChiTietQuyDinhLaiSuatResDTO> findById(Long id) {
-        return repository.findById(id).map(mapper::toChiTietQuyDinhLaiSuatResponseDTO);
-    }
-
-    public void deleteById(Long id) {
-        repository.deleteById(id);
-    }
-}
+//@Service
+//@AllArgsConstructor
+//public class ChiTietQuyDinhLaiSuatService {
+//    private final ChiTietQuyDinhLaiSuatRepository repository;
+//    private final ChiTietQuyDinhLaiSuatMapper mapper;
+//
+//    public Iterable<ChiTietQuyDinhLaiSuatResDTO> findAll() {
+//        return repository.findAll().stream().map(mapper::toChiTietQuyDinhLaiSuatResponseDTO).toList();
+//    }
+//
+//    public ChiTietQuyDinhLaiSuatResDTO save(ChiTietQuyDinhLaiSuat quyDinhLaiSuat) {
+//        return mapper.toChiTietQuyDinhLaiSuatResponseDTO(repository.save(quyDinhLaiSuat));
+//    }
+//
+//
+//    public ChiTietQuyDinhLaiSuatResDTO save(ChiTietQuyDinhLaiSuatReqDTO quyDinhLaiSuat) {
+//        return mapper.toChiTietQuyDinhLaiSuatResponseDTO(repository.save(mapper.toChiTietQuyDinhLaiSuat(quyDinhLaiSuat)));
+//    }
+//
+//
+//    public Optional<ChiTietQuyDinhLaiSuatResDTO> findById(Long id) {
+//        return repository.findById(id).map(mapper::toChiTietQuyDinhLaiSuatResponseDTO);
+//    }
+//
+//    public void deleteById(Long id) {
+//        repository.deleteById(id);
+//    }
+//}

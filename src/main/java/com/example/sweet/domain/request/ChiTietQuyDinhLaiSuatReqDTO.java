@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 public class ChiTietQuyDinhLaiSuatReqDTO {
     private Long chiTietQuyDinhID;
-    private Long quyDinhLaiSuatID;
+//    private Long quyDinhLaiSuatID;
     private Long loaiTietKiemID;
     private Long tanSuatNhanLaiID;
     private LoaiKyHan loaiKyHan;
