@@ -94,6 +94,12 @@ public class DataInitializer implements CommandLineRunner {
                     value.getLabel(), value.getLabel()))
                 .toList());
 
+        loaiGiaoDichRepository.saveAll(
+            Arrays.stream(LoaiGiaoDichEnum.values())
+                .map(value -> new LoaiGiaoDich(null, (int)value.getCode(), value.getLabel(), value.getLabel()))
+                .toList()
+        );
+
         var insertedLTT = loaiTrangThaiRepo.saveAll(List.of(
                 new LoaiTrangThai(null, "customer", "Khách hàng", "Khách hàng", false, List.of()),
                 new LoaiTrangThai(null, "employee", "Nhân viên", "Nhân viên", false, List.of()),
